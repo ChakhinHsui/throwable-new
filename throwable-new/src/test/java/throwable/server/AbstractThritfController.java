@@ -30,15 +30,15 @@ public class AbstractThritfController {
 		pool.setMaxActive(100);
 	}
 
-	public ResultMsg call(String rpid, String funCode, int uid, Map<String, String> paramMap) throws org.apache.thrift.TException {
+	public ResultMsg call(String rpid, String funCode, Map<String, String> paramMap) throws org.apache.thrift.TException {
 		ThriftConnect conn = null;
 		try {
 			conn = pool.borrowObject();
-			ResultMsg ret = conn.getClient().call(rpid, funCode, uid, paramMap);
+			ResultMsg ret = conn.getClient().call(rpid, funCode, paramMap);
 
 			return ret;
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		} finally {
 			try {
 				pool.returnObject(conn);

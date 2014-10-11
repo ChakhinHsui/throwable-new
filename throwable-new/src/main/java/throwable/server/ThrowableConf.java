@@ -1,4 +1,4 @@
-package throwable.server.conf;
+package throwable.server;
 
 import org.nutz.dao.Dao;
 import org.nutz.ioc.Ioc;

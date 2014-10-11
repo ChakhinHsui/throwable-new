@@ -23,11 +23,11 @@ public class UserTest extends AbstractThritfController {
 	@Test
 	public void testRegister() throws Exception{
 		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("username", "seava1");
+		paramMap.put("username", "seava3");
 		paramMap.put("password", "1");
-		paramMap.put("email", "xxx@seava.com");
+		paramMap.put("email", "x@seava.com");
 		paramMap.put("nickname", "seava1");
 		
-		ResultMsg retMsg = call(GeneratorID.getID(), "/user/register", 10002279, paramMap);
+		ResultMsg retMsg = call(GeneratorID.getID(), "/user/register", paramMap);
 	}
 }

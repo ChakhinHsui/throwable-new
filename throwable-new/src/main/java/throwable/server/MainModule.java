@@ -13,16 +13,10 @@ import org.nutz.mvc.annotation.Modules;
 import org.nutz.mvc.annotation.SetupBy;
 import org.nutz.mvc.ioc.provider.ComboIocProvider;
 
-import throwable.server.conf.ThrowableConf;
 
 
 
 
-
-/**
- * 主模块声明
- * @author Gongqin
- */
 @Modules(scanPackage = true)
 @IocBy(type = ComboIocProvider.class, args = {	"*org.nutz.ioc.loader.json.JsonLoader",
 												"application.js",

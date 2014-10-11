@@ -3,11 +3,12 @@ package throwable.server.handler.user;
 import java.util.Map;
 
 import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
+import throwable.server.ThrowableConf;
 import throwable.server.bean.User;
-import throwable.server.conf.ThrowableConf;
 import throwable.server.utils.BackTool;
 
 /**
@@ -15,6 +16,7 @@ import throwable.server.utils.BackTool;
  * @version 2014年10月10日
  */
 @At("/user")
+@IocBean
 public class UserController {
 
 	@Inject
@@ -22,6 +24,7 @@ public class UserController {
 	
 	@At("/register")
 	public Map<String, Object> addOneUser(@Param("..") User user){
+		System.out.println(user.email);
 		if(null == user.username || user.username.trim().equals("")){
 			return BackTool.errorInfo("010101", ThrowableConf.errorMsg);
 		}
@@ -34,6 +37,7 @@ public class UserController {
 		if(null == user.email || user.email.trim().equals("")){
 			return BackTool.errorInfo("010104", ThrowableConf.errorMsg);
 		}
+		System.out.println(userServer);
 		return userServer.addOneUser(user);
 	}
 }
