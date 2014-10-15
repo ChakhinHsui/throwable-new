@@ -23,9 +23,9 @@ public class UserTest extends AbstractThritfController {
 	@Test
 	public void testRegister() throws Exception{
 		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("username", "seava3");
+		paramMap.put("username", "seava4");
 		paramMap.put("password", "1");
-		paramMap.put("email", "x@seava.com");
+		paramMap.put("email", "x4@seava.com");
 		paramMap.put("nickname", "seava1");
 		
 		ResultMsg retMsg = call(GeneratorID.getID(), "/user/register", paramMap);
