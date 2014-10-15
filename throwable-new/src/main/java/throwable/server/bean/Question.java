@@ -30,6 +30,13 @@ public class Question {
 	public String question_description;
 	
 	/**
+	 * 问题是否公开
+	 * 1公开
+	 * 2私有
+	 */
+	public int question_type;
+	
+	/**
 	 * 问题访问数
 	 */
 	public int viewers;
@@ -42,7 +49,7 @@ public class Question {
 	/**
 	 * 问题创建时间
 	 */
-	public long time;
+	public long create_time;
 	
 	/**
 	 * 问题所属用户id
