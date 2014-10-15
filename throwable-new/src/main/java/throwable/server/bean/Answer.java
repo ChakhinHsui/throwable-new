@@ -1,38 +1,62 @@
+
+/**
+ * Studia Seava
+ * 
+ * created in 2014年10月14日
+ *
+ * author by WaterHsu
+ * 
+ */
 package throwable.server.bean;
 
 /**
- * @author WaterHsu@xiu8.com
- * @version 2014年10月13日
+ * @author WaterHsu
+ *
  */
 public class Answer {
-
+	
 	/**
-	 * 答案id
+	 * 回答id
 	 */
 	public int id;
 	
 	/**
-	 * 答案描述
+	 * 回答摘要
+	 */
+	public String answer_abstract;
+	
+	/**
+	 * 回答具体描述
 	 */
 	public String answer_description;
 	
 	/**
-	 * 答案符合度
+	 * 正确类型
 	 */
 	public int correct_type;
 	
 	/**
-	 * 答案赞同数
+	 * 赞同数
 	 */
 	public int agrees;
 	
 	/**
-	 * 答案访问数
+	 * 访问数
 	 */
 	public int viewers;
 	
 	/**
-	 * 答案创建时间
+	 * 回答时间
 	 */
 	public long answer_time;
+	
+	/**
+	 * 所属问题的id
+	 */
+	public int question_id;
+	
+	/**
+	 * 所属用户的id
+	 */
+	public int user_id;
 }
