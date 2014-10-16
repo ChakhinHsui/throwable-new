@@ -42,9 +42,13 @@ select * from seava_throwable.t_question where kind_id = @kind_id order by id de
 /*question_queryQuestionByUserId*/
 select * from seava_throwable.t_question where user_id = @user_id order by id desc
 
-/*question=*/
+/*question=根据kind_id分页查询问题*/
+/*question=queryQuestionByKindIdPage*/
+select * from seava_throwable.t_question where kind_id = @kind_id order by id desc limit @page, @count
 
-
+/*question=根据user_id分页查询问题*/
+/*question_queryQuestionByUserIdPage*/
+select * from seava_throwable.t_question where user_id = @user_id order by id desc limit @page, @count
 
 /*Kind*/
 
