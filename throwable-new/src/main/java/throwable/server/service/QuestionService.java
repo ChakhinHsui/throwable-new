@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
@@ -22,6 +23,7 @@ import throwable.server.bean.Question;
  * @author WaterHsu
  *
  */
+@IocBean
 public class QuestionService extends BaseService {
 	
 	private Log log = Logs.get();
