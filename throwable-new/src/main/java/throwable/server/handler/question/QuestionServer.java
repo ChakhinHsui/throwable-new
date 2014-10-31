@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.ioc.loader.annotation.IocBean;
 
 import throwable.server.bean.Question;
 import throwable.server.service.QuestionService;
@@ -20,6 +21,7 @@ import throwable.server.service.QuestionService;
  * @author WaterHsu
  *
  */
+@IocBean
 public class QuestionServer {
 
 	@Inject

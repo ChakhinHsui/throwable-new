@@ -17,7 +17,7 @@ public class AbstractThritfController {
 //	private String host = "192.168.1.226";
 //	private int port = 9169;
 	private String host = "localhost";
-	private int port = 9168;
+	private int port = 9169;
 
 	private static GenericObjectPool<ThriftConnect> pool;
 
@@ -35,14 +35,14 @@ public class AbstractThritfController {
 		try {
 			conn = pool.borrowObject();
 			ResultMsg ret = conn.getClient().call(rpid, funCode, paramMap);
-
 			return ret;
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		} finally {
 			try {
 				pool.returnObject(conn);
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		return null;
