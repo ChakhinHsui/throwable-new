@@ -25,7 +25,7 @@ public class User {
 	public String password;
 	
 	/**
-	 * 用户权限
+	 * 用户权限  普通用户:general_user  内容管理用户:context_manager  网站管理用户:web_manager 超级用户: root
 	 */
 	public String rights;
 	
@@ -55,7 +55,7 @@ public class User {
 	public int score;
 	
 	/**
-	 * 用户状态
+	 * 用户状态  1: 未激活   2:账号异常  3:账号被冻结  4: 账号已停用  5: 账号正常
 	 */
 	public int user_state;
 	

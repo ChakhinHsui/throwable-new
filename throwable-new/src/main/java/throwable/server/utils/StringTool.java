@@ -317,4 +317,16 @@ public class StringTool {
     	if(isEmpty(username)) return "";
     	return username.length() <=12 ? username : username.substring(0, 12);
     }
+	
+	/**
+	 * 用户名检测  不能是网站的保留字段  也不能是非法字符
+	 * @param username
+	 * @return
+	 */
+	public static boolean userNameCheck(String username){
+		if("general_user".equals(username) || "context_manager".equals(username) || "web_manager".equals(username) || "root".equals(username)){
+			return false;
+		}
+		return true;
+	}
 }

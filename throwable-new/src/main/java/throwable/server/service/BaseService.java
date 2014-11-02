@@ -7,8 +7,6 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
 
 /**
  * @author WaterHsu@xiu8.com

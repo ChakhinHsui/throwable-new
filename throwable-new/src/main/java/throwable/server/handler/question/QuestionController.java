@@ -16,6 +16,8 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
+import throwable.server.bean.Question;
+
 /**
  * @author WaterHsu
  *
@@ -28,7 +30,7 @@ public class QuestionController {
 	private QuestionServer questionServer;
 	
 	@At("/addQuestion")
-	public Map<String, Object> addQuestion(){
+	public Map<String, Object> addQuestion(@Param("..") Question question){
 		return null;
 	}
 	

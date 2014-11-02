@@ -27,7 +27,6 @@ public class UserServer {
 	private UserService userService;
 	
 	public Map<String, Object> addOneUser(User user){
-		System.out.println(user.username);
 		User user_x = userService.queryUserByUserName(user.username);
 		if(null != user_x){
 			return BackTool.errorInfo("010105", ThrowableConf.errorMsg);
@@ -37,6 +36,18 @@ public class UserServer {
 			return BackTool.errorInfo("010106", ThrowableConf.errorMsg);
 		}
 		user.rights = "general_user";
+		user.user_state = 1;
+		user.score = 0;
+		user.qq = "";
+		user.phone = "";
+		user.create_time = System.currentTimeMillis();
+		user.last_update_time = System.currentTimeMillis();
+		user.last_active_time = System.currentTimeMillis();
+		user.last_active_area = "";
+		user.last_active_ip = "";
+		user.last_forgetpassword_time = 0;
+		user.last_mark_time = 0;
+		user.last_mark_ip = "";
 		userService.insertOneUser(user);
 		//return BackTool.successInfo();
 		return Lang.obj2map(user);

@@ -10,6 +10,7 @@ import org.nutz.mvc.annotation.Param;
 import throwable.server.ThrowableConf;
 import throwable.server.bean.User;
 import throwable.server.utils.BackTool;
+import throwable.server.utils.StringTool;
 
 /**
  * @author WaterHsu@xiu8.com
@@ -24,20 +25,27 @@ public class UserController {
 	
 	@At("/register")
 	public Map<String, Object> addOneUser(@Param("..") User user){
-		System.out.println(user.email);
-		if(null == user.username || user.username.trim().equals("")){
+		if(StringTool.isEmpty(user)){
+			return BackTool.errorInfo("010108", ThrowableConf.errorMsg);
+		}
+		if(StringTool.isEmpty(user.username)){
 			return BackTool.errorInfo("010101", ThrowableConf.errorMsg);
 		}
-		if(null == user.password || user.password.trim().equals("")){
+		if(StringTool.isEmpty(user.password)){
 			return BackTool.errorInfo("010102", ThrowableConf.errorMsg);
 		}
-		if(null == user.nickname || user.nickname.trim().equals("")){
+		if(StringTool.isEmpty(user.nickname)){
 			return BackTool.errorInfo("010103", ThrowableConf.errorMsg);
 		}
-		if(null == user.email || user.email.trim().equals("")){
+		if(StringTool.isEmpty(user.email)){
 			return BackTool.errorInfo("010104", ThrowableConf.errorMsg);
 		}
-		System.out.println(userServer);
+		if(!StringTool.checkEmail(user.email)){
+			return BackTool.errorInfo("010111", ThrowableConf.errorMsg);
+		}
+		if(StringTool.isNumber(user.email)){
+			return BackTool.errorInfo("010110", ThrowableConf.errorMsg);
+		}
 		return userServer.addOneUser(user);
 	}
 }

@@ -15,6 +15,19 @@ select * from seava_throwable.t_user where username = @username
 /*user_queryUserByEmail*/
 select * from seava_throwable.t_user where email = @email
 
+/*user=查询用户 根据用户id查询用户*/
+/*user_queryUserById*/
+select * from seava_throwable.t_user where id = @id
+
+/*user=查询用户  根据id查询用户部分信息*/
+/*user_queryPartUserInfoById*/
+select username, password, rights, email, nickname, phone, qq, score, user_state from seava_throwable.t_user where id = @id
+
+/*user=查询用户  根据用户名查询用户部分信息*/
+/*user_queryPartUserInfoByUserName*/
+select username, password, rights, email, nickname, phone, qq, score, user_state from seava_throwable.t_user where username = @username
+
+
 /*user=查询所有用户*/
 /*user_queryAllUser*/
 select * from seava_throwable.t_user
@@ -22,6 +35,7 @@ select * from seava_throwable.t_user
 /*user=插入某个用户*/
 /*user_insertOneUser*/
 insert into seava_throwable.t_user(username, password, rights, email, nickname, phone, qq, score, user_state, create_time, last_update_time, last_active_time, last_active_area, last_active_ip, last_forgetpassword_time, last_mark_time, last_mark_ip) values(@username, @password, @rights, @email, @nickname, @phone, @qq, @score, @user_state, @create_time, @last_update_time, @last_active_time, @last_active_area, @last_active_ip, @last_forgetpassword_time, @last_mark_time, @last_mark_ip)
+
 
 
 /*Question*/
@@ -50,6 +64,19 @@ select * from seava_throwable.t_question where kind_id = @kind_id order by id de
 /*question_queryQuestionByUserIdPage*/
 select * from seava_throwable.t_question where user_id = @user_id order by id desc limit @page, @count
 
+/*question=根据时间段查询问题*/
+/*question_queryQuestionByTime*/
+select * from seava_throwable.t_question where create_time > @minTime and create_time < @maxTime
+
+
+/*question=根据时间段查询问题*/
+/*question_queryQuestionByTimePage*/
+select * from seava_throwable.t_question where create_time > @minTime and create_time < @maxTime limit @page, @count
+
+
+
+
+
 /*Kind*/
 
 /*kind=插入kind*/
@@ -60,6 +87,35 @@ insert into seava_throwable.t_question_kind(kind_name, kind_parent_id) values(@k
 /*kind_queryKindByKindName*/
 select * from seava_throwable.t_question_kind where kind_name = @kind_name
 
+/*kind=查询所有kind*/
+/*kind_queryAllKind*/
+select * from seava_throwable.t_question_kind
+
+/*kind=根据分类id查询分类名*/
+/*kind_queryKindNameByKindId*/
+select kind_name from seava_throwable.t_question_kind where id = @id
+
 /*kind=根据kind_id查询kind*/
 /*kind_queryKindByKindId*/
 select * from seava_throwable.t_question_kind where id = @id
+
+
+
+
+/*answer*/
+
+/*answer=查询答案 根据问题id查询答案*/
+/*answer_queryAnswerByQuestionId*/
+select * from seava_throwable.t_answer where question_id = @question_id
+
+/*answer=查询答案 根据用户id查询答案*/
+/*answer_queryAnswerByUserId*/
+select * from seava_throwable.t_answer where user_id = @user_id
+
+/*answer=查询答案 根据答案id查询答案*/
+/*answer_queryAnswerByAnswerId*/
+select * from seava_throwable.t_answer where id = @id
+
+/*answer=插入答案*/
+/*answer_insertAnswer*/
+insert into seava_throwable.t_answer(answer_abstract, answer_description, correct_type, agrees, viewers, answer_time, question_id, user_id) values(@answer_abstract, @answer_description, @correct_type, @agrees, @viewers, @answer_time, @question_id, @user_id)

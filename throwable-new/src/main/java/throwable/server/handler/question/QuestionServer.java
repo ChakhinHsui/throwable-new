@@ -27,6 +27,10 @@ public class QuestionServer {
 	@Inject
 	private QuestionService questionService;
 	
+	public Map<String, Object> addQuestion(Question question){
+		return null;
+	}
+	
 	public List<Map> queryAllQuestions(){
 		return null;
 	}

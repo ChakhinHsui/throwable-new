@@ -8,10 +8,13 @@
  */
 package throwable.server.handler.answer;
 
+import throwable.server.service.AnswerService;
+
 /**
  * @author WaterHsu
  *
  */
 public class AnswerServer {
 
+	private AnswerService answerService;
 }
