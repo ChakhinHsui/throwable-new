@@ -13,6 +13,7 @@ import throwable.server.ThrowableConf;
 import throwable.server.bean.User;
 import throwable.server.service.UserService;
 import throwable.server.utils.BackTool;
+import throwable.server.utils.MD5;
 
 /**
  * @author WaterHsu@xiu8.com
@@ -26,6 +27,11 @@ public class UserServer {
 	@Inject
 	private UserService userService;
 	
+	/**
+	 * 用户注册
+	 * @param user
+	 * @return
+	 */
 	public Map<String, Object> addOneUser(User user){
 		User user_x = userService.queryUserByUserName(user.username);
 		if(null != user_x){
@@ -35,6 +41,8 @@ public class UserServer {
 		if(null != user_x){
 			return BackTool.errorInfo("010106", ThrowableConf.errorMsg);
 		}
+		//md5加密
+		user.password = MD5.md5(user.password);
 		user.rights = "general_user";
 		user.user_state = 1;
 		user.score = 0;
@@ -51,5 +59,25 @@ public class UserServer {
 		userService.insertOneUser(user);
 		//return BackTool.successInfo();
 		return Lang.obj2map(user);
+	}
+	
+	/**
+	 * 用户登陆
+	 * @param username  用户名
+	 * @param password  密码
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public Map<String, Object> login(String username, String password){
+		Map map = userService.queryPartUserInfoByUserName(username);
+		if(map == null){
+			return BackTool.errorInfo("010203", ThrowableConf.errorMsg);
+		}else{
+			if(!MD5.md5(password).equals(map.get("password"))){
+				return BackTool.errorInfo("010204", ThrowableConf.errorMsg);
+			}else{
+				return null;
+			}
+		}
 	}
 }

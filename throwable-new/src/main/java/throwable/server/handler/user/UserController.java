@@ -48,4 +48,16 @@ public class UserController {
 		}
 		return userServer.addOneUser(user);
 	}
+	
+	@At("/login")
+	public Map<String, Object> login(@Param("username") String username, @Param("password") String password){
+		if(StringTool.isEmpty(username)){
+			return BackTool.errorInfo("010201", ThrowableConf.errorMsg);
+		}
+		if(StringTool.isEmpty(password)){
+			return BackTool.errorInfo("010202", ThrowableConf.errorMsg);
+		}
+		
+		return userServer.login(username, password);
+	}
 }
