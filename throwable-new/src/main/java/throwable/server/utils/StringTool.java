@@ -14,6 +14,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import throwable.server.enums.Right;
+
 public class StringTool {
 
 	public static String repaymentDate2Str(int repaymentDate) {
@@ -324,9 +326,27 @@ public class StringTool {
 	 * @return
 	 */
 	public static boolean userNameCheck(String username){
-		if("general_user".equals(username) || "context_manager".equals(username) || "web_manager".equals(username) || "root".equals(username)){
+		if(Right.general.getValue().equals(username) || Right.context.getValue().equals(username) || Right.web.getValue().equals(username) || Right.superU.getValue().equals(username)){
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * 判断是否是ip
+	 * @param ip
+	 * @return
+	 */
+	public static boolean isIp(String ip){
+		if(ip.trim().matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")){
+			String[] s = ip.split("\\.");
+			if(Integer.parseInt(s[0])<255)  
+                if(Integer.parseInt(s[1])<255)  
+                    if(Integer.parseInt(s[2])<255)  
+                        if(Integer.parseInt(s[3])<255){
+                        	return true;
+                        }
+		}
+		return false;
 	}
 }

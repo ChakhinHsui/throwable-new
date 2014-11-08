@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
@@ -13,6 +14,7 @@ import throwable.server.bean.Kind;
  * @author WaterHsu@xiu8.com
  * @version 2014年10月15日
  */
+@IocBean
 public class KindService extends BaseService {
 
 	private Log log = Logs.get();

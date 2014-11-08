@@ -40,24 +40,38 @@ public class UserController {
 		if(StringTool.isEmpty(user.email)){
 			return BackTool.errorInfo("010104", ThrowableConf.errorMsg);
 		}
+		if(StringTool.isEmpty(user.last_active_ip)){
+			return BackTool.errorInfo("010112", ThrowableConf.errorMsg);
+		}
+		if(!StringTool.isIp(user.last_active_ip)){
+			return BackTool.errorInfo("010113", ThrowableConf.errorMsg);
+		}
 		if(!StringTool.checkEmail(user.email)){
 			return BackTool.errorInfo("010111", ThrowableConf.errorMsg);
 		}
 		if(StringTool.isNumber(user.email)){
 			return BackTool.errorInfo("010110", ThrowableConf.errorMsg);
 		}
+		if(!StringTool.userNameCheck(user.username)){
+			return BackTool.errorInfo("010109", ThrowableConf.errorMsg);
+		}
 		return userServer.addOneUser(user);
 	}
 	
 	@At("/login")
-	public Map<String, Object> login(@Param("username") String username, @Param("password") String password){
+	public Map<String, Object> login(@Param("username") String username, @Param("password") String password, @Param("ip") String ip){
 		if(StringTool.isEmpty(username)){
 			return BackTool.errorInfo("010201", ThrowableConf.errorMsg);
 		}
 		if(StringTool.isEmpty(password)){
 			return BackTool.errorInfo("010202", ThrowableConf.errorMsg);
 		}
-		
-		return userServer.login(username, password);
+		if(StringTool.isEmpty(ip)){
+			return BackTool.errorInfo("010210", ThrowableConf.errorMsg);
+		}
+		if(!StringTool.isIp(ip)){
+			return BackTool.errorInfo("010211", ThrowableConf.errorMsg);
+		}
+		return userServer.login(username, password, ip);
 	}
 }

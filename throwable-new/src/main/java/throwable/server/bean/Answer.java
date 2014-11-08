@@ -31,7 +31,8 @@ public class Answer {
 	public String answer_description;
 	
 	/**
-	 * 正确类型
+	 * 正确类型   1:正确   2:部分正确  3:未确认  4:错误  5:非法
+	 * 默认为未确认
 	 */
 	public int correct_type;
 	

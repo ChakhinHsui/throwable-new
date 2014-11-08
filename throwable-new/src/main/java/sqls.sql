@@ -21,12 +21,11 @@ select * from seava_throwable.t_user where id = @id
 
 /*user=查询用户  根据id查询用户部分信息*/
 /*user_queryPartUserInfoById*/
-select username, password, rights, email, nickname, phone, qq, score, user_state from seava_throwable.t_user where id = @id
+select id, username, password, rights, email, nickname, phone, qq, score, user_state from seava_throwable.t_user where id = @id
 
 /*user=查询用户  根据用户名查询用户部分信息*/
 /*user_queryPartUserInfoByUserName*/
-select username, password, rights, email, nickname, phone, qq, score, user_state from seava_throwable.t_user where username = @username
-
+select id, username, password, rights, email, nickname, phone, qq, score, user_state from seava_throwable.t_user where username = @username
 
 /*user=查询所有用户*/
 /*user_queryAllUser*/
@@ -36,6 +35,24 @@ select * from seava_throwable.t_user
 /*user_insertOneUser*/
 insert into seava_throwable.t_user(username, password, rights, email, nickname, phone, qq, score, user_state, create_time, last_update_time, last_active_time, last_active_area, last_active_ip, last_forgetpassword_time, last_mark_time, last_mark_ip) values(@username, @password, @rights, @email, @nickname, @phone, @qq, @score, @user_state, @create_time, @last_update_time, @last_active_time, @last_active_area, @last_active_ip, @last_forgetpassword_time, @last_mark_time, @last_mark_ip)
 
+/*user=更新用户信息*/
+/*user_updateUserInfo*/
+update seava_throwable.t_user set nickname = @nickname, phone = @phone, qq = @qq, last_update_time = @last_update_time where id = @id
+
+/*user=更新用户登陆成功的日志信息*/
+/*user_updateUserTimeInfoSuccess*/
+update seava_throwable.t_user set last_active_time = @last_active_time, last_active_area = @last_active_area, last_active_ip = @last_active_ip where id = @id
+
+/*user=更新用户登陆失败(忘记密码)的日志信息*/
+/*user_updateUserTimeInfoForget*/
+update seava_throwable.t_user set user_state = @user_state, last_forgetpassword_time = @last_forgetpassword_time where id = @id
+
+/*user=更新用户登陆失败(异常用户)的日志信息*/
+/*user_updateUserTimeInfoException*/
+update seava_throwable.t_user set user_state = @user_state, last_mark_time = @last_mark_time, last_mark_ip = @last_mark_ip where id = @id
+
+
+
 
 
 /*Question*/
@@ -43,6 +60,22 @@ insert into seava_throwable.t_user(username, password, rights, email, nickname, 
 /*question=插入问题*/
 /*question_insertOneQuestion*/
 insert into seava_throwable.t_question(question_name, question_description, question_type, viewers, agrees, create_time, kind_id, user_id) values(@question_name, @question_description, @question_type, @viewers, @agrees, @create_time, @kind_id, @user_id)
+
+/*question=添加问题描述*/
+/*question_addQuestionDesc*/
+update seava_throwable.t_question set question_description = @question_description where id = @id
+
+/*question=公开问题*/
+/*question_publicQuestion*/
+update seava_throwable.t_question set question_type = @question_type where id = @id 
+
+/*question=修改访问数*/
+/*question_updateViewers*/
+update seava_throwable.t_question set viewers = viewers + @viewers where id = @id 
+
+/*question=修改赞同数*/
+/*question_updateAgrees*/
+update seava_throwable.t_question set agrees = agrees + @agrees where id = @id 
 
 /*question=根据id查询问题*/
 /*question_queryQuestionByQuestionId*/
@@ -68,10 +101,14 @@ select * from seava_throwable.t_question where user_id = @user_id order by id de
 /*question_queryQuestionByTime*/
 select * from seava_throwable.t_question where create_time > @minTime and create_time < @maxTime
 
-
 /*question=根据时间段查询问题*/
 /*question_queryQuestionByTimePage*/
 select * from seava_throwable.t_question where create_time > @minTime and create_time < @maxTime limit @page, @count
+
+/*question=根据questionType查询所有问题*/
+/*question_queryAllQuestionByType*/
+select * from seava_throwable.t_question where question_type = @question_type 
+
 
 
 

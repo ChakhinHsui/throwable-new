@@ -31,7 +31,7 @@ public class UserService extends BaseService {
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(User.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
+		log.info(username + ":  " + sql.getSourceSql());
 		List<User> list = sql.getList(User.class);
 		if(list == null || list.size() == 0) return null;
 		return list.get(0);
@@ -143,6 +143,66 @@ public class UserService extends BaseService {
 		sql.params().set("last_forgetpassword_time", user.last_forgetpassword_time);
 		sql.params().set("last_mark_time", user.last_mark_time);
 		sql.params().set("last_mark_ip", user.last_mark_ip);
+		dao.execute(sql);
+		log.info(sql.getSourceSql());
+	}
+	
+	/**
+	 * 更新用户基本信息
+	 * @param id    用户id
+	 * @param user  用户基本信息
+	 */
+	public void updateUserInfo(int id, User user){
+		Sql sql = dao.sqls().create("user_updateUserInfo");
+		sql.params().set("nickname", user.nickname);
+		sql.params().set("phone", user.phone);
+		sql.params().set("qq", user.qq);
+		sql.params().set("last_update_time", user.last_update_time);
+		sql.params().set("id", id);
+		dao.execute(sql);
+		log.info(sql.getSourceSql());
+	}
+	
+	/**
+	 * 登陆成功 更新部分日志信息
+	 * @param id   用户id
+	 * @param map  封装日志信息
+	 */
+	public void updateLoginSuccess(int id, Map<String, Object> map){
+		Sql sql = dao.sqls().create("user_updateUserTimeInfoSuccess");
+		sql.params().set("last_active_time", map.get("last_active_time"));
+		sql.params().set("last_active_area", map.get("last_active_area"));
+		sql.params().set("last_active_ip", map.get("last_active_ip"));
+		sql.params().set("id", id);
+		dao.execute(sql);
+		log.info(sql.getSourceSql());
+	}
+	
+	/**
+	 * 更新忘记密码的日志信息
+	 * @param id    用户id
+	 * @param map   忘记密码时间信息
+	 */
+	public void updateForgetPW(int id, Map<String, Object> map){
+		Sql sql = dao.sqls().create("user_updateUserTimeInfoForget");
+		sql.params().set("user_state", (int)map.get("user_state"));
+		sql.params().set("last_forgetpassword_time", map.get("last_forgetpassword_time"));
+		sql.params().set("id", id);
+		dao.execute(sql);
+		log.info(sql.getSourceSql());
+	}
+	
+	/**
+	 * 异常用户的日志更新
+	 * @param id   用户id
+	 * @param map  异常的时间  ip信息
+	 */
+	public void updateExceptionUser(int id, Map<String, Object> map){
+		Sql sql = dao.sqls().create("user_updateUserTimeInfoException");
+		sql.params().set("user_state", (int)map.get("user_state"));
+		sql.params().set("last_mark_time", map.get("last_mark_time"));
+		sql.params().set("last_mark_ip", map.get("last_mark_ip"));
+		sql.params().set("id", id);
 		dao.execute(sql);
 		log.info(sql.getSourceSql());
 	}

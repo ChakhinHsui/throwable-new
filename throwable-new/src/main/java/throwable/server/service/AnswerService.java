@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
@@ -21,6 +22,7 @@ import throwable.server.bean.Answer;
  * @author WaterHsu
  *
  */
+@IocBean
 public class AnswerService extends BaseService {
 	
 	private Log log = Logs.get();
@@ -87,7 +89,7 @@ public class AnswerService extends BaseService {
 		sql.params().set("correct_type", 0);
 		sql.params().set("agrees", 0);
 		sql.params().set("viewers", 0);
-		sql.params().set("answer_time", System.currentTimeMillis());
+		sql.params().set("answer_time", answer.answer_time);
 		sql.params().set("question_id", answer.question_id);
 		sql.params().set("user_id", answer.user_id);
 		dao.execute(sql);
