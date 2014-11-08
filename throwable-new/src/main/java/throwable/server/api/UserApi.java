@@ -1,7 +1,6 @@
 package throwable.server.api;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.nutz.ioc.loader.annotation.Inject;
@@ -27,6 +26,11 @@ public class UserApi {
 	@Inject
 	private UserService userService;
 	
+	/**
+	 * 这是给后台管理用的  加入了权限控制
+	 * @param userId   管理员的用户id
+	 * @return
+	 */
 	@SuppressWarnings({"unchecked","rawtypes"})
 	@At("/queryAllUser")
 	public Map queryAllUser(@Param("..")int userId){
@@ -44,5 +48,19 @@ public class UserApi {
 		map.get(userService.queryAllUser());
 		map.put("users", userService.queryAllUser());
 		return map;
+	}
+	
+	/**
+	 * 查询用户部分信息
+	 * @param userId   要查询的用户id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@At("/queryUserPartInfo")
+	public Map queryUserPartInfo(@Param("userId") int userId){
+		if(StringTool.isEmpty(userId)){
+			return BackTool.errorInfo("010301", ThrowableConf.errorMsg);
+		}
+		return userService.queryPartUserInfoById(userId);
 	}
 }
