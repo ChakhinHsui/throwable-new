@@ -22,7 +22,7 @@ import throwable.server.utils.MD5;
 @IocBean
 public class UserServer {
 
-	private Log log = Logs.get();
+	private Log log = Logs.getLog("UserServer");
 	
 	@Inject
 	private UserService userService;

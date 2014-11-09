@@ -1,9 +1,7 @@
 package throwable.server;
 
-import org.nutz.dao.Dao;
 import org.nutz.ioc.Ioc;
 import org.nutz.ioc.impl.PropertiesProxy;
-import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
@@ -17,9 +15,6 @@ import throwable.server.utils.StringTool;
  */
 @IocBean
 public class ThrowableConf {
-	
-	@Inject
-	private Dao dao;
 	
 	private Log log = Logs.get();
 	private long sleepTime;//更新配置周期

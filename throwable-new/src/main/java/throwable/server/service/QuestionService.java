@@ -243,4 +243,23 @@ public class QuestionService extends BaseService {
 		}
 		return list;
 	}
+	
+	/**
+	 * 根据问题类型查询问题
+	 * @param type  类型 1 公开  2 私有
+	 * @return
+	 */
+	public List<Question> queryQuestionByType(int type){
+		Sql sql = dao.sqls().create("question_queryAllQuestionByType");
+		sql.params().set("question_type", type);
+		sql.setCallback(Sqls.callback.entities());
+		sql.setEntity(dao.getEntity(Question.class));
+		dao.execute(sql);
+		log.info(sql.getSourceSql());
+		List<Question> list = sql.getList(Question.class);
+		if(list == null || list.size() < 1){
+			return null;
+		}
+		return list;
+	}
 }

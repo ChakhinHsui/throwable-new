@@ -49,7 +49,7 @@ public class UserController {
 		if(!StringTool.checkEmail(user.email)){
 			return BackTool.errorInfo("010111", ThrowableConf.errorMsg);
 		}
-		if(StringTool.isNumber(user.email)){
+		if(StringTool.isNumber(user.username)){
 			return BackTool.errorInfo("010110", ThrowableConf.errorMsg);
 		}
 		if(!StringTool.userNameCheck(user.username)){
