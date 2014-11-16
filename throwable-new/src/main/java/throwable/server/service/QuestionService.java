@@ -10,6 +10,7 @@ package throwable.server.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
@@ -249,14 +250,14 @@ public class QuestionService extends BaseService {
 	 * @param type  类型 1 公开  2 私有
 	 * @return
 	 */
-	public List<Question> queryQuestionByType(int type){
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryQuestionByType(int type){
 		Sql sql = dao.sqls().create("question_queryAllQuestionByType");
 		sql.params().set("question_type", type);
-		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao.getEntity(Question.class));
+		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		log.info(sql.getSourceSql());
-		List<Question> list = sql.getList(Question.class);
+		List<Map> list = sql.getList(Map.class);
 		if(list == null || list.size() < 1){
 			return null;
 		}
