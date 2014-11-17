@@ -9,6 +9,7 @@
 package throwable.server.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
@@ -34,16 +35,16 @@ public class AnswerService extends BaseService {
 	 * @param question_id
 	 * @return
 	 */
-	public Answer queryAnswerByQuestionId(int question_id){
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryAnswerByQuestionId(int question_id){
 		Sql sql = dao.sqls().create("answer_queryAnswerByQuestionId");
 		sql.params().set("question_id", question_id);
-		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao.getEntity(Answer.class));
+		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		log.info(sql.getSourceSql());
-		List<Answer> list = sql.getList(Answer.class);
+		List<Map> list = sql.getList(Map.class);
 		if(list == null || list.size() < 1) return null;
-		return list.get(0);
+		return list;
 	}
 	
 	/**

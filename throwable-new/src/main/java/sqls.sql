@@ -147,7 +147,7 @@ select * from seava_throwable.t_question_kind where id = @id
 
 /*answer=查询答案 根据问题id查询答案*/
 /*answer_queryAnswerByQuestionId*/
-select * from seava_throwable.t_answer where question_id = @question_id
+select a.id, a.answer_description, a.correct_type, a.agrees, a.viewers, a.answer_time, b.username from seava_throwable.t_answer as a inner join seava_throwable.t_user as b on a.user_id = b.id  where question_id = @question_id order by a.correct_type, a.agrees desc, a.viewers desc
 
 /*answer=查询答案 根据用户id查询答案*/
 /*answer_queryAnswerByUserId*/
