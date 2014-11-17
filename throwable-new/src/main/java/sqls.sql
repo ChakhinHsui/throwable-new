@@ -78,8 +78,8 @@ update seava_throwable.t_question set viewers = viewers + @viewers where id = @i
 update seava_throwable.t_question set agrees = agrees + @agrees where id = @id 
 
 /*question=根据id查询问题*/
-/*question_queryQuestionByQuestionId*/
-select * from seava_throwable.t_question where id = @id 
+/*question_queryOneQuestionInfo*/
+select a.id, a.question_name, a.question_description, a.viewers, a.agrees, a.create_time, b.username from seava_throwable.t_question as a inner join seava_throwable.t_user as b on a.user_id = b.id where a.id = @id 
 
 /*question=根据kind_id查询问题*/
 /*question_queryQuestionByKindId*/
@@ -107,8 +107,11 @@ select * from seava_throwable.t_question where create_time > @minTime and create
 
 /*question=根据questionType查询所有问题*/
 /*question_queryAllQuestionByType*/
-select * from seava_throwable.t_question where question_type = @question_type 
+select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type order by a.id desc 
 
+/*question=增加问题的回答数*/
+/*question_addQuestionAnswers*/
+update seava_throwable.t_question set answers = answers + @counts where id = @id
 
 
 

@@ -42,9 +42,19 @@ public class Question {
 	public int viewers;
 	
 	/**
-	 * 问题赞同数
+	 * 问题赞同数 顶
 	 */
 	public int agrees;
+	
+	/**
+	 * 踩的个数
+	 */
+	public int degrees;
+	
+	/**
+	 * 问题的回答数
+	 */
+	public int answers;
 	
 	/**
 	 * 问题创建时间

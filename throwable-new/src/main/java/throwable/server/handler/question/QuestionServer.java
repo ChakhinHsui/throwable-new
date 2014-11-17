@@ -37,7 +37,9 @@ public class QuestionServer {
 	 */
 	public Map<String, Object> addQuestion(Question question){
 		question.agrees = 0;
+		question.degrees = 0;
 		question.viewers = 0;
+		question.answers = 0;
 		question.create_time = System.currentTimeMillis();
 		questionService.addQuestion(question);
 		log.info("添加一个问题: " + question.user_id);

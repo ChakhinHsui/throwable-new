@@ -316,12 +316,42 @@ public class DateUtils {
 	public static int[] getTotal(){
 		return new int[]{10000000, 99999999};
 	}
+	
+	/**
+	 * 根据时间 获得 几分钟前，几小时前，几天前， 2014年3月15日等的时间格式
+	 * @param time   时间戳
+	 * @param day    几天前的截止  如10 则10天内的时间用几天前的格式  10天后的用 xxxx年xx月xx天
+	 * @return
+	 */
+	public static String getNewTime(long time, int day){
+		String retTime = "";
+		if(System.currentTimeMillis() - time > 1000 * 60 * 60 * 24 * day){
+			retTime = getYear_Month_Day(new Date(time));
+			String[] temp = retTime.split("-");
+			retTime = temp[0] + "年" + temp[1] + "月" + temp[2] + "日";
+		}else if(System.currentTimeMillis() - time >= 1000 * 60 * 60 * 24){
+			retTime = ((System.currentTimeMillis() - time) / (1000 * 60 * 60 * 24)) + "天前";
+		}else if(System.currentTimeMillis() - time >= 1000 * 60 * 60){
+			retTime = ((System.currentTimeMillis() - time) / (1000 * 60 * 60)) + "小时前";
+		}else if(System.currentTimeMillis() - time >= 1000 * 60){
+			retTime = "" + ((System.currentTimeMillis() - time) / (1000 * 60)) + "分钟前";
+		}else{
+			retTime = "1分钟前";
+		}
+		return retTime;
+	}
   
 	public static void main(String[] args) {
-		int[] retInt = getThisMonth(new Date());
-		for(int tt : retInt){
-			System.out.println(tt);
-		}
+//		int[] retInt = getThisMonth(new Date());
+//		for(int tt : retInt){
+//			System.out.println(tt);
+//		}
+//		getNewTime(System.currentTimeMillis(), 20);
+		System.out.println("你好阿".length());
+		System.out.println("nihaoa".length());
+		System.out.println("Hello World".length());
+		System.out.println("HelloWorld".length() + " " + "HelloWorld".getBytes().length);
+		System.out.println("Hello你好".length() + " " + "Hello你好".getBytes().length);
 	}
 	
 

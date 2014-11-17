@@ -104,15 +104,16 @@ public class QuestionService extends BaseService {
 	 * @param id         问题id
 	 * @return
 	 */
-	public Question queryQuestionByQuestionId(int id){
-		Sql sql = dao.sqls().create("question_queryQuestionByQuestionId");
+	@SuppressWarnings("rawtypes")
+	public Map queryQuestionByQuestionId(int id){
+		Sql sql = dao.sqls().create("question_queryOneQuestionInfo");
 		sql.params().set("id", id);
-		sql.setCallback(Sqls.callback.entity());
-		sql.setEntity(dao.getEntity(Question.class));
+		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		log.info(sql.getSourceSql());
-		Question question = (Question)sql.getEntity();
-		return question;
+		List<Map> list = sql.getList(Map.class);
+		if(list == null || list.size() < 1) return null;
+		return list.get(0);
 	}
 	
 	/**

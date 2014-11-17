@@ -15,6 +15,8 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
+import org.nutz.trans.Atom;
+import org.nutz.trans.Trans;
 
 import throwable.server.bean.Answer;
 
@@ -83,7 +85,7 @@ public class AnswerService extends BaseService {
 	 * @param answer
 	 */
 	public void insertData(Answer answer){
-		Sql sql = dao.sqls().create("answer_insertAnswer");
+		final Sql sql = dao.sqls().create("answer_insertAnswer");
 		sql.params().set("answer_abstract", answer.answer_abstract);
 		sql.params().set("answer_description", answer.answer_description);
 		sql.params().set("correct_type", 0);
@@ -92,7 +94,15 @@ public class AnswerService extends BaseService {
 		sql.params().set("answer_time", answer.answer_time);
 		sql.params().set("question_id", answer.question_id);
 		sql.params().set("user_id", answer.user_id);
-		dao.execute(sql);
+		final Sql sql2 = dao.sqls().create("question_addQuestionAnswers");
+		sql2.params().set("counts", 1);
+		sql2.params().set("id", answer.question_id);
+		Trans.exec(new Atom(){
+			public void run(){
+				dao.execute(sql);
+				dao.execute(sql2);
+			}
+		});
 		log.info(sql.getSourceSql());
 	}
 }
