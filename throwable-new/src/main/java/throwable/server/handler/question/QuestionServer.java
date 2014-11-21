@@ -15,6 +15,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
+import throwable.server.ThrowableConf;
 import throwable.server.bean.Question;
 import throwable.server.service.QuestionService;
 import throwable.server.utils.BackTool;
@@ -40,9 +41,43 @@ public class QuestionServer {
 		question.degrees = 0;
 		question.viewers = 0;
 		question.answers = 0;
+		question.solved = 0;
 		question.create_time = System.currentTimeMillis();
 		questionService.addQuestion(question);
 		log.info("添加一个问题: " + question.user_id);
+		return BackTool.successInfo();
+	}
+	
+	/**
+	 * 添加关注
+	 * @param userId
+	 * @param questionId
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public Map<String, Object> addFocus(int userId, int questionId){
+		Map question = questionService.queryQuestionByQuestionId(questionId);
+		if(Integer.parseInt(question.get("solved").toString()) != 0){
+			return BackTool.errorInfo("020304", ThrowableConf.errorMsg);
+		}
+		if(!questionService.queryHaveFocused(userId, questionId)){
+			return BackTool.errorInfo("020303", ThrowableConf.errorMsg);
+		}
+		questionService.addFocus(userId, questionId, System.currentTimeMillis());
+		return BackTool.successInfo();
+	}
+	
+	/**
+	 * 取消关注
+	 * @param userId         用户id
+	 * @param questionId     问题id
+	 * @return
+	 */
+	public Map<String, Object> deleteFocus(int userId, int questionId){
+		if(questionService.queryHaveFocused(userId, questionId)){
+			return BackTool.errorInfo("020403", ThrowableConf.errorMsg);
+		}
+		questionService.deleteFocus(userId, questionId);
 		return BackTool.successInfo();
 	}
 }

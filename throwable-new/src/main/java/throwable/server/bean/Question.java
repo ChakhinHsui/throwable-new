@@ -57,6 +57,11 @@ public class Question {
 	public int answers;
 	
 	/**
+	 * 问题的解决标记  0 未解决   1解决
+	 */
+	public int solved;
+	
+	/**
 	 * 问题创建时间
 	 */
 	public long create_time;

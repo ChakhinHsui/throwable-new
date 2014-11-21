@@ -32,6 +32,11 @@ public class QuestionController {
 	@Inject
 	private QuestionServer questionServer;
 	
+	/**
+	 * 添加问题
+	 * @param question   封装问题参数
+	 * @return
+	 */
 	@At("/addQuestion")
 	public Map<String, Object> addQuestion(@Param("..") Question question){
 		if(StringTool.isEmpty(question.question_name)){
@@ -50,5 +55,47 @@ public class QuestionController {
 			return BackTool.errorInfo("020105", ThrowableConf.errorMsg);
 		}
 		return questionServer.addQuestion(question);
+	}
+	
+	/**
+	 * 添加关注
+	 * @param userId       用户id
+	 * @param questionId   问题id
+	 * @return
+	 */
+	@At("/addFocus")
+	public Map<String, Object> addFocus(@Param("userId") int userId, @Param("questionId") int questionId){
+		if(userId <= 0){
+			return BackTool.errorInfo("020301", ThrowableConf.errorMsg);
+		}
+		if(questionId <= 0){
+			return BackTool.errorInfo("020302", ThrowableConf.errorMsg);
+		}
+		return questionServer.addFocus(userId, questionId);
+	}
+	
+	/**
+	 * 取消关注
+	 * @param userId       用户id
+	 * @param questionId   问题id
+	 * @return
+	 */
+	@At("/deleteFocus")
+	public Map<String, Object> deleteFocus(@Param("userId") int userId, @Param("questionId") int questionId){
+		if(userId <= 0){
+			return BackTool.errorInfo("020401", ThrowableConf.errorMsg);
+		}
+		if(questionId <= 0){
+			return BackTool.errorInfo("020402", ThrowableConf.errorMsg);
+		}
+		return questionServer.deleteFocus(userId, questionId);
+	}
+	
+	public Map<String, Object> addCollection(){
+		return null;
+	}
+	
+	public Map<String, Object> deleteCollection(){
+		return null;
 	}
 }

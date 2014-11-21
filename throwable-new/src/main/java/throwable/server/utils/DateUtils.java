@@ -347,11 +347,17 @@ public class DateUtils {
 //			System.out.println(tt);
 //		}
 //		getNewTime(System.currentTimeMillis(), 20);
-		System.out.println("你好阿".length());
-		System.out.println("nihaoa".length());
-		System.out.println("Hello World".length());
-		System.out.println("HelloWorld".length() + " " + "HelloWorld".getBytes().length);
-		System.out.println("Hello你好".length() + " " + "Hello你好".getBytes().length);
+//		System.out.println("你好阿".length());
+//		System.out.println("nihaoa".length());
+//		System.out.println("Hello World".length());
+//		System.out.println("HelloWorld".length() + " " + "HelloWorld".getBytes().length);
+//		System.out.println("Hello你好".length() + " " + "Hello你好".getBytes().length);
+		String s1 = "123456";
+		String s2 = "123456";
+		Long l1 = Long.parseLong(s1);
+		Long l2 = Long.parseLong(s2);
+		System.out.println(Long.parseLong(s1) == Long.parseLong(s2));
+		System.out.println(l1 == l2);
 	}
 	
 

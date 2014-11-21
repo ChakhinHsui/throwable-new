@@ -40,6 +40,7 @@ public class QuestionService extends BaseService {
 		sql.params().set("question_type", question.question_type);
 		sql.params().set("viewers", question.viewers);
 		sql.params().set("agrees", question.agrees);
+		sql.params().set("solved", question.solved);
 		sql.params().set("create_time", question.create_time);
 		sql.params().set("kind_id", question.kind_id);
 		sql.params().set("user_id", question.user_id);
@@ -263,5 +264,51 @@ public class QuestionService extends BaseService {
 			return null;
 		}
 		return list;
+	}
+	
+	/**
+	 * 查询用户是否已经关注过该问题
+	 * @param user_id            用户id
+	 * @param question_id        问题id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public boolean queryHaveFocused(int user_id, int question_id){
+		Sql sql = dao.sqls().create("focus_haveFocused");
+		sql.params().set("user_id", user_id);
+		sql.params().set("question_id", question_id);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		if(list == null || list.size() < 1){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 添加关注
+	 * @param user_id      用户id
+	 * @param question_id  问题id
+	 * @param time         关注时间
+	 */
+	public void addFocus(int user_id, int question_id, long time){
+		Sql sql = dao.sqls().create("focus_addFocus");
+		sql.params().set("user_id", user_id);
+		sql.params().set("question_id", question_id);
+		sql.params().set("create_time", time);
+		dao.execute(sql);
+	}
+	
+	/**
+	 * 删除关注
+	 * @param user_id          用户id
+	 * @param question_id      问题id
+	 */
+	public void deleteFocus(int user_id, int question_id){
+		Sql sql = dao.sqls().create("focus_deleteFocus");
+		sql.params().set("user_id", user_id);
+		sql.params().set("question_id", question_id);
+		dao.execute(sql);
 	}
 }

@@ -20,4 +20,9 @@ public class Kind {
 	 * 分类的上层分类
 	 */
 	public Kind parent_kind;
+	
+	/**
+	 * 分类创建时间
+	 */
+	public long time;
 }

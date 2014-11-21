@@ -59,7 +59,7 @@ update seava_throwable.t_user set user_state = @user_state, last_mark_time = @la
 
 /*question=插入问题*/
 /*question_insertOneQuestion*/
-insert into seava_throwable.t_question(question_name, question_description, question_type, viewers, agrees, create_time, kind_id, user_id) values(@question_name, @question_description, @question_type, @viewers, @agrees, @create_time, @kind_id, @user_id)
+insert into seava_throwable.t_question(question_name, question_description, question_type, viewers, agrees, solved, create_time, kind_id, user_id) values(@question_name, @question_description, @question_type, @viewers, @agrees, @solved, @create_time, @kind_id, @user_id)
 
 /*question=添加问题描述*/
 /*question_addQuestionDesc*/
@@ -114,6 +114,18 @@ select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.creat
 update seava_throwable.t_question set answers = answers + @counts where id = @id
 
 
+/*user focus question*/
+/*用户关注问题*/
+/*focus_addFocus*/
+insert into seava_throwable.t_user_question_focus(user_id, question_id, create_time) values(@user_id, @question_id, @create_time)
+
+/*用户取消关注问题*/
+/*focus_deleteFocus*/
+delete from seava_throwable.t_user_question_focus where user_id=@user_id, question_id=@question_id
+
+/*查询用户是否已经关注该问题*/
+/*focus_haveFocused*/
+select * from seava_throwable.t_user_question_focus where user_id=@user_id, question_id=@question_id
 
 
 
