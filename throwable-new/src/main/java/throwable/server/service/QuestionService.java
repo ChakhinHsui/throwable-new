@@ -40,6 +40,8 @@ public class QuestionService extends BaseService {
 		sql.params().set("question_type", question.question_type);
 		sql.params().set("viewers", question.viewers);
 		sql.params().set("agrees", question.agrees);
+		sql.params().set("degrees", question.degrees);
+		sql.params().set("answers", question.answers);
 		sql.params().set("solved", question.solved);
 		sql.params().set("create_time", question.create_time);
 		sql.params().set("kind_id", question.kind_id);
@@ -307,6 +309,54 @@ public class QuestionService extends BaseService {
 	 */
 	public void deleteFocus(int user_id, int question_id){
 		Sql sql = dao.sqls().create("focus_deleteFocus");
+		sql.params().set("user_id", user_id);
+		sql.params().set("question_id", question_id);
+		dao.execute(sql);
+	}
+	
+	/**
+	 * 查询用户是否已经收藏过问题
+	 * @param user_id          用户id
+	 * @param question_id      问题id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public boolean haveCollected(int user_id, int question_id){
+		Sql sql = dao.sqls().create("collection_haveCollected");
+		sql.params().set("user_id", user_id);
+		sql.params().set("question_id", question_id);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		if(list == null || list.size() < 1){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 用户添加收藏
+	 * @param user_id         用户id
+	 * @param question_id     问题id
+	 * @param time            收藏时间
+	 * @param mark            标注
+	 */
+	public void addCollection(int user_id, int question_id, long time, String mark){
+		Sql sql = dao.sqls().create("collection_addCollection");
+		sql.params().set("user_id", user_id);
+		sql.params().set("question_id", question_id);
+		sql.params().set("create_time", time);
+		sql.params().set("collection_mark", mark);
+		dao.execute(sql);
+	}
+	
+	/**
+	 * 用户取消收藏问题
+	 * @param user_id        用户id
+	 * @param question_id    问题id
+	 */
+	public void deleteCollection(int user_id, int question_id){
+		Sql sql = dao.sqls().create("collection_deleteCollection");
 		sql.params().set("user_id", user_id);
 		sql.params().set("question_id", question_id);
 		dao.execute(sql);

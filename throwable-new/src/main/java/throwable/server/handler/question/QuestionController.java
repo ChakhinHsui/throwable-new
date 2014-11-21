@@ -91,11 +91,38 @@ public class QuestionController {
 		return questionServer.deleteFocus(userId, questionId);
 	}
 	
-	public Map<String, Object> addCollection(){
-		return null;
+	/**
+	 * 收藏问题
+	 * @param userId       用户id
+	 * @param questionId   问题id
+	 * @param mark         问题标注
+	 * @return
+	 */
+	@At("/addCollection")
+	public Map<String, Object> addCollection(@Param("userId") int userId, @Param("questionId") int questionId, @Param("mark") String mark){
+		if(userId <= 0){
+			return BackTool.errorInfo("020501", ThrowableConf.errorMsg);
+		}
+		if(questionId <= 0){
+			return BackTool.errorInfo("020502", ThrowableConf.errorMsg);
+		}
+		return questionServer.addCollection(userId, questionId, mark);
 	}
 	
-	public Map<String, Object> deleteCollection(){
-		return null;
+	/**
+	 * 删除收藏
+	 * @param userId        用户id
+	 * @param questionId    问题id
+	 * @return
+	 */
+	@At("/deleteCollection")
+	public Map<String, Object> deleteCollection(@Param("userId") int userId, @Param("questionId") int questionId){
+		if(userId <= 0){
+			return BackTool.errorInfo("020601", ThrowableConf.errorMsg);
+		}
+		if(questionId <= 0){
+			return BackTool.errorInfo("020602", ThrowableConf.errorMsg);
+		}
+		return questionServer.deleteCollection(userId, questionId);
 	}
 }

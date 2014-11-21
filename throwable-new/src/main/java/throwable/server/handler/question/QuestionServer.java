@@ -80,4 +80,38 @@ public class QuestionServer {
 		questionService.deleteFocus(userId, questionId);
 		return BackTool.successInfo();
 	}
+	
+	/**
+	 * 增加收藏
+	 * @param userId        用户id
+	 * @param questionId    问题id
+	 * @param mark          问题标注
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public Map<String, Object> addCollection(int userId, int questionId, String mark){
+		Map question = questionService.queryQuestionByQuestionId(questionId);
+		if(Integer.parseInt(question.get("solved").toString()) == 0){
+			return BackTool.errorInfo("020503", ThrowableConf.errorMsg);
+		}
+		if(!questionService.haveCollected(userId, questionId)){
+			return BackTool.errorInfo("020504", ThrowableConf.errorMsg);
+		}
+		questionService.addCollection(userId, questionId, System.currentTimeMillis(), mark);
+		return BackTool.successInfo();
+	}
+	
+	/**
+	 * 取消收藏
+	 * @param userId       用户id 
+	 * @param questionId   问题id
+	 * @return
+	 */
+	public Map<String, Object> deleteCollection(int userId, int questionId){
+		if(questionService.haveCollected(userId, questionId)){
+			return BackTool.errorInfo("020603", ThrowableConf.errorMsg);
+		}
+		questionService.deleteCollection(userId, questionId);
+		return BackTool.successInfo();
+	}
 }
