@@ -42,6 +42,11 @@ public class Answer {
 	public int agrees;
 	
 	/**
+	 * 不赞同数
+	 */
+	public int disagrees;
+	
+	/**
 	 * 访问数
 	 */
 	public int viewers;

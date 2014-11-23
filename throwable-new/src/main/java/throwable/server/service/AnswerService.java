@@ -89,9 +89,10 @@ public class AnswerService extends BaseService {
 		final Sql sql = dao.sqls().create("answer_insertAnswer");
 		sql.params().set("answer_abstract", answer.answer_abstract);
 		sql.params().set("answer_description", answer.answer_description);
-		sql.params().set("correct_type", 0);
-		sql.params().set("agrees", 0);
-		sql.params().set("viewers", 0);
+		sql.params().set("correct_type", answer.correct_type);
+		sql.params().set("agrees", answer.agrees);
+		sql.params().set("disagrees", answer.disagrees);
+		sql.params().set("viewers", answer.viewers);
 		sql.params().set("answer_time", answer.answer_time);
 		sql.params().set("question_id", answer.question_id);
 		sql.params().set("user_id", answer.user_id);

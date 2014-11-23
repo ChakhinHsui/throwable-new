@@ -361,4 +361,11 @@ public class QuestionService extends BaseService {
 		sql.params().set("question_id", question_id);
 		dao.execute(sql);
 	}
+	
+	public int agreeQuestion(int questionId){
+		Sql sql = dao.sqls().create("question_agreeQuestion");
+		sql.params().set("agrees", 1);
+		dao.execute(sql);
+		return 1;
+	}
 }

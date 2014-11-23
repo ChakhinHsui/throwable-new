@@ -39,6 +39,8 @@ public class AnswerServer {
 	public Map<String, Object> addAnswer(Answer answer){
 		answer.agrees = 0;
 		answer.viewers = 0;
+		answer.disagrees = 0;
+		answer.correct_type = answer.correct_type == 0 ? 3 : answer.correct_type;
 		answer.answer_time = System.currentTimeMillis();
 		answerService.insertData(answer);
 		log.info("问题添加成功");

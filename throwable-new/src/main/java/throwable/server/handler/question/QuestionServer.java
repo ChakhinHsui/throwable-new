@@ -114,4 +114,12 @@ public class QuestionServer {
 		questionService.deleteCollection(userId, questionId);
 		return BackTool.successInfo();
 	}
+	
+	public Map<String, Object> agreeQuestion(int questionId){
+		return null;
+	}
+	
+	public Map<String, Object> disagreeQuestion(int questionId){
+		return null;
+	}
 }

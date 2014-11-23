@@ -113,6 +113,18 @@ select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.creat
 /*question_addQuestionAnswers*/
 update seava_throwable.t_question set answers = answers + @counts where id = @id
 
+/*question=agree问题*/
+/*question_agreeQuestion*/
+update seava_throwable.t_question set agrees = agrees + @agrees where id = @id
+
+/*question=disagree问题*/
+/*question_disagreeQuestion*/
+update seava_throwable.t_question set disagrees = disagrees + @disagrees where id = @id
+
+/*question=增加访问数*/
+/*question_addViewers*/
+update seava_throwable.t_question set viewers = viewers + @viewers where id = @id
+
 
 /*user focus question*/
 /*用户关注问题*/
@@ -182,4 +194,4 @@ select * from seava_throwable.t_answer where id = @id
 
 /*answer=插入答案*/
 /*answer_insertAnswer*/
-insert into seava_throwable.t_answer(answer_abstract, answer_description, correct_type, agrees, viewers, answer_time, question_id, user_id) values(@answer_abstract, @answer_description, @correct_type, @agrees, @viewers, @answer_time, @question_id, @user_id)
+insert into seava_throwable.t_answer(answer_abstract, answer_description, correct_type, agrees, diagrees, viewers, answer_time, question_id, user_id) values(@answer_abstract, @answer_description, @correct_type, @agrees, @disagrees, @viewers, @answer_time, @question_id, @user_id)

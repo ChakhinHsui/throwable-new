@@ -23,11 +23,6 @@ public class Label {
 	public int type;
 	
 	/**
-	 * 用户私有时  用户id
-	 */
-	public int userId;
-	
-	/**
 	 * 标签创建时间
 	 */
 	public long time;

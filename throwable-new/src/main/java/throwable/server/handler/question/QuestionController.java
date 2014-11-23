@@ -125,4 +125,18 @@ public class QuestionController {
 		}
 		return questionServer.deleteCollection(userId, questionId);
 	}
+	
+	public Map<String, Object> agreeQuestion(@Param("questionId") int questionId){
+		if(questionId <= 0){
+			return BackTool.errorInfo("020701", ThrowableConf.errorMsg);
+		}
+		return questionServer.agreeQuestion(questionId);
+	}
+	
+	public Map<String, Object> disagreeQuestion(@Param("questionId") int questionId){
+		if(questionId <= 0){
+			return BackTool.errorInfo("020801", ThrowableConf.errorMsg);
+		}
+		return questionServer.disagreeQuestion(questionId);
+	}
 }
