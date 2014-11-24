@@ -194,4 +194,4 @@ select * from seava_throwable.t_answer where id = @id
 
 /*answer=插入答案*/
 /*answer_insertAnswer*/
-insert into seava_throwable.t_answer(answer_abstract, answer_description, correct_type, agrees, diagrees, viewers, answer_time, question_id, user_id) values(@answer_abstract, @answer_description, @correct_type, @agrees, @disagrees, @viewers, @answer_time, @question_id, @user_id)
+insert into seava_throwable.t_answer(answer_abstract, answer_description, correct_type, agrees, disagrees, viewers, answer_time, question_id, user_id) values(@answer_abstract, @answer_description, @correct_type, @agrees, @disagrees, @viewers, @answer_time, @question_id, @user_id)
