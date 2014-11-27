@@ -17,17 +17,18 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+
 /**
  * @author WaterHsu@xiu8.com
  * @version 2014年11月19日
  */
 public class MailTool {
 
-	public class Email{
+	public static class Email{
 		/**
 		 * 发送邮件的服务器的地址
 		 */
-		private String mailServerHost = "mail.xiu8.com";
+		private String mailServerHost = "smtp.163.com";
 		/**
 		 * 发送邮件的服务器端口
 		 */
@@ -35,15 +36,15 @@ public class MailTool {
 		/**
 		 * 邮件发送者地址
 		 */
-		private String fromAddress = "service@xiu8.com";
+		private String fromAddress = "hsupangfei1989@163.com";
 		/**
 		 * 邮箱用户名
 		 */
-		private String username = "service@xiu8.com";
+		private String username = "hsupangfei1989@163.com";
 		/**
 		 * 邮箱密码
 		 */
-		private String password = "QImo5Bo.com";
+		private String password = "china374256336qq";
 		/**
 		 * 用于读取配置文件
 		 */
@@ -347,5 +348,15 @@ public class MailTool {
 			}
 		}
 		return addrs;
+	}
+	
+	public static void main(String[] args){
+		MailTool.Email email = new MailTool.Email();
+		email.setToAddress("374299447@qq.com");
+		email.setSubject("Hello World");
+		email.setContent("Nihaoma");
+		MailTool mailTool = new MailTool();
+		mailTool.sendEmailAsyn(email);
+		System.out.println("发送完毕");
 	}
 }
