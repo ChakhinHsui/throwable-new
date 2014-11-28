@@ -27,7 +27,7 @@
          <artifactId>throwableFrameWork</artifactId>  
          <version>0.0.1-SNAPSHOT</version> 
          <scope>system</scope>  
-         <systemPath>${project.basedir}/src/main/lib/throwable-framework.jar</systemPath>  
+         <systemPath>${project.basedir}/src/main/lib/throwable-framework-20141128.jar</systemPath>  
     </dependency>
     <dependency>
     	<groupId>org.nutz</groupId>
@@ -48,6 +48,13 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/lib/log4j-over-logback-all-1.0.7.jar</systemPath>
 		</dependency>
+	<dependency>
+			<groupId>org.nutz</groupId>
+			<artifactId>ssdb4j</artifactId>
+			<version>9.2</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/lib/ssdb4j-9.2.jar</systemPath>
+	</dependency>
     <dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>fastjson</artifactId>
