@@ -23,6 +23,11 @@ public class UserController {
 	@Inject
 	private UserServer userServer;
 	
+	/**
+	 * 用户注册
+	 * @param user
+	 * @return
+	 */
 	@At("/register")
 	public Map<String, Object> addOneUser(@Param("..") User user){
 		if(StringTool.isEmpty(user)){
@@ -58,6 +63,13 @@ public class UserController {
 		return userServer.addOneUser(user);
 	}
 	
+	/**
+	 * 用户登陆
+	 * @param username
+	 * @param password
+	 * @param ip
+	 * @return
+	 */
 	@At("/login")
 	public Map<String, Object> login(@Param("username") String username, @Param("password") String password, @Param("ip") String ip){
 		if(StringTool.isEmpty(username)){
@@ -74,4 +86,37 @@ public class UserController {
 		}
 		return userServer.login(username, password, ip);
 	}
+	
+	/**
+	 * 激活用户发送邮件
+	 * @param userId
+	 * @param url
+	 * @return
+	 */
+	@At("/activeUserEmail")
+	public Map<String, Object> activeUserEmail(@Param("userId") int userId, @Param("url") String url) {
+		if (userId < 1) {
+			return BackTool.errorInfo("010403", ThrowableConf.errorMsg);
+		}
+		if (StringTool.isEmpty(url)) {
+			return BackTool.errorInfo("010404", ThrowableConf.errorMsg);
+		}
+		if (!url.endsWith("?key=")) {
+			return BackTool.errorInfo("010405", ThrowableConf.errorMsg);
+		}
+		return userServer.activeUserEmail(userId, url);
+	}
+	
+	/**
+	 * 激活账号
+	 * @param key
+	 * @return
+	 */
+	@At("/activeUser")
+	public Map<String, Object> activeUser(@Param("key") String key) {
+		if (StringTool.isEmpty(key)) {
+			return BackTool.errorInfo("010506", ThrowableConf.errorMsg);
+		}
+		return userServer.activeUser(key);
+	} 
 }

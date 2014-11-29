@@ -51,7 +51,13 @@ update seava_throwable.t_user set user_state = @user_state, last_forgetpassword_
 /*user_updateUserTimeInfoException*/
 update seava_throwable.t_user set user_state = @user_state, last_mark_time = @last_mark_time, last_mark_ip = @last_mark_ip where id = @id
 
+/*user=查询用户账号状态*/
+/*user_queryUserState*/
+select user_state from seava_throwable.t_user where id = @id
 
+/*user=更新用户账号状态*/
+/*user_updateUserState*/
+update seava_throwable.t_user set user_state = @user_state where id = @id
 
 
 

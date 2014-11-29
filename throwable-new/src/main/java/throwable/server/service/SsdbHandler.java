@@ -1,5 +1,6 @@
 package throwable.server.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.nutz.ioc.loader.annotation.Inject;
@@ -8,6 +9,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import throwable.server.framework.cache.ssdb.SsdbMasterSlavePool;
 
 /**
+ * ssdb处理类 
  * @author WaterHsu@xiu8.com
  * @version 2014年11月28日
  */
@@ -178,7 +180,64 @@ public class SsdbHandler {
 		return ssdbMasterSlavePool.getSsdb().hsize(key).check().asInt();
 	}
 	
+	/**
+	 * key-map 同时设置多个值
+	 * @param key
+	 * @param values
+	 */
 	public void multi_hset(final String key, final Map<String, Object> values) {
 		ssdbMasterSlavePool.getSsdb().multi_hset(key, values).check();
 	} 
+	
+	/**
+	 * key-map  同时取多个值
+	 * @param key
+	 * @param fields   多个字段  不固定
+	 * @return
+	 */
+	public Map<String, Object> multi_hget(final String key, Object...fields) {
+		return ssdbMasterSlavePool.getSsdb().multi_hget(key, fields).check().map();
+	}
+	
+	/**
+	 * zset  设值
+	 * @param key
+	 * @param field
+	 * @param score
+	 */
+	public void zset(final String key, final String field, final long score) {
+		ssdbMasterSlavePool.getSsdb().zset(key, field, score).check();
+	}
+	
+	/**
+	 * zset  取值
+	 * @param key
+	 * @param field
+	 * @return
+	 */
+	public long zget(final String key, final String field) {
+		return ssdbMasterSlavePool.getSsdb().zget(key, field).check().asLong();
+	}
+	
+	/**
+	 * zset  自增
+	 * @param key
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public long zincr(final String key, final String field, final int value) {
+		return ssdbMasterSlavePool.getSsdb().zincr(key, field, value).check().asLong();
+	}
+	
+	/**
+	 * zset  自减
+	 * @param key
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public long zdecr(final String key, final String field, final int value) {
+		return ssdbMasterSlavePool.getSsdb().zdecr(key, field, value).check().asLong();
+	}
 }

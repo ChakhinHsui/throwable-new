@@ -349,4 +349,53 @@ public class StringTool {
 		}
 		return false;
 	}
+	
+	/**
+	 * 得到注册激活发邮件的邮件内容
+	 * @param nick  用户名
+	 * @param url   url 邮件点击后返回地址
+	 * @return
+	 */
+	public static String getRegisterMailString(String nick, String url){
+		StringBuffer context = new StringBuffer();
+		context.append("<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>");
+		context.append("<html xmlns='http://www.w3.org/1999/xhtml'>");
+		context.append("<head>");
+		context.append("<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />");
+		context.append("<title>Throwable技术问答社区</title>");
+		context.append("<meta name='keywords' content='用户账号激活   throwable技术问答社区'/>");
+		context.append("<meta name='description' content='用户账号激活   throwable技术问答社区' />");
+		context.append("<style type='text/css'>");
+		context.append(".email_center a { word-break: break-all;}");
+		context.append(".email_logo { width:285px; height:40px;}");
+		context.append(".email_logo img {border:none;}");
+		context.append(".email_center { width:550px;  border-top:1px solid #e5d0b0; background:#fff1dd; margin-top:5px; padding:0px 10px 10px 10px;}");
+		context.append(".email_center p { padding:0px; margin:11px 0px; font-size:14px; color:#333; line-height:18px;}");
+		context.append(".email_center p font { color:#f00; font-size:14px; font-weight:bold;}");
+		context.append(".email_bottom { width:550px; border-top:1px dashed #333; margin-left:10px; margin-top:20px; font-size:14px;}");
+		context.append(".email_bottom p { width:550px; text-align:center; padding:0px; margin:11px 0px;}");
+		context.append(".email_bottom p a { color:#1155cc; text-decoration:underline; padding-left:3px;}");
+		context.append("</style>");
+		context.append("</head>");
+		context.append("<body>");
+		context.append("<a href='http://www.xiu8.com' class='email_logo'><img src='http://static.xiu8.com/images1/myaccount/logo.png' /></a>");
+		context.append("<div class='email_center'>");
+		context.append("<p>亲爱的<span>");
+		context.append(nick);
+		context.append("</span>:</p>");
+		context.append(" <p>您好，感谢您对throwable技术问答社区的支持。</p>");
+		context.append("<p>您在throwable技术问答社区注册了账号，请使用以下链接进行激活：<a href='"+url+"' target='_blank'> "+ url +" </a></p> ");
+		context.append("<p>如果链接无法点击，请您选择并复制整个链接，打开浏览器窗口并将其粘贴到地址栏中。然后单击'转到'按钮或按键盘上的 Enter 键。</p>");
+		context.append("<p><font>注意：</font>此激活链接在24小时内有效，如地址已失效，请重新激活。</p>");
+		context.append("</div>");
+		context.append("<div class='email_bottom'>");
+		context.append("<p>此信由throwable技术问答社区系统发出，系统不接收回信，因此请勿直接回复。</p>");
+		context.append("<p><font>温馨提示：</font> 1、throwable技术问答社区统一回复邮箱为xxx@throwable.cn，请注意邮件发送者，谨防假冒！2、为了您帐号的安全，建议经常更新密码！</p>");
+		context.append("<p>如有任何疑问，请联系<a href='http://sighttp.qq.com/msgrd?v=3&uin=97260007&site=qq&menu=yes'>throwable管理员</a>.</p>");
+		context.append("<p>Copyright 2014-2054, 版权所有<a href='http://www.throwable.cn'>Throwable.cn</a></p>");
+		context.append("</div>");
+		context.append("</body>");
+		context.append("</html>");
+		return context.toString();
+	}
 }

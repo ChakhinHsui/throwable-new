@@ -206,4 +206,29 @@ public class UserService extends BaseService {
 		dao.execute(sql);
 		log.info(sql.getSourceSql());
 	}
+	
+	/**
+	 * 查询用户账号状态
+	 * @param userId   用户id
+	 * @return
+	 */
+	public int queryUserState(int userId) {
+		Sql sql = dao.sqls().create("user_queryUserState");
+		sql.params().set("id", userId);
+		sql.setCallback(Sqls.callback.integer());
+		dao.execute(sql);
+		int back = sql.getInt();
+		return back;
+	}
+	
+	/**
+	 * 更新用户账号状态
+	 * @param userId     用户id
+	 * @param userState  账号状态
+	 */
+	public void updateUserState(int userId, int userState) {
+		Sql sql = dao.sqls().create("user_updateUserState");
+		sql.params().set("user_state", userState);
+		dao.execute(sql);
+	}
 }

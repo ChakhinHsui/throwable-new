@@ -261,7 +261,7 @@ public class MailTool {
 	 * 同步发送邮件
 	 * @param email
 	 */
-	public void sendEmailSyn(Email email){
+	public static void sendEmailSyn(Email email){
 		try{
 			send(email);
 		}catch(Exception e){
@@ -273,7 +273,7 @@ public class MailTool {
 	 * 异步发送邮件
 	 * @param email
 	 */
-	public void sendEmailAsyn(final Email email){
+	public static void sendEmailAsyn(final Email email){
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -351,12 +351,30 @@ public class MailTool {
 	}
 	
 	public static void main(String[] args){
-		MailTool.Email email = new MailTool.Email();
+		Email email = new Email();
 		email.setToAddress("374299447@qq.com");
 		email.setSubject("Hello World");
 		email.setContent("Nihaoma");
-		MailTool mailTool = new MailTool();
-		mailTool.sendEmailAsyn(email);
+		MailTool.sendEmailAsyn(email);
 		System.out.println("发送完毕");
+	}
+	
+	/**
+	 * 发送邮箱的接口
+	 * @param email
+	 * @param title
+	 * @param content
+	 * @param isAsyn
+	 */
+	public static void sendMail (String email, String title, String content, boolean isAsyn) {
+		Email email_b = new Email();
+		email_b.setToAddress(email);
+		email_b.setSubject(title);
+		email_b.setContent(content);
+		if (isAsyn) {
+			sendEmailAsyn(email_b);
+		} else {
+			sendEmailSyn(email_b);
+		}
 	}
 }
