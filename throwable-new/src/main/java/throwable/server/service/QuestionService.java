@@ -42,6 +42,8 @@ public class QuestionService extends BaseService {
 		sql.params().set("agrees", question.agrees);
 		sql.params().set("degrees", question.degrees);
 		sql.params().set("answers", question.answers);
+		sql.params().set("focuses", question.focuses);
+		sql.params().set("collections", question.collections);
 		sql.params().set("solved", question.solved);
 		sql.params().set("create_time", question.create_time);
 		sql.params().set("kind_id", question.kind_id);
@@ -261,6 +263,60 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		log.info(sql.getSourceSql());
+		List<Map> list = sql.getList(Map.class);
+		if(list == null || list.size() < 1){
+			return null;
+		}
+		return list;
+	}
+	
+	/**
+	 * 查询最热问题  访问最多问题
+	 * @param type   问题类型
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryHotQuestionByType(int type) {
+		Sql sql = dao.sqls().create("question_queryAllHotQuestionByType");
+		sql.params().set("question_type", type);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		if(list == null || list.size() < 1){
+			return null;
+		}
+		return list;
+	}
+	
+	/**
+	 * 查询关注最多的问题
+	 * @param type 问题类型
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryMostFocusedQuestion(int type) {
+		Sql sql = dao.sqls().create("question_queryAllMostFocusQuestionByType");
+		sql.params().set("question_type", type);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		if(list == null || list.size() < 1){
+			return null;
+		}
+		return list;
+	}
+	
+	/**
+	 * 查询最新的回答最多的问题
+	 * @param type   问题类型
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryNewMostAnswerQuestion(int type) {
+		Sql sql = dao.sqls().create("question_queryNewMostAnswerQuestionByType");
+		sql.params().set("question_type", type);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
 		List<Map> list = sql.getList(Map.class);
 		if(list == null || list.size() < 1){
 			return null;

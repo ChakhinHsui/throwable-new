@@ -57,6 +57,16 @@ public class Question {
 	public int answers;
 	
 	/**
+	 * 问题的被关注数
+	 */
+	public int focuses;
+	
+	/**
+	 * 问题的被收藏数
+	 */
+	public int collections;
+	
+	/**
 	 * 问题的解决标记  0 未解决   1解决
 	 */
 	public int solved;

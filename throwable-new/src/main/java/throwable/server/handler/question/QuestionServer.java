@@ -41,6 +41,8 @@ public class QuestionServer {
 		question.degrees = 0;
 		question.viewers = 0;
 		question.answers = 0;
+		question.focuses = 0;
+		question.collections = 0;
 		question.solved = 0;
 		question.create_time = System.currentTimeMillis();
 		questionService.addQuestion(question);

@@ -61,11 +61,12 @@ update seava_throwable.t_user set user_state = @user_state where id = @id
 
 
 
+
 /*Question*/
 
 /*question=插入问题*/
 /*question_insertOneQuestion*/
-insert into seava_throwable.t_question(question_name, question_description, question_type, viewers, agrees, degrees, answers, solved, create_time, kind_id, user_id) values(@question_name, @question_description, @question_type, @viewers, @agrees, @degrees, @answers, @solved, @create_time, @kind_id, @user_id)
+insert into seava_throwable.t_question(question_name, question_description, question_type, viewers, agrees, degrees, answers, focuses, collections, solved, create_time, kind_id, user_id) values(@question_name, @question_description, @question_type, @viewers, @agrees, @degrees, @answers, @focuses, @collections, @solved, @create_time, @kind_id, @user_id)
 
 /*question=添加问题描述*/
 /*question_addQuestionDesc*/
@@ -114,6 +115,18 @@ select * from seava_throwable.t_question where create_time > @minTime and create
 /*question=根据questionType查询所有问题*/
 /*question_queryAllQuestionByType*/
 select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type order by a.id desc 
+
+/*question=根据questionType查询所有最热(访问数最多)问题*/
+/*question_queryAllHotQuestionByType*/
+select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type order by a.viewers desc, a.id desc
+
+/*question=根据questionType查询所有关注最多的问题*/
+/*question_queryAllMostFocusQuestionByType*/
+select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.focuses, a.solved, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type and a.solved = 0 order by a.focuses desc, a.id desc
+
+/*question=根据questionType查询10条最新的回答最多的问题*/
+/*question_queryNewMostAnswerQuestionByType*/
+select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.focuses, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type order by a.answers desc, a.id desc limit 10
 
 /*question=增加问题的回答数*/
 /*question_addQuestionAnswers*/
@@ -180,6 +193,8 @@ select kind_name from seava_throwable.t_question_kind where id = @id
 /*kind=根据kind_id查询kind*/
 /*kind_queryKindByKindId*/
 select * from seava_throwable.t_question_kind where id = @id
+
+
 
 
 

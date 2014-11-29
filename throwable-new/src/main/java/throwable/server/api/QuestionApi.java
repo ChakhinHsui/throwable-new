@@ -6,15 +6,14 @@ import java.util.Map;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.lang.Lang;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
 import throwable.server.ThrowableConf;
+import throwable.server.enums.QuestionType;
 import throwable.server.service.QuestionService;
 import throwable.server.utils.BackTool;
 import throwable.server.utils.DateUtils;
-import throwable.server.utils.StringTool;
 
 /**
  * @author WaterHsu@xiu8.com
@@ -28,18 +27,64 @@ public class QuestionApi {
 	private QuestionService questionService;
 	
 	/**
-	 * 查询公开的问题 用于首页显示
+	 * 查询公开的问题 用于首页显示 最新的
 	 * @param question_type  问题类型
 	 * @return
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@At("/getPublicQs")
-	public Map queryPublicQuestions(@Param("question_type") int question_type){
-		if(StringTool.isEmpty(question_type)){
-			return BackTool.errorInfo("020201", ThrowableConf.errorMsg);
-		}
+	public Map queryPublicQuestions(){
 		Map map = new HashMap();
-		List<Map> list = questionService.queryQuestionByType(question_type);
+		List<Map> list = questionService.queryQuestionByType(QuestionType.can_public.getValue());
+		for(Map mm : list){
+			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
+		}
+		map.put("questions", list);
+		return map;
+	}
+	
+	/**
+	 * 查询公开的最热问题 访问数最多
+	 * @param question_type
+	 * @return
+	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	@At("/getPublicHotQs")
+	public Map queryPublicHotQuestions() {
+		Map map = new HashMap();
+		List<Map> list = questionService.queryHotQuestionByType(QuestionType.can_public.getValue());
+		for(Map mm : list){
+			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
+		}
+		map.put("questions", list);
+		return map;
+	}
+	
+	/**
+	 * 查询关注最多的问题  用户首页等你的 的显示
+	 * @return
+	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	@At("/getPublicMFQs")
+	public Map queryPublicMostFocusQuestions() {
+		Map map = new HashMap();
+		List<Map> list = questionService.queryMostFocusedQuestion(QuestionType.can_public.getValue());
+		for(Map mm : list){
+			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
+		}
+		map.put("questions", list);
+		return map;
+	}
+	
+	/**
+	 * 查询最新最多回答的问题
+	 * @return
+	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	@At("/getPublicNMAQs")
+	public Map queryPublicNewMostAQuestions() {
+		Map map = new HashMap();
+		List<Map> list = questionService.queryNewMostAnswerQuestion(QuestionType.can_public.getValue());
 		for(Map mm : list){
 			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
 		}
