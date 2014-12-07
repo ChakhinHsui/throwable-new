@@ -165,7 +165,7 @@ public class UserServer {
 			log.error("激活链接已失效");
 			return BackTool.errorInfo("010501", ThrowableConf.errorMsg);
 		}
-		Map ssdbMap = Json.fromJsonAsMap(Map.class, ssdbJson);
+		Map ssdbMap = Json.fromJson(Map.class, ssdbJson);
 		if(webMap.get("userId").toString().equals(ssdbMap.get("userId").toString()) 
 				&& webMap.get("username").toString().equals(ssdbMap.get("username").toString())
 				&& webMap.get("email").toString().equals(ssdbMap.get("email").toString())
@@ -189,7 +189,7 @@ public class UserServer {
 			log.error("验证信息失败");
 			return BackTool.errorInfo("010502", ThrowableConf.errorMsg);
 		}
-		return null;
+		return BackTool.successInfo();
 	}
 	
 	/**
@@ -201,7 +201,7 @@ public class UserServer {
 	private boolean sendEmail(int userId, String url) {
 		Map map = userService.queryPartUserInfoById(userId);
 		Map<String, String> ssdbMap = new HashMap<String, String>();
-		String email = map.get("username").toString();
+		String email = map.get("email").toString();
 		String username = map.get("username").toString();
 		ssdbMap.put("userId", map.get("id").toString());
 		ssdbMap.put("username", username);
@@ -214,7 +214,7 @@ public class UserServer {
 			e.printStackTrace();
 		}
 		try {
-			MailTool.sendMail(email, "Throwable技术问答社区账号激活", StringTool.getRegisterMailString(username, (url == null ? ThrowableConf.appProp.get("url", "http://127.0.0.1/throwable-web/active?key=") : url) + param), true);
+			MailTool.sendMail(email, "Throwable技术问答社区账号激活", StringTool.getRegisterMailString(username, (url == null ? ThrowableConf.appProp.get("url", "http://127.0.0.1/throwable-web/active.html?key=") : url) + param), true);
 			ssdbHandler.setx(USER_ACTIVE_UUID + ssdbMap.get("uuid"), Json.toJson(ssdbMap), 24 * 60 * 60);
 			int send_num = ssdbHandler.hincr(USER_ACTIVE_NUM, "" + userId, 1);
 			if (send_num >= 10) {

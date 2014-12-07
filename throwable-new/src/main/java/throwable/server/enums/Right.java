@@ -47,4 +47,18 @@ public enum Right {
 	public String toString() {
 		return this.value;
 	}
+	
+	public Right getRight(String value) {
+		if(value.equals(Right.general.getValue())) {
+			return Right.general;
+		} else if(value.equals(Right.context.getValue())) {
+			return Right.context;
+		} else if(value.equals(Right.web.getValue())) {
+			return Right.web;
+		} else if(value.equals(Right.superU.getValue())) {
+			return Right.superU;
+		} else {
+			return null;
+		}
+	}
 }

@@ -229,6 +229,7 @@ public class UserService extends BaseService {
 	public void updateUserState(int userId, int userState) {
 		Sql sql = dao.sqls().create("user_updateUserState");
 		sql.params().set("user_state", userState);
+		sql.params().set("id", userId);
 		dao.execute(sql);
 	}
 }

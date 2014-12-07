@@ -51,5 +51,35 @@ public enum State {
 		this.value = value;
 	}
 	
+	public State getState(int value) {
+		if(value == State.no_active.getValue()) {
+			return State.no_active;
+		} else if(value == State.user_exception.getValue()) {
+			return State.user_exception;
+		} else if(value == State.user_frozen.getValue()) {
+			return State.user_frozen;
+		} else if(value == State.user_disabled.getValue()) {
+			return State.user_disabled;
+		} else if(value == State.user_nomal.getValue()) {
+			return State.user_nomal;
+		} else {
+			return null;
+		}
+	}
 	
+	public State getState(String name) {
+		if(name.equals(State.no_active.getName())) {
+			return State.no_active;
+		} else if(name.equals(State.user_exception.getName())) {
+			return State.user_exception;
+		} else if(name.equals(State.user_frozen.getName())) {
+			return State.user_frozen;
+		} else if(name.equals(State.user_disabled.getName())) {
+			return State.user_disabled;
+		} else if(name.equals(State.user_nomal.getName())) {
+			return State.user_nomal;
+		} else {
+			return null;
+		}
+	}
 }
