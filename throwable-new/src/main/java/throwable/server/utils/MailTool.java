@@ -36,15 +36,15 @@ public class MailTool {
 		/**
 		 * 邮件发送者地址
 		 */
-		private String fromAddress = "hsupangfei1989@163.com";
+		private String fromAddress = "*****@163.com";
 		/**
 		 * 邮箱用户名
 		 */
-		private String username = "hsupangfei1989@163.com";
+		private String username = "*****@163.com";
 		/**
 		 * 邮箱密码
 		 */
-		private String password = "china374256336qq";
+		private String password = "******";
 		/**
 		 * 用于读取配置文件
 		 */
