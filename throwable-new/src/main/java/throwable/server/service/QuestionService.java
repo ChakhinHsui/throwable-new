@@ -424,4 +424,40 @@ public class QuestionService extends BaseService {
 		dao.execute(sql);
 		return 1;
 	}
+	
+	/**
+	 * 根据用户id查询问题的部分信息
+	 * @param userId   用户id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryPartQuestionInfoByUserId(int userId) {
+		Sql sql = dao.sqls().create("question_queryPartQByUserId");
+		sql.params().set("user_id", userId);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		if(null == list || list.size() < 1) {
+			return null;
+		}
+		return list;
+	}
+	
+	/**
+	 * 查询用户关注的问题
+	 * @param userId  用户id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryUserFocus(int userId) {
+		Sql sql = dao.sqls().create("focus_queryUserFocused");
+		sql.params().set("user_id", userId);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		if(null == list || list.size() < 1) {
+			return null;
+		}
+		return list;
+	}
 }

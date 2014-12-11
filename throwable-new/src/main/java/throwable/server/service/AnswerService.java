@@ -48,6 +48,22 @@ public class AnswerService extends BaseService {
 	}
 	
 	/**
+	 * 根据用户id查询用户的答案和问题信息
+	 * @param userId
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryAnswerQuestionByUId(int userId) {
+		Sql sql = dao.sqls().create("answer_queryAnswerQuestionInfoByUserId");
+		sql.params().set("user_id", userId);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		if(null == list || list.size() < 1) return null;
+		return list;
+	}
+	
+	/**
 	 * 根据用户id查询答案
 	 * @param user_id
 	 * @return

@@ -10,10 +10,13 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
 import throwable.server.ThrowableConf;
+import throwable.server.enums.CorrectType;
+import throwable.server.enums.QuestionSolved;
 import throwable.server.enums.QuestionType;
 import throwable.server.service.QuestionService;
 import throwable.server.utils.BackTool;
 import throwable.server.utils.DateUtils;
+import throwable.server.utils.StringTool;
 
 /**
  * @author WaterHsu@xiu8.com
@@ -105,6 +108,54 @@ public class QuestionApi {
 		}
 		Map map = questionService.queryQuestionByQuestionId(id);
 		map.put("create_time", DateUtils.getNewTime(Long.parseLong(map.get("create_time").toString()), 10));
+		return map;
+	}
+	
+	/**
+	 * 根据用户id获取问题 (选取部分信息)
+	 * @param userId  用户id
+	 * @return
+	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	public Map queryUserQuestion(@Param("userId") String userId) {
+		if(StringTool.isEmpty(userId)) {
+			return BackTool.errorInfo("020203");
+		}
+		if(!StringTool.isNumber(userId)) {
+			return BackTool.errorInfo("020204");
+		}
+		Map map = new HashMap();
+		List<Map> list = questionService.queryPartQuestionInfoByUserId(Integer.parseInt(userId));
+		for(Map mm : list){
+			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
+			mm.put("question_type", QuestionType.getName(Integer.parseInt(mm.get("question_type").toString())));
+			mm.put("solved", QuestionSolved.getName(Integer.parseInt(mm.get("solved").toString())));
+		}
+		map.put("questions", list);
+		return map;
+	}
+	
+	/**
+	 * 查询用户关注的问题
+	 * @param userId
+	 * @return
+	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	public Map queryUserFocusedQuestion(@Param("userId") String userId) {
+		if(StringTool.isEmpty(userId)) {
+			return BackTool.errorInfo("020203");
+		}
+		if(!StringTool.isNumber(userId)) {
+			return BackTool.errorInfo("020204");
+		}
+		Map map = new HashMap();
+		List<Map> list = questionService.queryUserFocus(Integer.parseInt(userId));
+		for(Map mm : list){
+			mm.put("question_time", DateUtils.getNewTime(Long.parseLong(mm.get("question_time").toString()), 10));
+			mm.put("focus_time", DateUtils.getNewTime(Long.parseLong(mm.get("focus_time").toString()), 10));
+			mm.put("solved", QuestionSolved.getName(Integer.parseInt(mm.get("solved").toString())));
+		}
+		map.put("questions", list);
 		return map;
 	}
 	

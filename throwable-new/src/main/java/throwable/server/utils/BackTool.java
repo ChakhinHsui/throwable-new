@@ -6,6 +6,7 @@ import java.util.Map;
 import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.lang.Lang;
 
+import throwable.server.ThrowableConf;
 import throwable.server.framework.mvc.SystemError;
 import throwable.server.framework.rpc.ResultCode;
 
@@ -33,6 +34,16 @@ public class BackTool {
 		Map<String, Object> res = new HashMap<String, Object>();
 		res.put(BackTool.msgCode, msgCode);
 		res.put(BackTool.errorMsg, errorMsg.get(msgCode));
+		return res;
+	}
+	
+	public static Map<String,Object> errorInfo(String msgCode){
+		if(!successMsgCode.equals(msgCode)){
+			throw Lang.wrapThrow(new SystemError(ResultCode.PARAMS_ERROR, msgCode,ThrowableConf.errorMsg.get(msgCode)));
+		}
+		Map<String, Object> res = new HashMap<String, Object>();
+		res.put(BackTool.msgCode, msgCode);
+		res.put(BackTool.errorMsg, ThrowableConf.errorMsg.get(msgCode));
 		return res;
 	}
 	

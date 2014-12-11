@@ -126,6 +126,11 @@ public class QuestionController {
 		return questionServer.deleteCollection(userId, questionId);
 	}
 	
+	/**
+	 * 顶问题
+	 * @param questionId  问题id
+	 * @return
+	 */
 	public Map<String, Object> agreeQuestion(@Param("questionId") int questionId){
 		if(questionId <= 0){
 			return BackTool.errorInfo("020701", ThrowableConf.errorMsg);
@@ -133,6 +138,11 @@ public class QuestionController {
 		return questionServer.agreeQuestion(questionId);
 	}
 	
+	/**
+	 * 踩问题
+	 * @param questionId  问题id
+	 * @return
+	 */
 	public Map<String, Object> disagreeQuestion(@Param("questionId") int questionId){
 		if(questionId <= 0){
 			return BackTool.errorInfo("020801", ThrowableConf.errorMsg);

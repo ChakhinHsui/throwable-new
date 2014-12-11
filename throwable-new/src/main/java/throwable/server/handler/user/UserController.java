@@ -119,4 +119,11 @@ public class UserController {
 		}
 		return userServer.activeUser(key);
 	} 
+	
+	public Map<String, Object> queryUserInfo(@Param("userId") String userId) {
+		if(StringTool.isEmpty(userId)) {
+			return BackTool.errorInfo("010601");
+		}
+		return BackTool.successInfo();
+	}
 }

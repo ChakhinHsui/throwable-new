@@ -116,6 +116,10 @@ select * from seava_throwable.t_question where create_time > @minTime and create
 /*question_queryAllQuestionByType*/
 select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type order by a.id desc 
 
+/*question=根据userid查询问题的部分信息*/
+/*question_queryPartQByUserId*/
+select id, question_name, question_type, viewers, agrees, degrees, answers, focuses, collections, solved, create_time from seava_throwable.t_question where user_id = @user_id
+
 /*question=根据questionType查询所有最热(访问数最多)问题*/
 /*question_queryAllHotQuestionByType*/
 select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type order by a.viewers desc, a.id desc
@@ -158,6 +162,9 @@ delete from seava_throwable.t_user_question_focus where user_id=@user_id and que
 /*focus_haveFocused*/
 select * from seava_throwable.t_user_question_focus where user_id=@user_id and question_id=@question_id
 
+/*查询用户关注的问题*/
+/*focus_queryUserFocused*/
+select a.id, a.question_name, a.viewers, a.agrees, a.focuses, a.answers, a.solved, a.create_time as question_time, b.create_time as focus_time from seava_throwable.t_question as a inner join seava_throwable.t_user_question_focus as b on a.id = b.question_id where b.user_id = @user_id
 
 /*user collect question*/
 /*用户收藏问题*/
@@ -216,3 +223,7 @@ select * from seava_throwable.t_answer where id = @id
 /*answer=插入答案*/
 /*answer_insertAnswer*/
 insert into seava_throwable.t_answer(answer_abstract, answer_description, correct_type, agrees, disagrees, viewers, answer_time, question_id, user_id) values(@answer_abstract, @answer_description, @correct_type, @agrees, @disagrees, @viewers, @answer_time, @question_id, @user_id)
+
+/*answer=查询用户的回答*/
+/*answer_queryAnswerQuestionInfoByUserId*/
+select a.id, a.answer_abstract, a.correct_type, a.agrees, a.viewers, a.answer_time, a.question_id, b.question_name from seava_throwable.t_answer as a inner join seava_throwable.t_question as b on a.question_id = b.id where a.user_id = @user_id
