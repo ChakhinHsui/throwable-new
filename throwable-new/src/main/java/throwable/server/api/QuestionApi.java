@@ -10,7 +10,6 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
 import throwable.server.ThrowableConf;
-import throwable.server.enums.CorrectType;
 import throwable.server.enums.QuestionSolved;
 import throwable.server.enums.QuestionType;
 import throwable.server.service.QuestionService;
@@ -117,6 +116,7 @@ public class QuestionApi {
 	 * @return
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
+	@At("/getUserQuestions")
 	public Map queryUserQuestion(@Param("userId") String userId) {
 		if(StringTool.isEmpty(userId)) {
 			return BackTool.errorInfo("020203");
@@ -141,6 +141,7 @@ public class QuestionApi {
 	 * @return
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
+	@At("/getUserFocus")
 	public Map queryUserFocusedQuestion(@Param("userId") String userId) {
 		if(StringTool.isEmpty(userId)) {
 			return BackTool.errorInfo("020203");
