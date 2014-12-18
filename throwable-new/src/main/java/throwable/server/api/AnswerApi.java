@@ -53,7 +53,7 @@ public class AnswerApi {
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@At("/getUserAnswers")
-	public Map queryAnswerByUId(@Param("questionId") String userId) {
+	public Map queryAnswerByUId(@Param("userId") String userId) {
 		if(StringTool.isEmpty(userId)) {
 			return BackTool.errorInfo("030202");
 		}

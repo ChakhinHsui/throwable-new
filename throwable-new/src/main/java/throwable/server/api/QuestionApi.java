@@ -151,12 +151,14 @@ public class QuestionApi {
 		}
 		Map map = new HashMap();
 		List<Map> list = questionService.queryUserFocus(Integer.parseInt(userId));
-		for(Map mm : list){
-			mm.put("question_time", DateUtils.getNewTime(Long.parseLong(mm.get("question_time").toString()), 10));
-			mm.put("focus_time", DateUtils.getNewTime(Long.parseLong(mm.get("focus_time").toString()), 10));
-			mm.put("solved", QuestionSolved.getName(Integer.parseInt(mm.get("solved").toString())));
+		if(list != null) {
+			for(Map mm : list){
+				mm.put("question_time", DateUtils.getNewTime(Long.parseLong(mm.get("question_time").toString()), 10));
+				mm.put("focus_time", DateUtils.getNewTime(Long.parseLong(mm.get("focus_time").toString()), 10));
+				mm.put("solved", QuestionSolved.getName(Integer.parseInt(mm.get("solved").toString())));
+			}
 		}
-		map.put("questions", list);
+		map.put("questions", null);
 		return map;
 	}
 	
