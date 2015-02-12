@@ -13,6 +13,8 @@ import throwable.server.utils.BackTool;
 import throwable.server.utils.StringTool;
 
 /**
+ * 用户处理类
+ * 
  * @author WaterHsu@xiu8.com
  * @version 2014年10月10日
  */
@@ -65,9 +67,9 @@ public class UserController {
 	
 	/**
 	 * 用户登陆
-	 * @param username
-	 * @param password
-	 * @param ip
+	 * @param username   用户名  
+	 * @param password   密码
+	 * @param ip         登陆ip
 	 * @return
 	 */
 	@At("/login")
@@ -89,8 +91,8 @@ public class UserController {
 	
 	/**
 	 * 激活用户发送邮件
-	 * @param userId
-	 * @param url
+	 * @param userId   用户id
+	 * @param url      激活用户的地址链接
 	 * @return
 	 */
 	@At("/activeUserEmail")
@@ -109,7 +111,7 @@ public class UserController {
 	
 	/**
 	 * 激活账号
-	 * @param key
+	 * @param key   激活的key
 	 * @return
 	 */
 	@At("/activeUser")

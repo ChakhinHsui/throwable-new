@@ -6,52 +6,44 @@ import java.util.Map;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
-
 import throwable.server.bean.User;
+import throwable.server.utils.StringTool;
 
 /**
+ * 用户相关的操作数据库的类
+ * 
  * @author WaterHsu@xiu8.com
  * @version 2014年10月10日
  */
 @IocBean
 public class UserService extends BaseService {
 
-	private Log log = Logs.get();
-	
 	/**
 	 * user 根据username查询用户信息
-	 * @param username
+	 * @param username   用户名
 	 * @return
 	 */
 	public User queryUserByUserName(String username){
 		Sql sql = dao.sqls().create("user_queryUserByUserName");
 		sql.params().set("username", username);
-		sql.setCallback(Sqls.callback.entities());
+		sql.setCallback(Sqls.callback.entity());
 		sql.setEntity(dao.getEntity(User.class));
 		dao.execute(sql);
-		log.info(username + ":  " + sql.getSourceSql());
-		List<User> list = sql.getList(User.class);
-		if(list == null || list.size() == 0) return null;
-		return list.get(0);
+		return sql.getObject(User.class);
 	}
 	
 	/**
 	 * user 根据email查询用户信息
-	 * @param email
+	 * @param email   用户邮箱
 	 * @return
 	 */
 	public User queryUserByEmail(String email){
 		Sql sql = dao.sqls().create("user_queryUserByEmail");
 		sql.params().set("email", email);
-		sql.setCallback(Sqls.callback.entities());
+		sql.setCallback(Sqls.callback.entity());
 		sql.setEntity(dao.getEntity(User.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<User> list = sql.getList(User.class);
-		if(list == null || list.size() == 0) return null;
-		return list.get(0);
+		return sql.getObject(User.class);
 	}
 	
 	/**
@@ -63,32 +55,26 @@ public class UserService extends BaseService {
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(User.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<User> list = sql.getList(User.class);
-		if(list == null || list.size() == 0) return null;
-		return list;
+		return sql.getList(User.class);
 	}
 	
 	/**
 	 * user 根据用户id查询用户
-	 * @param userId
+	 * @param userId     用户id
 	 * @return
 	 */
 	public User queryUserById(int userId){
 		Sql sql = dao.sqls().create("user_queryUserById");
 		sql.params().set("id", userId);
-		sql.setCallback(Sqls.callback.entities());
+		sql.setCallback(Sqls.callback.entity());
 		sql.setEntity(dao.getEntity(User.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<User> list = sql.getList(User.class);
-		if(list == null || list.size() == 0) return null;
-		return list.get(0);
+		return sql.getObject(User.class);
 	}
 	
 	/**
 	 * user 根据用户id查询用户部分信息
-	 * @param userId
+	 * @param userId    用户id
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
@@ -97,15 +83,13 @@ public class UserService extends BaseService {
 		sql.params().set("id", userId);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 		List<Map> list = sql.getList(Map.class);
-		if(list == null || list.size() == 0) return null;
-		return list.get(0);
+		return StringTool.isEmpty(list) ? null : list.get(0);
 	}
 	
 	/**
 	 * 根据用户名查询用户部分信息
-	 * @param username
+	 * @param username  用户名
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
@@ -114,17 +98,15 @@ public class UserService extends BaseService {
 		sql.params().set("username", username);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 		List<Map> list = sql.getList(Map.class);
-		if(list == null || list.size() == 0) return null;
-		return list.get(0);
+		return StringTool.isEmpty(list) ? null : list.get(0);
 	}
 	
 	/**
 	 * user 插入一个用户
-	 * @param user
+	 * @param user  用户基本信息
 	 */
-	public void insertOneUser(User user){
+	public int insertOneUser(User user){
 		Sql sql = dao.sqls().create("user_insertOneUser");
 		sql.params().set("username", user.username);
 		sql.params().set("password", user.password);
@@ -144,7 +126,7 @@ public class UserService extends BaseService {
 		sql.params().set("last_mark_time", user.last_mark_time);
 		sql.params().set("last_mark_ip", user.last_mark_ip);
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
+		return sql.getUpdateCount();
 	}
 	
 	/**
@@ -160,7 +142,6 @@ public class UserService extends BaseService {
 		sql.params().set("last_update_time", user.last_update_time);
 		sql.params().set("id", id);
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 	}
 	
 	/**
@@ -175,7 +156,6 @@ public class UserService extends BaseService {
 		sql.params().set("last_active_ip", map.get("last_active_ip"));
 		sql.params().set("id", id);
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 	}
 	
 	/**
@@ -189,7 +169,6 @@ public class UserService extends BaseService {
 		sql.params().set("last_forgetpassword_time", map.get("last_forgetpassword_time"));
 		sql.params().set("id", id);
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 	}
 	
 	/**
@@ -204,7 +183,6 @@ public class UserService extends BaseService {
 		sql.params().set("last_mark_ip", map.get("last_mark_ip"));
 		sql.params().set("id", id);
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 	}
 	
 	/**

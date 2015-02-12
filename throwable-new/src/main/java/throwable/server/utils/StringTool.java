@@ -16,6 +16,11 @@ import java.util.regex.Pattern;
 
 import throwable.server.enums.Right;
 
+/**
+ * 公用的String工具类
+ * @author WaterHsu@xiu8.com
+ * @version 2015年2月12日
+ */
 public class StringTool {
 
 	public static String repaymentDate2Str(int repaymentDate) {
@@ -134,16 +139,26 @@ public class StringTool {
 		return s;
 	}
 	
-	public static boolean isEmpty(String s) {
-		if (null == s || "".equals(s.trim())) {
+	/**
+	 * 判断是否为空  String Map List Set Object
+	 * @param object  对象
+	 * @return
+	 */
+	public static boolean isEmpty(Object object) {
+		if(null == object) {
 			return true;
 		}
-		return false;
-	}
-
-	public static boolean isEmpty(Object o) {
-		if (null == o || isEmpty(String.valueOf(o))) {
-			return true;
+		if(object instanceof String) {
+			return "".equals(((String)object).trim());
+		}
+		if(object instanceof Map) {
+			return ((Map<?,?>)object).isEmpty();
+		}
+		if(object instanceof List) {
+			return ((List<?>)object).isEmpty();
+		}
+		if(object instanceof Set) {
+			return ((Set<?>)object).isEmpty();
 		}
 		return false;
 	}

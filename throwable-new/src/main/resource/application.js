@@ -51,7 +51,7 @@ var ioc = {
 	},
 	sqlManager: {
 		type: "org.nutz.dao.impl.FileSqlManager",
-		args: ["sqls.sql"]
+		args: ["sqls/"]
 	}, 
 	// 主库 DAO
 	dao : {
@@ -62,4 +62,5 @@ var ioc = {
 			refer : "sqlManager"
 		} ]
 	}
+	// 缓存拦截器
 }

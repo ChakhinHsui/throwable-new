@@ -8,26 +8,21 @@
  */
 package throwable.server.service;
 
-
 import java.util.List;
 import java.util.Map;
-
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
-
 import throwable.server.bean.Question;
+import throwable.server.utils.StringTool;
 
 /**
+ * 
+ * 问题相关的操作数据库的类
  * @author WaterHsu
- *
  */
 @IocBean
 public class QuestionService extends BaseService {
-	
-	private Log log = Logs.get();
 	
 	/**
 	 * 问题-添加问题
@@ -49,7 +44,6 @@ public class QuestionService extends BaseService {
 		sql.params().set("kind_id", question.kind_id);
 		sql.params().set("user_id", question.user_id);
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 	}
 	
 	/**
@@ -62,7 +56,6 @@ public class QuestionService extends BaseService {
 		sql.params().set("question_description", question_description);
 		sql.params().set("id", id);
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 	}
 	
 	/**
@@ -75,7 +68,6 @@ public class QuestionService extends BaseService {
 		sql.params().set("viewers", viewers);
 		sql.params().set("id", id);
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 	}
 	
 	/**
@@ -88,7 +80,6 @@ public class QuestionService extends BaseService {
 		sql.params().set("agrees", agrees);
 		sql.params().set("id", id);
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 	}
 	
 	/**
@@ -101,7 +92,6 @@ public class QuestionService extends BaseService {
 		sql.params().set("question_type", question_type);
 		sql.params().set("id", id);
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 	}
 	
 	/**
@@ -115,10 +105,8 @@ public class QuestionService extends BaseService {
 		sql.params().set("id", id);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
 		List<Map> list = sql.getList(Map.class);
-		if(list == null || list.size() < 1) return null;
-		return list.get(0);
+		return StringTool.isEmpty(list) ? null : list.get(0);
 	}
 	
 	/**
@@ -132,12 +120,7 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(Question.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<Question> list = sql.getList(Question.class);
-		if(list == null || list.size() < 1){
-			return null;
-		}
-		return list;
+		return sql.getList(Question.class);
 	}
 	
 	/**
@@ -155,12 +138,7 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(Question.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<Question> list = sql.getList(Question.class);
-		if(list == null || list.size() < 1){
-			return null;
-		}
-		return list;
+		return sql.getList(Question.class);
 	}
 	
 	/**
@@ -174,12 +152,7 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(Question.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<Question> list = sql.getList(Question.class);
-		if(list == null || list.size() < 1){
-			return null;
-		}
-		return list;
+		return sql.getList(Question.class);
 	}
 	
 	/**
@@ -197,12 +170,7 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(Question.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<Question> list = sql.getList(Question.class);
-		if(list == null || list.size() < 1){
-			return null;
-		}
-		return list;
+		return sql.getList(Question.class);
 	}
 	
 	/**
@@ -218,12 +186,7 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(Question.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<Question> list = sql.getList(Question.class);
-		if(list == null || list.size() < 1){
-			return null;
-		}
-		return list;
+		return sql.getList(Question.class);
 	}
 	
 	/**
@@ -243,12 +206,7 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(Question.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<Question> list = sql.getList(Question.class);
-		if(list == null || list.size() < 1){
-			return null;
-		}
-		return list;
+		return sql.getList(Question.class);
 	}
 	
 	/**
@@ -262,12 +220,7 @@ public class QuestionService extends BaseService {
 		sql.params().set("question_type", type);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<Map> list = sql.getList(Map.class);
-		if(list == null || list.size() < 1){
-			return null;
-		}
-		return list;
+		return sql.getList(Map.class);
 	}
 	
 	/**
@@ -281,11 +234,7 @@ public class QuestionService extends BaseService {
 		sql.params().set("question_type", type);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
-		List<Map> list = sql.getList(Map.class);
-		if(list == null || list.size() < 1){
-			return null;
-		}
-		return list;
+		return sql.getList(Map.class);
 	}
 	
 	/**
@@ -299,11 +248,7 @@ public class QuestionService extends BaseService {
 		sql.params().set("question_type", type);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
-		List<Map> list = sql.getList(Map.class);
-		if(list == null || list.size() < 1){
-			return null;
-		}
-		return list;
+		return sql.getList(Map.class);
 	}
 	
 	/**
@@ -317,11 +262,7 @@ public class QuestionService extends BaseService {
 		sql.params().set("question_type", type);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
-		List<Map> list = sql.getList(Map.class);
-		if(list == null || list.size() < 1){
-			return null;
-		}
-		return list;
+		return sql.getList(Map.class);
 	}
 	
 	/**
@@ -338,10 +279,7 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		List<Map> list = sql.getList(Map.class);
-		if(list == null || list.size() < 1){
-			return true;
-		}
-		return false;
+		return StringTool.isEmpty(list);
 	}
 	
 	/**
@@ -384,10 +322,7 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		List<Map> list = sql.getList(Map.class);
-		if(list == null || list.size() < 1){
-			return true;
-		}
-		return false;
+		return StringTool.isEmpty(list);
 	}
 	
 	/**
@@ -436,11 +371,7 @@ public class QuestionService extends BaseService {
 		sql.params().set("user_id", userId);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
-		List<Map> list = sql.getList(Map.class);
-		if(null == list || list.size() < 1) {
-			return null;
-		}
-		return list;
+		return sql.getList(Map.class);
 	}
 	
 	/**
@@ -454,10 +385,6 @@ public class QuestionService extends BaseService {
 		sql.params().set("user_id", userId);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
-		List<Map> list = sql.getList(Map.class);
-		if(null == list || list.size() < 1) {
-			return null;
-		}
-		return list;
+		return sql.getList(Map.class);
 	}
 }

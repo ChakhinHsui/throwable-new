@@ -10,6 +10,8 @@ import throwable.server.utils.StringTool;
 
 
 /**
+ * 配置相关的类
+ * 
  * @author WaterHsu@xiu8.com
  * @version 2014年10月10日
  */
@@ -21,6 +23,7 @@ public class ThrowableConf {
 	public static Ioc ioc;//IOC容器
 	public static PropertiesProxy appProp = new PropertiesProxy();
 	public static PropertiesProxy errorMsg = new PropertiesProxy();
+	public static PropertiesProxy config = new PropertiesProxy();  //读取conf下面的配置文件
 	
 	/**
 	 * 文件配置的信息
@@ -33,11 +36,16 @@ public class ThrowableConf {
 		}
 	}
 	
+	/**
+	 * 初始化一些读取配置文件的类
+	 * @param ioc   Ioc容器
+	 */
 	private void initPro(Ioc ioc){
 		ThrowableConf.ioc = ioc;
 		appProp.setPaths(new String[] { "application.properties" });
 		errorMsg.setPaths(new String[] { "errorMsg.properties" });
 		sleepTime = appProp.getLong("system.sleepTime",120)*1000L;
+		config = ioc.get(PropertiesProxy.class, "config");
 	}
 	
 	private void init(){

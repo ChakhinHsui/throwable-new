@@ -14,21 +14,18 @@ import java.util.Map;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
 import throwable.server.bean.Answer;
 
 /**
+ * 答案相关的数据库操作类
+ * 
  * @author WaterHsu
- *
  */
 @IocBean
 public class AnswerService extends BaseService {
-	
-	private Log log = Logs.get();
 	
 	/**
 	 * 根据问题id查询答案
@@ -41,10 +38,7 @@ public class AnswerService extends BaseService {
 		sql.params().set("question_id", question_id);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<Map> list = sql.getList(Map.class);
-		if(list == null || list.size() < 1) return null;
-		return list;
+		return sql.getList(Map.class);
 	}
 	
 	/**
@@ -58,9 +52,7 @@ public class AnswerService extends BaseService {
 		sql.params().set("user_id", userId);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
-		List<Map> list = sql.getList(Map.class);
-		if(null == list || list.size() < 1) return null;
-		return list;
+		return sql.getList(Map.class);
 	}
 	
 	/**
@@ -74,10 +66,7 @@ public class AnswerService extends BaseService {
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(Answer.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<Answer> list = sql.getList(Answer.class);
-		if(list == null || list.size() < 1) return null;
-		return list;
+		return sql.getList(Answer.class);
 	}
 	
 	/**
@@ -88,13 +77,10 @@ public class AnswerService extends BaseService {
 	public Answer queryAnswerByAnswerId(int id){
 		Sql sql = dao.sqls().create("answer_queryAnswerByAnswerId");
 		sql.params().set("id", id);
-		sql.setCallback(Sqls.callback.entities());
+		sql.setCallback(Sqls.callback.entity());
 		sql.setEntity(dao.getEntity(Answer.class));
 		dao.execute(sql);
-		log.info(sql.getSourceSql());
-		List<Answer> list = sql.getList(Answer.class);
-		if(list == null || list.size() < 1) return null;
-		return list.get(0);
+		return sql.getObject(Answer.class);
 	}
 	
 	/**
@@ -121,6 +107,5 @@ public class AnswerService extends BaseService {
 				dao.execute(sql2);
 			}
 		});
-		log.info(sql.getSourceSql());
 	}
 }
