@@ -133,6 +133,7 @@ public class UserController {
 	 * @param interest             兴趣爱好
 	 * @param goodAt               擅长
 	 */
+	@At("/addUserExtend")
 	public Map<String, Object> addUserExtendInfo(@Param("..") UserExtend userInfo) {
 		if(StringTool.isEmpty(userInfo)) {
 			return BackTool.errorInfo("010702");
