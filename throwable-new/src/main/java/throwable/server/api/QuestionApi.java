@@ -164,6 +164,7 @@ public class QuestionApi {
 	 * @param userId  用户id
 	 * @return
 	 */
+	@At("/getUserQuestionNumber")
 	public int getUserQuestionNumber(int userId) {
 		if(userId < 1) {
 			BackTool.errorInfo("020203");
