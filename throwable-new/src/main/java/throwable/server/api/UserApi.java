@@ -63,4 +63,21 @@ public class UserApi {
 		}
 		return userService.queryPartUserInfoById(userId);
 	}
+	
+	/**
+	 * 查询用户扩展信息
+	 * @param userId  用户id
+	 * @return
+	 */
+	@SuppressWarnings({"unchecked","rawtypes"})
+	@At("/queryUserExtendInfo")
+	public Map queryUserExtendInfo(int userId) {
+		if(StringTool.isEmpty(userId)) {
+			return BackTool.errorInfo("010301");
+		}
+		Map map = userService.queryUserExtendInfo(userId);
+		User user = userService.queryUserById(userId);
+		map.put("create_time", user.create_time);
+		return map;
+	}
 }

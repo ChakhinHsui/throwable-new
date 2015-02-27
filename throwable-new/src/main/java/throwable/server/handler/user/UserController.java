@@ -9,6 +9,7 @@ import org.nutz.mvc.annotation.Param;
 
 import throwable.server.ThrowableConf;
 import throwable.server.bean.User;
+import throwable.server.bean.UserExtend;
 import throwable.server.utils.BackTool;
 import throwable.server.utils.StringTool;
 
@@ -122,10 +123,24 @@ public class UserController {
 		return userServer.activeUser(key);
 	} 
 	
-	public Map<String, Object> queryUserInfo(@Param("userId") String userId) {
-		if(StringTool.isEmpty(userId)) {
-			return BackTool.errorInfo("010601");
+	/**
+	 * 添加用户扩展信息
+	 * @param userId               用户id
+	 * @param live_address         住址
+	 * @param now_job              当前工作 职位
+	 * @param graduate_school      毕业院校
+	 * @param motto                座右铭
+	 * @param interest             兴趣爱好
+	 * @param goodAt               擅长
+	 */
+	public Map<String, Object> addUserExtendInfo(@Param("..") UserExtend userInfo) {
+		if(StringTool.isEmpty(userInfo)) {
+			return BackTool.errorInfo("010702");
 		}
+		if(userInfo.user_id < 1) {
+			return BackTool.errorInfo("010701");
+		}
+		userServer.saveUserExtendInfo(userInfo);
 		return BackTool.successInfo();
 	}
 }

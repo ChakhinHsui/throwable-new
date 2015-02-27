@@ -83,3 +83,7 @@ update seava_throwable.t_question set disagrees = disagrees + @disagrees where i
 /*question=增加访问数*/
 /*question_addViewers*/
 update seava_throwable.t_question set viewers = viewers + @viewers where id = @id
+
+/*question=查询用户问题数*/
+/*question_getUserQuestionNumber*/
+select count(*) from seava_throwable.t_question where user_id = @userId

@@ -7,14 +7,12 @@ import java.util.Map;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Param;
 
 import throwable.server.ThrowableConf;
 import throwable.server.enums.CorrectType;
 import throwable.server.service.AnswerService;
 import throwable.server.utils.BackTool;
 import throwable.server.utils.DateUtils;
-import throwable.server.utils.StringTool;
 
 /**
  * @author WaterHsu@xiu8.com
@@ -29,8 +27,8 @@ public class AnswerApi {
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@At("/getAnswerByQId")
-	public Map queryAnswer(@Param("questionId") int questionId){
-		if(StringTool.isEmpty(questionId)){
+	public Map queryAnswer(int questionId){
+		if(questionId < 1){
 			return BackTool.errorInfo("030201", ThrowableConf.errorMsg);
 		}
 		List<Map> list = answerService.queryAnswerByQuestionId(questionId);
@@ -53,14 +51,11 @@ public class AnswerApi {
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@At("/getUserAnswers")
-	public Map queryAnswerByUId(@Param("userId") String userId) {
-		if(StringTool.isEmpty(userId)) {
-			return BackTool.errorInfo("030202");
+	public Map queryAnswerByUId(int userId) {
+		if(userId < 1) {
+			BackTool.errorInfo("030202");
 		}
-		if(!StringTool.isNumber(userId)) {
-			return BackTool.errorInfo("030203");
-		}
-		List<Map> list = answerService.queryAnswerQuestionByUId(Integer.parseInt(userId));
+		List<Map> list = answerService.queryAnswerQuestionByUId(userId);
 		Map map = new HashMap();
 		if(list != null){
 			for(Map mm : list){
@@ -72,5 +67,17 @@ public class AnswerApi {
 			map.put("answers", "");
 		}
 		return map;
+	}
+	
+	/**
+	 * 查询用户的回答数
+	 * @param userId
+	 * @return
+	 */
+	public int getUserAnswerNumber(int userId) {
+		if(userId < 1) {
+			BackTool.errorInfo("030202");
+		}
+		return answerService.queryUserAnswerNumber(userId);
 	}
 }

@@ -20,3 +20,7 @@ insert into seava_throwable.t_answer(answer_abstract, answer_description, correc
 /*answer=查询用户的回答*/
 /*answer_queryAnswerQuestionInfoByUserId*/
 select a.id, a.answer_abstract, a.correct_type, a.agrees, a.viewers, a.answer_time, a.question_id, b.question_name from seava_throwable.t_answer as a inner join seava_throwable.t_question as b on a.question_id = b.id where a.user_id = @user_id
+
+/*answer=查询用户回答的问题个数*/
+/*answer_queryUserAnswerNumber*/
+select count(*) from seava_throwable.t_answer where user_id = @userId

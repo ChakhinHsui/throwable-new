@@ -6,7 +6,9 @@ import java.util.Map;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
+
 import throwable.server.bean.User;
+import throwable.server.bean.UserExtend;
 import throwable.server.utils.StringTool;
 
 /**
@@ -209,5 +211,58 @@ public class UserService extends BaseService {
 		sql.params().set("user_state", userState);
 		sql.params().set("id", userId);
 		dao.execute(sql);
+	}
+	
+	/**
+	 * 查询用户扩展信息
+	 * @param userId
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public Map queryUserExtendInfo(int userId) {
+		Sql sql = dao.sqls().create("user_extend_queryInfo");
+		sql.params().set("user_id", userId);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		return StringTool.isEmpty(list) ? null : list.get(0);
+	}
+	
+	/**
+	 * 添加用户扩展信息
+	 * @param userInfo
+	 * @return
+	 */
+	public int addUserExtendInfo(UserExtend userInfo) {
+		Sql sql = dao.sqls().create("user_extend_addInfo");
+		sql.params().set("user_id", userInfo.user_id);
+		sql.params().set("live_address", userInfo.live_address);
+		sql.params().set("now_job", userInfo.now_job);
+		sql.params().set("graduate_school", userInfo.graduate_school);
+		sql.params().set("motto", userInfo.motto);
+		sql.params().set("interest", userInfo.interest);
+		sql.params().set("goodAt", userInfo.goodAt);
+		sql.params().set("image", userInfo.image);
+		dao.execute(sql);
+		return sql.getUpdateCount();
+	}
+	
+	/**
+	 * 修改用户扩展信息
+	 * @param userInfo
+	 * @return
+	 */
+	public int alterUserExtendInfo(UserExtend userInfo) {
+		Sql sql = dao.sqls().create("user_extend_alterInfo");
+		sql.params().set("user_id", userInfo.user_id);
+		sql.params().set("live_address", userInfo.live_address);
+		sql.params().set("now_job", userInfo.now_job);
+		sql.params().set("graduate_school", userInfo.graduate_school);
+		sql.params().set("motto", userInfo.motto);
+		sql.params().set("interest", userInfo.interest);
+		sql.params().set("goodAt", userInfo.goodAt);
+		sql.params().set("image", userInfo.image);
+		dao.execute(sql);
+		return sql.getUpdateCount();
 	}
 }

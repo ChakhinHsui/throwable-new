@@ -108,4 +108,17 @@ public class AnswerService extends BaseService {
 			}
 		});
 	}
+	
+	/**
+	 * 查询用户的回答数
+	 * @param userId
+	 * @return
+	 */
+	public int queryUserAnswerNumber(int userId) {
+		Sql sql = dao.sqls().create("answer_queryUserAnswerNumber");
+		sql.params().set("userId", userId);
+		sql.setCallback(Sqls.callback.integer());
+		dao.execute(sql);
+		return sql.getInt();
+	}
 }

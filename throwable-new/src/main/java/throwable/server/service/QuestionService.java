@@ -387,4 +387,17 @@ public class QuestionService extends BaseService {
 		dao.execute(sql);
 		return sql.getList(Map.class);
 	}
+	
+	/**
+	 * 查询用户的问题个数
+	 * @param userId  用户id
+	 * @return
+	 */
+	public int getUserQuestionNumber(int userId) {
+		Sql sql = dao.sqls().create("question_getUserQuestionNumber");
+		sql.params().set("userId", userId);
+		sql.setCallback(Sqls.callback.integer());
+		dao.execute(sql);
+		return sql.getInt();
+	}
 }

@@ -82,3 +82,23 @@ delete from seava_throwable.t_user_question_collection where user_id = @user_id 
 /*查询用户是否已经收藏过该问题*/
 /*collection_haveCollected*/
 select * from seava_throwable.t_user_question_collection where user_id = @user_id and question_id = @question_id
+
+/*用户扩展信息添加*/
+/*user_extend_addInfo*/
+insert into seava_throwable.t_user_extend (user_id, live_address, now_job, graduate_school, motto, interest, goodAt, image)
+values(@user_id, @live_address, @now_job, @graduate_school, @motto, @interest, @goodAt, @image)
+
+/*用户扩展信息修改*/
+/*user_extend_alterInfo*/
+update seava_throwable.t_user_extend 
+set live_address = @live_address,
+now_job = @now_job,
+graduate_school = @graduate_school,
+motto = @motto,
+interest = @interest,
+image = @image;
+goodAt = @goodAt where user_id = @user_id
+
+/*用户扩展信息查询*/
+/*user_extend_queryInfo*/
+select * from seava_throwable.t_user_extend where user_id = @user_id

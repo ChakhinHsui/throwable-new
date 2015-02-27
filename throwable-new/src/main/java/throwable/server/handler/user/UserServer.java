@@ -14,6 +14,7 @@ import org.nutz.log.Logs;
 
 import throwable.server.ThrowableConf;
 import throwable.server.bean.User;
+import throwable.server.bean.UserExtend;
 import throwable.server.enums.State;
 import throwable.server.service.SsdbHandler;
 import throwable.server.service.UserService;
@@ -225,5 +226,17 @@ public class UserServer {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * 保存用户扩展信息
+	 * @param userInfo
+	 */
+	public void saveUserExtendInfo(UserExtend userInfo) {
+		if(null == userService.queryUserExtendInfo(userInfo.user_id)) {
+			userService.addUserExtendInfo(userInfo);
+		} else {
+			userService.alterUserExtendInfo(userInfo);
+		}
 	}
 }

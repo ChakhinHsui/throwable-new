@@ -142,15 +142,12 @@ public class QuestionApi {
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@At("/getUserFocus")
-	public Map queryUserFocusedQuestion(@Param("userId") String userId) {
-		if(StringTool.isEmpty(userId)) {
+	public Map queryUserFocusedQuestion(int userId) {
+		if(userId < 1) {
 			return BackTool.errorInfo("020203");
 		}
-		if(!StringTool.isNumber(userId)) {
-			return BackTool.errorInfo("020204");
-		}
 		Map map = new HashMap();
-		List<Map> list = questionService.queryUserFocus(Integer.parseInt(userId));
+		List<Map> list = questionService.queryUserFocus(userId);
 		if(list != null) {
 			for(Map mm : list){
 				mm.put("question_time", DateUtils.getNewTime(Long.parseLong(mm.get("question_time").toString()), 10));
@@ -162,4 +159,15 @@ public class QuestionApi {
 		return map;
 	}
 	
+	/**
+	 * 查询用户问题个数
+	 * @param userId  用户id
+	 * @return
+	 */
+	public int getUserQuestionNumber(int userId) {
+		if(userId < 1) {
+			BackTool.errorInfo("020203");
+		}
+		return questionService.getUserQuestionNumber(userId);
+	}
 }
