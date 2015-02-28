@@ -74,6 +74,7 @@ public class AnswerApi {
 	 * @param userId
 	 * @return
 	 */
+	@At("/getUserAnswerNumber")
 	public int getUserAnswerNumber(int userId) {
 		if(userId < 1) {
 			BackTool.errorInfo("030202");

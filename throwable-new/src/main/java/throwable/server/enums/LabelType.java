@@ -33,7 +33,7 @@ public enum LabelType {
 	}
 	
 	public static String getName(int value){
-		for(CorrectType c : CorrectType.values()){
+		for(LabelType c : LabelType.values()){
 			if(c.getValue() == value){
 				return c.getName();
 			}

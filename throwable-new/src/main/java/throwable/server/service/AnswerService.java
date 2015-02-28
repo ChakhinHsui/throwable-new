@@ -18,6 +18,7 @@ import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
 import throwable.server.bean.Answer;
+import throwable.server.utils.StringTool;
 
 /**
  * 答案相关的数据库操作类
@@ -120,5 +121,20 @@ public class AnswerService extends BaseService {
 		sql.setCallback(Sqls.callback.integer());
 		dao.execute(sql);
 		return sql.getInt();
+	}
+	
+	/**
+	 * 查询正确答案
+	 * @param questionId
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public Map queryCorrectAnswer(int questionId) {
+		Sql sql = dao.sqls().create("answer_queryCorrectAnswer");
+		sql.params().set("questionId", questionId);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		return StringTool.isEmpty(list) ? null : list.get(0); 
 	}
 }

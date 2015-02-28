@@ -13,6 +13,7 @@ import throwable.server.bean.User;
 import throwable.server.enums.Right;
 import throwable.server.service.UserService;
 import throwable.server.utils.BackTool;
+import throwable.server.utils.DateUtils;
 import throwable.server.utils.StringTool;
 
 /**
@@ -77,7 +78,8 @@ public class UserApi {
 		}
 		Map map = userService.queryUserExtendInfo(userId);
 		User user = userService.queryUserById(userId);
-		map.put("create_time", user.create_time);
+		map = null == map ? new HashMap() : map;
+		map.put("create_time", DateUtils.getNewTime(user.create_time, 10));
 		return map;
 	}
 }

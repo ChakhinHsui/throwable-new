@@ -12,6 +12,7 @@ import org.nutz.mvc.annotation.Param;
 import throwable.server.ThrowableConf;
 import throwable.server.enums.QuestionSolved;
 import throwable.server.enums.QuestionType;
+import throwable.server.service.AnswerService;
 import throwable.server.service.QuestionService;
 import throwable.server.utils.BackTool;
 import throwable.server.utils.DateUtils;
@@ -27,6 +28,8 @@ public class QuestionApi {
 	
 	@Inject
 	private QuestionService questionService;
+	@Inject
+	private AnswerService answerService;
 	
 	/**
 	 * 查询公开的问题 用于首页显示 最新的
@@ -127,6 +130,9 @@ public class QuestionApi {
 		Map map = new HashMap();
 		List<Map> list = questionService.queryPartQuestionInfoByUserId(Integer.parseInt(userId));
 		for(Map mm : list){
+			if(1 == Integer.parseInt(mm.get("solved").toString())) {
+				mm.putAll(answerService.queryCorrectAnswer(Integer.parseInt(mm.get("id").toString())));
+			}
 			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
 			mm.put("question_type", QuestionType.getName(Integer.parseInt(mm.get("question_type").toString())));
 			mm.put("solved", QuestionSolved.getName(Integer.parseInt(mm.get("solved").toString())));

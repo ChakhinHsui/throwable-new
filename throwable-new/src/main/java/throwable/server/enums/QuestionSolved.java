@@ -33,7 +33,7 @@ public enum QuestionSolved {
 	}
 	
 	public static String getName(int value){
-		for(CorrectType c : CorrectType.values()){
+		for(QuestionSolved c : QuestionSolved.values()){
 			if(c.getValue() == value){
 				return c.getName();
 			}

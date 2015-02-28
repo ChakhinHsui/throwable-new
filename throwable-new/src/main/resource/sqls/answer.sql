@@ -24,3 +24,7 @@ select a.id, a.answer_abstract, a.correct_type, a.agrees, a.viewers, a.answer_ti
 /*answer=查询用户回答的问题个数*/
 /*answer_queryUserAnswerNumber*/
 select count(*) from seava_throwable.t_answer where user_id = @userId
+
+/*answer=查询问题的正确答案*/
+/*answer_queryCorrectAnswer*/
+select answer_abstract from seava_throwable.t_answer where question_id = @questionId and correct_type = 1
