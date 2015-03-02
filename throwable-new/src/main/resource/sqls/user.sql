@@ -96,7 +96,7 @@ now_job = @now_job,
 graduate_school = @graduate_school,
 motto = @motto,
 interest = @interest,
-image = @image;
+image = @image,
 goodAt = @goodAt where user_id = @user_id
 
 /*用户扩展信息查询*/
