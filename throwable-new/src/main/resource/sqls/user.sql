@@ -53,36 +53,6 @@ select user_state from seava_throwable.t_user where id = @id
 /*user_updateUserState*/
 update seava_throwable.t_user set user_state = @user_state where id = @id
 
-/*user focus question*/
-/*用户关注问题*/
-/*focus_addFocus*/
-insert into seava_throwable.t_user_question_focus(user_id, question_id, create_time) values(@user_id, @question_id, @create_time)
-
-/*用户取消关注问题*/
-/*focus_deleteFocus*/
-delete from seava_throwable.t_user_question_focus where user_id=@user_id and question_id=@question_id
-
-/*查询用户是否已经关注该问题*/
-/*focus_haveFocused*/
-select * from seava_throwable.t_user_question_focus where user_id=@user_id and question_id=@question_id
-
-/*查询用户关注的问题*/
-/*focus_queryUserFocused*/
-select a.id, a.question_name, a.viewers, a.agrees, a.focuses, a.answers, a.solved, a.create_time as question_time, b.create_time as focus_time from seava_throwable.t_question as a inner join seava_throwable.t_user_question_focus as b on a.id = b.question_id where b.user_id = @user_id
-
-/*user collect question*/
-/*用户收藏问题*/
-/*collection_addCollection*/
-insert into seava_throwable.t_user_question_collection(user_id, question_id, create_time, collection_mark) values(@user_id, @question_id, @create_time, @collection_mark)
-
-/*用户取消收藏*/
-/*collection_deleteCollection*/
-delete from seava_throwable.t_user_question_collection where user_id = @user_id and question_id = @question_id
-
-/*查询用户是否已经收藏过该问题*/
-/*collection_haveCollected*/
-select * from seava_throwable.t_user_question_collection where user_id = @user_id and question_id = @question_id
-
 /*用户扩展信息添加*/
 /*user_extend_addInfo*/
 insert into seava_throwable.t_user_extend (user_id, live_address, now_job, graduate_school, motto, interest, goodAt, image)

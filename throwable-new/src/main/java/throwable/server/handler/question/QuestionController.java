@@ -131,6 +131,7 @@ public class QuestionController {
 	 * @param questionId  问题id
 	 * @return
 	 */
+	@At("/agreeQuestion")
 	public Map<String, Object> agreeQuestion(@Param("questionId") int questionId){
 		if(questionId <= 0){
 			return BackTool.errorInfo("020701", ThrowableConf.errorMsg);
@@ -143,10 +144,24 @@ public class QuestionController {
 	 * @param questionId  问题id
 	 * @return
 	 */
+	@At("/disagreeQuestion")
 	public Map<String, Object> disagreeQuestion(@Param("questionId") int questionId){
 		if(questionId <= 0){
 			return BackTool.errorInfo("020801", ThrowableConf.errorMsg);
 		}
 		return questionServer.disagreeQuestion(questionId);
+	}
+	
+	/**
+	 * 增加访问人数
+	 * @param questionId
+	 * @return
+	 */
+	@At("/addViewer")
+	public Map<String, Object> addViewers(@Param("questionId") int questionId) {
+		if(questionId < 1) {
+			return BackTool.errorInfo("020801", ThrowableConf.errorMsg);
+		}
+		return questionServer.addViewer(questionId);
 	}
 }

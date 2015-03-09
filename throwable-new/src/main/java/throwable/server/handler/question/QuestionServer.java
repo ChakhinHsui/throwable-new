@@ -117,11 +117,33 @@ public class QuestionServer {
 		return BackTool.successInfo();
 	}
 	
+	/**
+	 * 顶问题
+	 * @param questionId
+	 * @return
+	 */
 	public Map<String, Object> agreeQuestion(int questionId){
-		return null;
+		questionService.agreeQuestion(questionId);
+		return BackTool.successInfo();
 	}
 	
+	/**
+	 * 踩问题
+	 * @param questionId
+	 * @return
+	 */
 	public Map<String, Object> disagreeQuestion(int questionId){
-		return null;
+		questionService.disagreeQuestion(questionId);
+		return BackTool.successInfo();
+	}
+	
+	/**
+	 * 添加问题
+	 * @param questionId
+	 * @return
+	 */
+	public Map<String, Object> addViewer(int questionId){
+		questionService.addViewer(questionId);
+		return BackTool.successInfo();
 	}
 }

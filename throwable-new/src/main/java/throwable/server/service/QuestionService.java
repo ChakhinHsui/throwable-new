@@ -353,11 +353,43 @@ public class QuestionService extends BaseService {
 		dao.execute(sql);
 	}
 	
+	/**
+	 * 赞同问题  顶问题
+	 * @param questionId
+	 * @return
+	 */
 	public int agreeQuestion(int questionId){
 		Sql sql = dao.sqls().create("question_agreeQuestion");
 		sql.params().set("agrees", 1);
+		sql.params().set("id", questionId);
 		dao.execute(sql);
-		return 1;
+		return sql.getUpdateCount();
+	}
+	
+	/**
+	 * 不赞同问题  踩问题
+	 * @param questionId
+	 * @return
+	 */
+	public int disagreeQuestion(int questionId){
+		Sql sql = dao.sqls().create("question_disagreeQuestion");
+		sql.params().set("disagrees", 1);
+		sql.params().set("id", questionId);
+		dao.execute(sql);
+		return sql.getUpdateCount();
+	}
+	
+	/**
+	 * 增加问题的访问数
+	 * @param questionId
+	 * @return
+	 */
+	public int addViewer(int questionId) {
+		Sql sql = dao.sqls().create("question_addViewers");
+		sql.params().set("viewers", 1);
+		sql.params().set("id", questionId);
+		dao.execute(sql);
+		return sql.getUpdateCount();
 	}
 	
 	/**
