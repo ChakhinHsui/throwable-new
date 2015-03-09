@@ -78,7 +78,7 @@ update seava_throwable.t_question set agrees = agrees + @agrees where id = @id
 
 /*question=disagree问题*/
 /*question_disagreeQuestion*/
-update seava_throwable.t_question set disagrees = disagrees + @disagrees where id = @id
+update seava_throwable.t_question set degrees = degrees + @disagrees where id = @id
 
 /*question=增加访问数*/
 /*question_addViewers*/
