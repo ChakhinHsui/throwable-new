@@ -432,4 +432,18 @@ public class QuestionService extends BaseService {
 		dao.execute(sql);
 		return sql.getInt();
 	}
+	
+	/**
+	 * 根据标签id查询问题
+	 * @param labelId
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryQuestionByLabelId(int labelId) {
+		Sql sql = dao.sqls().create("question_queryQuestionByLabelId");
+		sql.params().set("labelId", labelId);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		return sql.getList(Map.class);
+	}
 }

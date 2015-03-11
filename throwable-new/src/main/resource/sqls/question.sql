@@ -117,3 +117,6 @@ delete from seava_throwable.t_user_question_collection where user_id = @user_id 
 /*collection_haveCollected*/
 select * from seava_throwable.t_user_question_collection where user_id = @user_id and question_id = @question_id
 
+/*question-根据label查询问题*/
+/*question_queryQuestionByLabelId*/
+select a.id as questionId, a.question_name as questionName, a.question_type as questionType, a.answers as answers, a.focuses as focuses from seava_throwable.t_question as a inner join seava_throwable.t_label_question as b where b.label_id = @labelId and b.question_id = a.id

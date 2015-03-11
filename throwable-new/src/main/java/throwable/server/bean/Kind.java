@@ -25,4 +25,9 @@ public class Kind {
 	 * 分类创建时间
 	 */
 	public long time;
+	
+	/**
+	 * 问题所属用户id
+	 */
+	public int user_id;
 }
