@@ -6,13 +6,17 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.nutz.json.Json;
 
 import throwable.server.enums.Right;
 
@@ -161,6 +165,46 @@ public class StringTool {
 			return ((Set<?>)object).isEmpty();
 		}
 		return false;
+	}
+	
+	/**
+	 * 将map的Object转成String
+	 * @param map
+	 * @return
+	 */
+	public static Map<String, String> mapStr2Obj(Map<String, Object> map) {
+		Map<String, String> retMap = new HashMap<String, String>();
+		for(String key : map.keySet()) {
+			retMap.put(key, map.get(key).toString());
+		}
+		return retMap;
+	}
+	
+	/**
+	 * 将List中的str转为Object
+	 * @param list
+	 * @param type
+	 * @return
+	 */
+	public static <T>List<T> listStr2Obj(List<String> list, Class<T> type) {
+		List<T> retList = new ArrayList<T>();
+		for(String str : list) {
+			retList.add(Json.fromJson(type, str));
+		}
+		return retList;
+	}
+	
+	/**
+	 * 将List中的Object转为String
+	 * @param list
+	 * @return
+	 */
+	public static List<String> listObj2Str(List<Object> list) {
+		List<String> retList = new ArrayList<String>();
+		for(Object o : list) {
+			retList.add(Json.toJson(o));
+		}
+		return retList;
 	}
 
 	public static boolean isEmptyOrLong(String s, int length) {

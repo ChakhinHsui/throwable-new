@@ -15,6 +15,15 @@ public enum LabelType {
 		this.name = name;
 		this.value = value;
 	}
+	
+	public static int getValue(String name) {
+		for(LabelType c : LabelType.values()){
+			if(name.equals(c.getName())){
+				return c.getValue();
+			}
+		}
+		return 0;
+	}
 
 	public String getName() {
 		return name;

@@ -29,4 +29,3 @@ select * from seava_throwable.t_label
 /*label-根据问题id查询label信息*/
 /*label_queryLabelByQuestionId*/
 select a.id as labelId, a.name as labelName, a.type as labelType from seava_throwable.t_label as a inner join seava_throwable.t_label_question as b where b.question_id = @questionId and a.id = b.label_id
-
