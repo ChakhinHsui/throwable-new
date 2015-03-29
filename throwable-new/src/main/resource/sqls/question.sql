@@ -2,7 +2,8 @@
 
 /*question=插入问题*/
 /*question_insertOneQuestion*/
-insert into seava_throwable.t_question(question_name, question_description, question_type, viewers, agrees, degrees, answers, focuses, collections, solved, create_time, kind_id, user_id) values(@question_name, @question_description, @question_type, @viewers, @agrees, @degrees, @answers, @focuses, @collections, @solved, @create_time, @kind_id, @user_id)
+insert into seava_throwable.t_question(question_name, question_description, question_type, viewers, agrees, degrees, answers, focuses, collections, solved, create_time, kind_id, user_id) 
+values(@question_name, @question_description, @question_type, @viewers, @agrees, @degrees, @answers, @focuses, @collections, @solved, @create_time, @kind_id, @user_id)
 
 /*question=添加问题描述*/
 /*question_addQuestionDesc*/
@@ -11,6 +12,17 @@ update seava_throwable.t_question set question_description = @question_descripti
 /*question=公开问题*/
 /*question_publicQuestion*/
 update seava_throwable.t_question set question_type = @question_type where id = @id 
+
+/*根据问题信息返回问题的id*/
+/*question_queryQId*/
+select id from seava_throwable.t_question
+where question_type = @question_type
+and question_name = @question_name
+and question_description = @question_description
+and create_time = @create_time
+and user_id = @user_id
+and kind_id = @kind_id order by id desc
+
 
 /*question=修改访问数*/
 /*question_updateViewers*/
@@ -22,7 +34,8 @@ update seava_throwable.t_question set agrees = agrees + @agrees where id = @id
 
 /*question=根据id查询问题*/
 /*question_queryOneQuestionInfo*/
-select a.id, a.question_name, a.question_description, a.viewers, a.agrees, a.degrees, a.create_time, b.username from seava_throwable.t_question as a inner join seava_throwable.t_user as b on a.user_id = b.id where a.id = @id 
+select a.id, a.question_name, a.question_description, a.viewers, a.agrees, a.degrees, a.solved, a.user_id, a.focuses, a.collections, a.create_time, b.username 
+from seava_throwable.t_question as a inner join seava_throwable.t_user as b on a.user_id = b.id where a.id = @id 
 
 /*question=根据kind_id查询问题*/
 /*question_queryQuestionByKindId*/
@@ -50,7 +63,9 @@ select * from seava_throwable.t_question where create_time > @minTime and create
 
 /*question=根据questionType查询所有问题*/
 /*question_queryAllQuestionByType*/
-select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type order by a.id desc 
+select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username
+from seava_throwable.t_question as a inner join seava_throwable.t_user as b on a.user_id = b.id
+where a.question_type = @question_type order by a.id desc 
 
 /*question=根据userid查询问题的部分信息*/
 /*question_queryPartQByUserId*/

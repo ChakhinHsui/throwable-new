@@ -14,11 +14,17 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
+import org.nutz.trans.Atom;
+import org.nutz.trans.Trans;
 
 import throwable.server.ThrowableConf;
 import throwable.server.bean.Question;
+import throwable.server.enums.LabelType;
+import throwable.server.handler.label.LabelServer;
+import throwable.server.service.LabelService;
 import throwable.server.service.QuestionService;
 import throwable.server.utils.BackTool;
+import throwable.server.utils.StringTool;
 
 /**
  * @author WaterHsu
@@ -30,13 +36,17 @@ public class QuestionServer {
 	private Log log = Logs.get();
 	@Inject
 	private QuestionService questionService;
+	@Inject
+	private LabelServer labelServer;
+	@Inject
+	private LabelService labelService;
 	
 	/**
 	 * 添加问题
 	 * @param question  问题的pojo
 	 * @return
 	 */
-	public Map<String, Object> addQuestion(Question question){
+	public Map<String, Object> addQuestion(final Question question, final String label_names){
 		question.agrees = 0;
 		question.degrees = 0;
 		question.viewers = 0;
@@ -45,7 +55,31 @@ public class QuestionServer {
 		question.collections = 0;
 		question.solved = 0;
 		question.create_time = System.currentTimeMillis();
-		questionService.addQuestion(question);
+		Trans.exec(new Atom() {
+			
+			@Override
+			public void run() {
+				//添加问题
+				questionService.addQuestion(question);
+				if(!StringTool.isEmpty(label_names)) {
+					//查询问题id
+					int id = questionService.queryQuestionId(question);
+					String[] labels = label_names.split(";");
+					//添加label 以及用户lable
+					for(String labelName : labels) {
+						labelServer.addLabel(question.user_id, labelName, LabelType.web_own_label.getName());
+					}
+					//添加问题label
+					for(String labelName : labels) {
+						int labelId = labelService.queryLabelByName(labelName).id;
+						labelService.addQuestionLable(id, labelId);
+					}
+				}
+			}
+		});
+		
+		
+		
 		log.info("添加一个问题: " + question.user_id);
 		return BackTool.successInfo();
 	}

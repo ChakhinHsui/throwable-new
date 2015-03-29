@@ -61,7 +61,7 @@ public class LabelService extends BaseService {
 	 */
 	public boolean addQuestionLable(int questionId, int labelId) {
 		Sql sql = dao.sqls().create("label_addQuestionLabel");
-		sql.params().set("userId", questionId);
+		sql.params().set("questionId", questionId);
 		sql.params().set("labelId", labelId);
 		dao.execute(sql);
 		return 1 == sql.getUpdateCount();
@@ -136,4 +136,20 @@ public class LabelService extends BaseService {
 		dao.execute(sql);
 		return sql.getList(Map.class);
 	} 
+	
+	/**
+	 * 查询user_label表中是否存在相同的数据
+	 * @param userId   用户id
+	 * @param labelId  标签id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryExists(int userId, int labelId) {
+		Sql sql = dao.sqls().create("label_queryExists");
+		sql.params().set("userId", userId);
+		sql.params().set("labelId", labelId);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		return sql.getList(Map.class);
+	}
 }

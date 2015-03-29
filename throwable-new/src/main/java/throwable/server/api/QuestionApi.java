@@ -10,9 +10,12 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
 import throwable.server.ThrowableConf;
+import throwable.server.bean.Comment;
 import throwable.server.enums.QuestionSolved;
 import throwable.server.enums.QuestionType;
 import throwable.server.service.AnswerService;
+import throwable.server.service.CommentService;
+import throwable.server.service.LabelService;
 import throwable.server.service.QuestionService;
 import throwable.server.utils.BackTool;
 import throwable.server.utils.DateUtils;
@@ -30,6 +33,10 @@ public class QuestionApi {
 	private QuestionService questionService;
 	@Inject
 	private AnswerService answerService;
+	@Inject
+	private LabelService labelService;
+	@Inject
+	private CommentService commentService;
 	
 	/**
 	 * 查询公开的问题 用于首页显示 最新的
@@ -43,6 +50,8 @@ public class QuestionApi {
 		List<Map> list = questionService.queryQuestionByType(QuestionType.can_public.getValue());
 		for(Map mm : list){
 			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
+			List<Map> labelList = labelService.queryLabelsByQuestionId(Integer.parseInt(mm.get("id").toString())); 
+			mm.put("labels", labelList);
 		}
 		map.put("questions", list);
 		return map;
@@ -60,6 +69,8 @@ public class QuestionApi {
 		List<Map> list = questionService.queryHotQuestionByType(QuestionType.can_public.getValue());
 		for(Map mm : list){
 			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
+			List<Map> labelList = labelService.queryLabelsByQuestionId(Integer.parseInt(mm.get("id").toString())); 
+			mm.put("labels", labelList);
 		}
 		map.put("questions", list);
 		return map;
@@ -76,6 +87,8 @@ public class QuestionApi {
 		List<Map> list = questionService.queryMostFocusedQuestion(QuestionType.can_public.getValue());
 		for(Map mm : list){
 			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
+			List<Map> labelList = labelService.queryLabelsByQuestionId(Integer.parseInt(mm.get("id").toString())); 
+			mm.put("labels", labelList);
 		}
 		map.put("questions", list);
 		return map;
@@ -104,12 +117,26 @@ public class QuestionApi {
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@At("/getOneQ")
-	public Map queryOneQuestion(@Param("id") int id){
+	public Map queryOneQuestion(@Param("id") int id, @Param("userId") int userId){
 		if(id < 0){
 			return BackTool.errorInfo("020202", ThrowableConf.errorMsg);
 		}
 		Map map = questionService.queryQuestionByQuestionId(id);
 		map.put("create_time", DateUtils.getNewTime(Long.parseLong(map.get("create_time").toString()), 10));
+		if(userId > 0 && userId != Integer.parseInt(map.get("user_id").toString())) {
+			if(questionService.queryHaveFocused(userId, id)) {
+				map.put("focused", 1);
+			} else {
+				map.put("focused", 0);
+			}
+			if(questionService.haveCollected(userId, id)) {
+				map.put("collected", 1);
+			} else {
+				map.put("collected", 0);
+			}
+		}
+		List<Comment> list = commentService.queryCommentByBelongIdType(id, 0);
+		map.put("comments", list);
 		return map;
 	}
 	

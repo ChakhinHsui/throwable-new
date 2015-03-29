@@ -58,7 +58,9 @@ public class LabelServer {
 					labelService.addLabel(label);
 					label_n = labelService.queryLabelByName(label.name);
 				}
-				labelService.addUserLabel(userId, label_n.id);
+				if(StringTool.isEmpty(labelService.queryExists(userId, label_n.id))) {
+					labelService.addUserLabel(userId, label_n.id);
+				}
 			}
 		});
 		} catch(Exception e) {

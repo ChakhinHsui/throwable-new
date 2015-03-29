@@ -446,4 +446,22 @@ public class QuestionService extends BaseService {
 		dao.execute(sql);
 		return sql.getList(Map.class);
 	}
+	
+	/**
+	 * 根据问题信息查询问题id
+	 * @param question
+	 * @return
+	 */
+	public int queryQuestionId(Question question) {
+		Sql sql = dao.sqls().create("question_queryQId");
+		sql.params().set("question_type", question.question_type);
+		sql.params().set("question_name", question.question_name);
+		sql.params().set("question_description", question.question_description);
+		sql.params().set("create_time", question.create_time);
+		sql.params().set("user_id", question.user_id);
+		sql.params().set("kind_id", question.kind_id);
+		sql.setCallback(Sqls.callback.integer());
+		dao.execute(sql);
+		return sql.getInt();
+	}
 }

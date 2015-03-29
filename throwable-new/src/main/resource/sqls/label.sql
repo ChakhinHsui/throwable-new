@@ -1,6 +1,6 @@
 /*label-增加label*/
 /*label_addLabel*/
-insert into seava_throwable.t_label(name, type, time) values(@name, @value, @time)
+insert into seava_throwable.t_label(name, type, time) values(@name, @type, @time)
 
 /*label-根据label名查询label*/
 /*label_queryLabelByName*/
@@ -29,3 +29,8 @@ select * from seava_throwable.t_label
 /*label-根据问题id查询label信息*/
 /*label_queryLabelByQuestionId*/
 select a.id as labelId, a.name as labelName, a.type as labelType from seava_throwable.t_label as a inner join seava_throwable.t_label_question as b where b.question_id = @questionId and a.id = b.label_id
+
+/*label-查询重复数据*/
+/*label_queryExists*/
+select * from seava_throwable.t_user_label
+where user_id = @userId and label_id = @labelId

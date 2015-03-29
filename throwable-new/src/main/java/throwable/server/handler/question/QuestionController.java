@@ -38,7 +38,7 @@ public class QuestionController {
 	 * @return
 	 */
 	@At("/addQuestion")
-	public Map<String, Object> addQuestion(@Param("..") Question question){
+	public Map<String, Object> addQuestion(@Param("..") Question question, String label_names){
 		if(StringTool.isEmpty(question.question_name)){
 			return BackTool.errorInfo("020101", ThrowableConf.errorMsg);
 		}
@@ -54,7 +54,7 @@ public class QuestionController {
 		if(QuestionType.not_public.getValue() != question.question_type && QuestionType.can_public.getValue() != question.question_type){
 			return BackTool.errorInfo("020105", ThrowableConf.errorMsg);
 		}
-		return questionServer.addQuestion(question);
+		return questionServer.addQuestion(question, label_names);
 	}
 	
 	/**
