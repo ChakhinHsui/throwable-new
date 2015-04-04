@@ -96,7 +96,7 @@ public class QuestionServer {
 		if(Integer.parseInt(question.get("solved").toString()) != 0){
 			return BackTool.errorInfo("020304", ThrowableConf.errorMsg);
 		}
-		if(!questionService.queryHaveFocused(userId, questionId)){
+		if(questionService.queryHaveFocused(userId, questionId)){
 			return BackTool.errorInfo("020303", ThrowableConf.errorMsg);
 		}
 		questionService.addFocus(userId, questionId, System.currentTimeMillis());
@@ -110,7 +110,7 @@ public class QuestionServer {
 	 * @return
 	 */
 	public Map<String, Object> deleteFocus(int userId, int questionId){
-		if(questionService.queryHaveFocused(userId, questionId)){
+		if(!questionService.queryHaveFocused(userId, questionId)){
 			return BackTool.errorInfo("020403", ThrowableConf.errorMsg);
 		}
 		questionService.deleteFocus(userId, questionId);
@@ -130,7 +130,7 @@ public class QuestionServer {
 		if(Integer.parseInt(question.get("solved").toString()) == 0){
 			return BackTool.errorInfo("020503", ThrowableConf.errorMsg);
 		}
-		if(!questionService.haveCollected(userId, questionId)){
+		if(questionService.haveCollected(userId, questionId)){
 			return BackTool.errorInfo("020504", ThrowableConf.errorMsg);
 		}
 		questionService.addCollection(userId, questionId, System.currentTimeMillis(), mark);
@@ -144,7 +144,7 @@ public class QuestionServer {
 	 * @return
 	 */
 	public Map<String, Object> deleteCollection(int userId, int questionId){
-		if(questionService.haveCollected(userId, questionId)){
+		if(!questionService.haveCollected(userId, questionId)){
 			return BackTool.errorInfo("020603", ThrowableConf.errorMsg);
 		}
 		questionService.deleteCollection(userId, questionId);

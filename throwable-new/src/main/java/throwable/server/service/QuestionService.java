@@ -279,7 +279,7 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		List<Map> list = sql.getList(Map.class);
-		return StringTool.isEmpty(list);
+		return !StringTool.isEmpty(list);
 	}
 	
 	/**
@@ -322,7 +322,7 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		List<Map> list = sql.getList(Map.class);
-		return StringTool.isEmpty(list);
+		return !StringTool.isEmpty(list);
 	}
 	
 	/**
