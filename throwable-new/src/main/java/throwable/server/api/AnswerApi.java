@@ -11,6 +11,7 @@ import org.nutz.mvc.annotation.At;
 import throwable.server.ThrowableConf;
 import throwable.server.enums.CorrectType;
 import throwable.server.service.AnswerService;
+import throwable.server.service.CommentService;
 import throwable.server.utils.BackTool;
 import throwable.server.utils.DateUtils;
 
@@ -24,6 +25,8 @@ public class AnswerApi {
 
 	@Inject
 	private AnswerService answerService;
+	@Inject
+	private CommentService commentService;
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@At("/getAnswerByQId")
@@ -36,6 +39,11 @@ public class AnswerApi {
 		if(list != null){
 			for(Map mm : list){
 				mm.put("answer_time", DateUtils.getNewTime(Long.parseLong(mm.get("answer_time").toString()), 10));
+				List<Map> comments = commentService.queryCommentByBelongIdType(Integer.parseInt(mm.get("id").toString()), 1);
+				for(Map comment : comments) {
+					comment.put("time", DateUtils.getNewTime(Long.parseLong(comment.get("time").toString()), 10));
+				}
+				mm.put("comments", comments);
 			}
 			map.put("answers", list);
 		}else{

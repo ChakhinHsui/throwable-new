@@ -1,6 +1,7 @@
 package throwable.server.handler.comment;
 
 import java.util.List;
+import java.util.Map;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -55,8 +56,9 @@ public class CommentController {
 	 * @param type
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	@At("/queryByBelongId")
-	public List<Comment> queryCommentByBelongIdType(int belongId, int type) {
+	public List<Map> queryCommentByBelongIdType(int belongId, int type) {
 		if(belongId < 1 || (type != 0 && type != 1)) {
 			BackTool.errorInfo("100001", "参数错误");
 		}

@@ -1,6 +1,7 @@
 package throwable.server.handler.comment;
 
 import java.util.List;
+import java.util.Map;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -61,7 +62,8 @@ public class CommentServer {
 	 * @param type       类型
 	 * @return
 	 */
-	public List<Comment> queryCommentByBelongIdType(int belongId, int type) {
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryCommentByBelongIdType(int belongId, int type) {
 		return commentService.queryCommentByBelongIdType(belongId, type);
 	}
 }

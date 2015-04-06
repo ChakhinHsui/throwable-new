@@ -1,6 +1,7 @@
 package throwable.server.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
@@ -38,13 +39,14 @@ public class CommentService extends BaseService {
 	 * @param type
 	 * @return
 	 */
-	public List<Comment> queryCommentByBelongIdType(int belongId, int type) {
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryCommentByBelongIdType(int belongId, int type) {
 		Sql sql = dao.sqls().create("comment_queryByBelongIdType");
 		sql.params().set("belongId", belongId);
 		sql.params().set("belongType", type);
-		sql.setCallback(Sqls.callback.entities());
-		sql.setEntity(dao.getEntity(Comment.class));
-		return sql.getList(Comment.class);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		return sql.getList(Map.class);
 	}
 	
 	/**
@@ -57,6 +59,7 @@ public class CommentService extends BaseService {
 		sql.params().set("fromUserId", userId);
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(Comment.class));
+		dao.execute(sql);
 		return sql.getList(Comment.class);
 	}
 	
@@ -70,6 +73,7 @@ public class CommentService extends BaseService {
 		sql.params().set("toUserId", userId);
 		sql.setCallback(Sqls.callback.entities());
 		sql.setEntity(dao.getEntity(Comment.class));
+		dao.execute(sql);
 		return sql.getList(Comment.class);
 	}
 	
@@ -83,6 +87,7 @@ public class CommentService extends BaseService {
 		sql.params().set("id", id);
 		sql.setCallback(Sqls.callback.entity());
 		sql.setEntity(dao.getEntity(Comment.class));
+		dao.execute(sql);
 		return sql.getObject(Comment.class);
 	}
 }

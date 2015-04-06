@@ -10,7 +10,6 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
 import throwable.server.ThrowableConf;
-import throwable.server.bean.Comment;
 import throwable.server.enums.QuestionSolved;
 import throwable.server.enums.QuestionType;
 import throwable.server.service.AnswerService;
@@ -135,7 +134,10 @@ public class QuestionApi {
 				map.put("collected", 0);
 			}
 		}
-		List<Comment> list = commentService.queryCommentByBelongIdType(id, 0);
+		List<Map> list = commentService.queryCommentByBelongIdType(id, 0);
+		for(Map mm : list) {
+			mm.put("time", DateUtils.getNewTime(Long.parseLong(mm.get("time").toString()), 10));
+		}
 		map.put("comments", list);
 		return map;
 	}
