@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.ssdb4j.spi.SSDB;
 
 import throwable.server.framework.cache.ssdb.SsdbMasterSlavePool;
 
@@ -17,6 +18,14 @@ public class SsdbHandler {
 	
 	@Inject
 	private SsdbMasterSlavePool ssdbMasterSlavePool;
+	
+	/**
+	 * 得到ssdb
+	 * @return
+	 */
+	public SSDB getSSDB() {
+		return ssdbMasterSlavePool.getSsdb();
+	}
 	
 	/**
 	 * key-value  set 设置值  

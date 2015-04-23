@@ -239,4 +239,13 @@ public class UserServer {
 			userService.alterUserExtendInfo(userInfo);
 		}
 	}
+	
+	/**
+	 * 查询用户信息
+	 * @param userId
+	 * @return
+	 */
+	public User queryUserInfo(long userId) {
+		return userService.queryUserById((int)userId);
+	}
 }

@@ -61,6 +61,18 @@ var ioc = {
 		}, {
 			refer : "sqlManager"
 		} ]
-	}
+	},
+	redisTool : {
+		type : "seava.tools.RedisTool",
+		args : [ 
+		        { java: "$config.get('chat.redis.host')" }
+		        ,{ java: "$config.get('chat.redis.port')" }
+		        ,{ java: "$config.get('chat.redis.timeout')" }
+		        ,{ java: "$config.get('chat.redis.password')" }
+		        ,{ java: "$config.get('chat.redis.maxActive')" }
+		        ,{ java: "$config.get('chat.redis.maxIdle')" }
+		        ,{ java: "$config.get('chat.redis.minIdle')" }
+		        ]
+		},
 	// 缓存拦截器
 }
