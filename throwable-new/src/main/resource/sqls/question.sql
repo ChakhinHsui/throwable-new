@@ -65,7 +65,13 @@ select * from seava_throwable.t_question where create_time > @minTime and create
 /*question_queryAllQuestionByType*/
 select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username
 from seava_throwable.t_question as a inner join seava_throwable.t_user as b on a.user_id = b.id
-where a.question_type = @question_type order by a.id desc 
+where a.question_type = @question_type order by a.id desc
+
+/*question=根据questionType分页查询查询所有问题*/
+/*question_queryAllQuestionByTypePage*/
+select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username
+from seava_throwable.t_question as a inner join seava_throwable.t_user as b on a.user_id = b.id
+where a.question_type = @question_type order by a.id desc limit @page, @count
 
 /*question=根据userid查询问题的部分信息*/
 /*question_queryPartQByUserId*/
@@ -135,3 +141,7 @@ select * from seava_throwable.t_user_question_collection where user_id = @user_i
 /*question-根据label查询问题*/
 /*question_queryQuestionByLabelId*/
 select a.id as questionId, a.question_name as questionName, a.question_type as questionType, a.answers as answers, a.focuses as focuses from seava_throwable.t_question as a inner join seava_throwable.t_label_question as b where b.label_id = @labelId and b.question_id = a.id
+
+/*question-查询问题的总记录数 用于分页*/
+/*question_queryAllQuestionNumber*/
+select count(*) from seava_throwable.t_question where question_type = 1
