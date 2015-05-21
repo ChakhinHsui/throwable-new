@@ -247,9 +247,11 @@ public class QuestionService extends BaseService {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public List<Map> queryHotQuestionByType(int type) {
+	public List<Map> queryHotQuestionByType(int type, int page, int count) {
 		Sql sql = dao.sqls().create("question_queryAllHotQuestionByType");
 		sql.params().set("question_type", type);
+		sql.params().set("page", page);
+		sql.params().set("count", count);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		return sql.getList(Map.class);
@@ -261,9 +263,11 @@ public class QuestionService extends BaseService {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public List<Map> queryMostFocusedQuestion(int type) {
+	public List<Map> queryMostFocusedQuestion(int type, int page, int count) {
 		Sql sql = dao.sqls().create("question_queryAllMostFocusQuestionByType");
 		sql.params().set("question_type", type);
+		sql.params().set("page", page);
+		sql.params().set("count", count);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		return sql.getList(Map.class);
