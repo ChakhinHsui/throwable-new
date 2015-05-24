@@ -19,8 +19,10 @@ import org.nutz.trans.Trans;
 
 import throwable.server.ThrowableConf;
 import throwable.server.bean.Question;
+import throwable.server.bean.UserStatistic;
 import throwable.server.enums.LabelType;
 import throwable.server.handler.label.LabelServer;
+import throwable.server.handler.user.UserServer;
 import throwable.server.service.LabelService;
 import throwable.server.service.QuestionService;
 import throwable.server.utils.BackTool;
@@ -40,6 +42,8 @@ public class QuestionServer {
 	private LabelServer labelServer;
 	@Inject
 	private LabelService labelService;
+	@Inject
+	private UserServer userServer;
 	
 	/**
 	 * 添加问题
@@ -75,6 +79,11 @@ public class QuestionServer {
 						labelService.addQuestionLable(id, labelId);
 					}
 				}
+				//增加用户提问数统计
+				UserStatistic userStat = new UserStatistic();
+				userStat.user_id = question.user_id;
+				userStat.asks = 1;
+				userServer.addUserStatistics(userStat);
 			}
 		});
 		
@@ -180,4 +189,5 @@ public class QuestionServer {
 		questionService.addViewer(questionId);
 		return BackTool.successInfo();
 	}
+	
 }

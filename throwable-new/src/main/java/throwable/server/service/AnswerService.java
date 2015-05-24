@@ -137,4 +137,44 @@ public class AnswerService extends BaseService {
 		List<Map> list = sql.getList(Map.class);
 		return StringTool.isEmpty(list) ? null : list.get(0); 
 	}
+	
+	/**
+	 * 赞同答案  顶答案
+	 * @param questionId
+	 * @return
+	 */
+	public int agreeAnswer(long answerId){
+		Sql sql = dao.sqls().create("answer_agreeAnswer");
+		sql.params().set("agrees", 1);
+		sql.params().set("id", answerId);
+		dao.execute(sql);
+		return sql.getUpdateCount();
+	}
+	
+	/**
+	 * 不赞同答案  踩答案
+	 * @param questionId
+	 * @return
+	 */
+	public int disagreeAnswer(long answerId){
+		Sql sql = dao.sqls().create("answer_disagreeAnswer");
+		sql.params().set("disagrees", 1);
+		sql.params().set("id", answerId);
+		dao.execute(sql);
+		return sql.getUpdateCount();
+	}
+	
+	/**
+	 * 接受答案
+	 * @param answerId    回答id
+	 * @param correctType 正确类型
+	 * @return
+	 */
+	public int acceptAnswer(long answerId, int correctType) {
+		Sql sql = dao.sqls().create("answer_acceptAnswer");
+		sql.params().set("correct_type", correctType);
+		sql.params().set("id", answerId);
+		dao.execute(sql);
+		return sql.getUpdateCount();
+	}
 }

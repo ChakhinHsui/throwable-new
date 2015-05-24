@@ -147,3 +147,7 @@ select a.id as questionId, a.question_name as questionName, a.question_type as q
 /*question-查询问题的总记录数 用于分页*/
 /*question_queryAllQuestionNumber*/
 select count(*) from seava_throwable.t_question where question_type = 1
+
+/*question-问题已解决*/
+/*question_solveQuestion*/
+update seava_throwable.t_question set solved = @solved where id = @id

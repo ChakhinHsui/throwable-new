@@ -15,6 +15,7 @@ import org.nutz.log.Logs;
 import throwable.server.ThrowableConf;
 import throwable.server.bean.User;
 import throwable.server.bean.UserExtend;
+import throwable.server.bean.UserStatistic;
 import throwable.server.enums.State;
 import throwable.server.service.SsdbHandler;
 import throwable.server.service.UserService;
@@ -247,5 +248,19 @@ public class UserServer {
 	 */
 	public User queryUserInfo(long userId) {
 		return userService.queryUserById((int)userId);
+	}
+	
+	/**
+	 * 增加用户相关统计  提问数  回答数   赞同数  收藏数   关注数
+	 * @param userStatistic
+	 */
+	@SuppressWarnings("rawtypes")
+	public void addUserStatistics(UserStatistic userStatistic) {
+		Map map = userService.queryUserStatistics(userStatistic.user_id);
+		if(null == map) {
+			userService.insertUserStatistics(userStatistic);
+		} else {
+			userService.updateUserStatistics(userStatistic);
+		}
 	}
 }

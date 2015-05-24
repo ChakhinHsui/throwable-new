@@ -7,8 +7,10 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import throwable.server.bean.Notice;
 import throwable.server.bean.User;
 import throwable.server.bean.UserExtend;
+import throwable.server.bean.UserStatistic;
 import throwable.server.utils.StringTool;
 
 /**
@@ -264,5 +266,103 @@ public class UserService extends BaseService {
 		sql.params().set("image", userInfo.image);
 		dao.execute(sql);
 		return sql.getUpdateCount();
+	}
+	
+	/**
+	 * 查询用户统计信息
+	 * @param userId
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public Map queryUserStatistics(long userId) {
+		Sql sql = dao.sqls().create("user_statistics_queryInfo");
+		sql.params().set("userId", userId);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		return StringTool.isEmpty(list) ? null : list.get(0);
+	}
+	
+	/**
+	 * 插入用户统计信息
+	 * @param userStatistic
+	 * @return
+	 */
+	public int insertUserStatistics(UserStatistic userStatistic) {
+		Sql sql = dao.sqls().create("user_statistics_insertInfo");
+		sql.params().set("user_id", userStatistic.user_id);
+		sql.params().set("asks", userStatistic.asks);
+		sql.params().set("answers", userStatistic.answers);
+		sql.params().set("agrees", userStatistic.agrees);
+		sql.params().set("collections", userStatistic.collections);
+		sql.params().set("focuses", userStatistic.focuses);
+		dao.execute(sql);
+		return sql.getUpdateCount();
+	}
+	
+	/**
+	 * 更新用户统计信息
+	 * @param userStatistic
+	 * @return
+	 */
+	public int updateUserStatistics(UserStatistic userStatistic) {
+		Sql sql = dao.sqls().create("user_statistics_updateInfo");
+		sql.params().set("userId", userStatistic.user_id);
+		sql.params().set("asks", userStatistic.asks);
+		sql.params().set("answers", userStatistic.answers);
+		sql.params().set("agrees", userStatistic.agrees);
+		sql.params().set("collections", userStatistic.collections);
+		sql.params().set("focuses", userStatistic.focuses);
+		dao.execute(sql);
+		return sql.getUpdateCount();
+	}
+	
+	/**
+	 * 插入通知
+	 * @param notice
+	 * @return
+	 */
+	public int insertNotice(Notice notice) {
+		Sql sql = dao.sqls().create("notice_insertNotice");
+		sql.params().set("noticeText", notice.nonticeText);
+		sql.params().set("noticeUrl", notice.noticeUrl);
+		sql.params().set("readOrNo", notice.readOrNo);
+		sql.params().set("type", notice.type);
+		sql.params().set("uuid", notice.uuid);
+		sql.params().set("userId", notice.userId);
+		sql.params().set("time", notice.time);
+		dao.execute(sql);
+		return sql.getUpdateCount();
+	}
+	
+	/**
+	 * 将通知更新为已读
+	 * @param uuid
+	 * @param readOrNo 2已经被查看
+	 * @return
+	 */
+	public int updateReadOrNo(String uuid, int readOrNo) {
+		Sql sql = dao.sqls().create("notice_updateReadOrNo");
+		sql.params().set("uuid", uuid);
+		sql.params().set("readOrNo", readOrNo);
+		dao.execute(sql);
+		return sql.getUpdateCount();
+	}
+	
+	/**
+	 * 查询用户通知
+	 * @param userId    用户id
+	 * @param readOrNo  1未被查看
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public Map queryUserNotice(long userId, int readOrNo) {
+		Sql sql = dao.sqls().create("notice_queryReadOrNo");
+		sql.params().set("userId", userId);
+		sql.params().set("readOrNo", readOrNo);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		return StringTool.isEmpty(list) ? null : list.get(0);
 	}
 }

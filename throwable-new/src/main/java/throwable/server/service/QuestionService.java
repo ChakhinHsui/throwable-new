@@ -497,4 +497,18 @@ public class QuestionService extends BaseService {
 		dao.execute(sql);
 		return sql.getInt();
 	}
+	
+	/**
+	 * 解决问题
+	 * @param questionId  问题id
+	 * @param solved      解决
+	 * @return
+	 */
+	public int solveQuestion(long questionId, int solved) {
+		Sql sql = dao.sqls().create("question_solveQuestion");
+		sql.params().set("id", questionId);
+		sql.params().set("solved", solved);
+		dao.execute(sql);
+		return sql.getUpdateCount();
+	}
 }
