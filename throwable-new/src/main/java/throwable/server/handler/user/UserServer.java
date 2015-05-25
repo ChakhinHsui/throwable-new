@@ -12,6 +12,7 @@ import org.nutz.json.Json;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
+import seava.tools.RedisTool;
 import throwable.server.ThrowableConf;
 import throwable.server.bean.User;
 import throwable.server.bean.UserExtend;
@@ -40,6 +41,8 @@ public class UserServer {
 	private UserService userService;
 	@Inject
 	private SsdbHandler ssdbHandler;
+	@Inject
+	private RedisTool redisTool;
 	
 	/**
 	 * 用户注册
@@ -263,4 +266,5 @@ public class UserServer {
 			userService.updateUserStatistics(userStatistic);
 		}
 	}
+	
 }

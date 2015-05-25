@@ -14,7 +14,7 @@ select * from seava_throwable.t_user where id = @id
 
 /*user=查询用户  根据id查询用户部分信息*/
 /*user_queryPartUserInfoById*/
-select id, username, password, rights, email, nickname, phone, qq, score, user_state from seava_throwable.t_user where id = @id
+select id, username, rights, email, nickname, phone, qq, score, user_state from seava_throwable.t_user where id = @id
 
 /*user=查询用户  根据用户名查询用户部分信息*/
 /*user_queryPartUserInfoByUserName*/

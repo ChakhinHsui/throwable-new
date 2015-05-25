@@ -19,8 +19,11 @@ import org.nutz.trans.Trans;
 
 import throwable.server.ThrowableConf;
 import throwable.server.bean.Question;
+import throwable.server.bean.User;
 import throwable.server.bean.UserStatistic;
 import throwable.server.enums.LabelType;
+import throwable.server.enums.Right;
+import throwable.server.enums.State;
 import throwable.server.handler.label.LabelServer;
 import throwable.server.handler.user.UserServer;
 import throwable.server.service.LabelService;
@@ -51,6 +54,19 @@ public class QuestionServer {
 	 * @return
 	 */
 	public Map<String, Object> addQuestion(final Question question, final String label_names){
+		User user = userServer.queryUserInfo(question.user_id);
+		if(null == user) {
+			BackTool.errorInfo("050304", "用户不存在");
+		}
+		if(!user.rights.equals(Right.general.getValue()) && user.rights.equals(Right.context.getValue()) && !user.rights.equals(Right.superU.getValue())) {
+			BackTool.errorInfo("050305", "用户权限不够, 不能提问题");
+		}
+		if(user.user_state == State.no_active.getValue()) {
+			BackTool.errorInfo("020306", "用户未激活，不能提问题");
+		}
+		if(user.user_state != State.user_nomal.getValue()) {
+			BackTool.errorInfo("020306", "用户异常，不能提问题，请联系网站管理员");
+		}
 		question.agrees = 0;
 		question.degrees = 0;
 		question.viewers = 0;
@@ -86,9 +102,6 @@ public class QuestionServer {
 				userServer.addUserStatistics(userStat);
 			}
 		});
-		
-		
-		
 		log.info("添加一个问题: " + question.user_id);
 		return BackTool.successInfo();
 	}
@@ -181,7 +194,7 @@ public class QuestionServer {
 	}
 	
 	/**
-	 * 添加问题
+	 * 添加问题的访问数
 	 * @param questionId
 	 * @return
 	 */

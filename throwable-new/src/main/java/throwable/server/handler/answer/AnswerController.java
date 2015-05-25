@@ -86,10 +86,10 @@ public class AnswerController {
 	 * @return
 	 */
 	@At("/acceptAnswer")
-	public int acceptAnswer(long questionId, long answerId) {
-		if(questionId < 1 || answerId < 1) {
+	public int acceptAnswer(long questionId, long answerId, long userId) {
+		if(questionId < 1 || answerId < 1 || userId < 1) {
 			BackTool.errorInfo("120001", "参数错误");
 		}
-		return answerServer.acceptAnswer(questionId, answerId);
+		return answerServer.acceptAnswer(questionId, answerId, userId);
 	}
 }

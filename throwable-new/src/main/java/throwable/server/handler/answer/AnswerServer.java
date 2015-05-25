@@ -21,9 +21,12 @@ import org.nutz.trans.Trans;
 
 import seava.tools.rabbitmq.RabbitMqTool;
 import throwable.server.bean.Answer;
+import throwable.server.bean.User;
 import throwable.server.bean.UserStatistic;
 import throwable.server.enums.CorrectType;
 import throwable.server.enums.QuestionSolved;
+import throwable.server.enums.Right;
+import throwable.server.enums.State;
 import throwable.server.handler.user.UserServer;
 import throwable.server.service.AnswerService;
 import throwable.server.service.QuestionService;
@@ -53,6 +56,19 @@ public class AnswerServer {
 	 * @return
 	 */
 	public Map<String, Object> addAnswer(final Answer answer){
+		User user = userServer.queryUserInfo(answer.user_id);
+		if(null == user) {
+			BackTool.errorInfo("050304", "用户不存在");
+		}
+		if(!user.rights.equals(Right.general.getValue()) && !user.rights.equals(Right.context.getValue()) && !user.rights.equals(Right.superU.getValue())) {
+			BackTool.errorInfo("050305", "用户权限不够,不能回答问题");
+		}
+		if(user.user_state == State.no_active.getValue()) {
+			BackTool.errorInfo("020306", "用户未激活，不能回答问题");
+		}
+		if(user.user_state != State.user_nomal.getValue()) {
+			BackTool.errorInfo("020306", "用户异常，不能回答问题，请联系网站管理员");
+		}
 		answer.agrees = 0;
 		answer.viewers = 0;
 		answer.disagrees = 0;
@@ -103,7 +119,25 @@ public class AnswerServer {
 	 * @param answerId    答案id
 	 * @return
 	 */
-	public int acceptAnswer(final long questionId, final long answerId) {
+	@SuppressWarnings("rawtypes")
+	public int acceptAnswer(final long questionId, final long answerId, long userId) {
+		User user = userServer.queryUserInfo(userId);
+		if(null == user) {
+			BackTool.errorInfo("050304", "用户不存在");
+		}
+		if(!user.rights.equals(Right.general.getValue()) && user.rights.equals(Right.context.getValue()) && !user.rights.equals(Right.superU.getValue())) {
+			BackTool.errorInfo("050305", "用户权限不够,不能回答问题");
+		}
+		if(user.user_state == State.no_active.getValue()) {
+			BackTool.errorInfo("020306", "用户未激活，不能回答问题");
+		}
+		if(user.user_state != State.user_nomal.getValue()) {
+			BackTool.errorInfo("020306", "用户异常，不能回答问题，请联系网站管理员");
+		}
+		Map map = questionService.queryQuestionByQuestionId((int)questionId);
+		if(userId != Long.parseLong(map.get("user_id").toString())) {
+			BackTool.errorInfo("050305", "不是该问题的拥有者不能接受答案");
+		}
 		try {
 			Trans.exec(new Atom() {
 				
