@@ -32,4 +32,12 @@ public class UserTest extends AbstractThritfController {
 		ResultMsg retMsg = call(GeneratorID.getID(), "/user/register", paramMap);
 		System.out.println(retMsg);
 	}
+	
+	@Test
+	public void testQueryUserInfo() throws Exception {
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("userId", "29");
+		ResultMsg retMsg = call(GeneratorID.getID(), "/user/queryUserInfo", paramMap);
+		System.out.println(retMsg);
+	}
 }

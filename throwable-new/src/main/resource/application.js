@@ -74,5 +74,15 @@ var ioc = {
 		        ,{ java: "$config.get('chat.redis.minIdle')" }
 		        ]
 		},
+		rabbitMqTool : {
+			type : "seava.tools.rabbitmq.RabbitMqTool",
+			args : [
+			        	{java : "$config.get('mq.ip')"},
+			        	{java : "$config.get('mq.prot')"},
+			        	{java : "$config.get('mq.username')"},
+			        	{java : "$config.get('mq.password')"},
+			        	{java : "$config.get('mq.timeout')"}
+			        ]
+		}
 	// 缓存拦截器
 }

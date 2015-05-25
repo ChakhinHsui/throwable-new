@@ -1,5 +1,7 @@
 package throwable.server;
 
+import java.util.Map.Entry;
+
 import org.nutz.ioc.Ioc;
 import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -18,7 +20,7 @@ import throwable.server.utils.StringTool;
 @IocBean
 public class ThrowableConf {
 	
-	private Log log = Logs.get();
+	private Log log = Logs.getLog(ThrowableConf.class);
 	private long sleepTime;//更新配置周期
 	public static Ioc ioc;//IOC容器
 	public static PropertiesProxy appProp = new PropertiesProxy();
@@ -46,6 +48,15 @@ public class ThrowableConf {
 		errorMsg.setPaths(new String[] { "errorMsg.properties" });
 		sleepTime = appProp.getLong("system.sleepTime",120)*1000L;
 		config = ioc.get(PropertiesProxy.class, "config");
+		for(Entry<String, String> entry : config.toMap().entrySet()) {
+			try {
+				if(entry.getKey().startsWith("init.")){
+					ioc.get(Class.forName(entry.getValue()), entry.getKey().replace("init.", ""));
+				}
+			} catch (Exception e) {
+				log.error("初始化"+entry.getKey()+"出错", e);
+			}
+		}
 	}
 	
 	private void init(){

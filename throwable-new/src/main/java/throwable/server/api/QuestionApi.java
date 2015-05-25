@@ -57,15 +57,47 @@ public class QuestionApi {
 	}
 	
 	/**
+	 * 分页查询查询公开的问题 用于首页显示 最新的
+	 * @param page    要展示的那一页
+	 * @param count   每页显示的条数
+	 * @return
+	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	@At("/getPublicQsPage")
+	public Map queryPublicQuestionsPage(int page, int count){
+		if(page < 0 || count < 0) {
+			BackTool.errorInfo("020203");
+		}
+		Map map = new HashMap();
+		List<Map> list = questionService.queryQuestionByTypePage(QuestionType.can_public.getValue(), (page - 1) * count, count);
+		for(Map mm : list){
+			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
+			List<Map> labelList = labelService.queryLabelsByQuestionId(Integer.parseInt(mm.get("id").toString())); 
+			mm.put("labels", labelList);
+		}
+		map.put("questions", list);
+		return map;
+	}
+	
+	/**
+	 * 查询问题总记录数
+	 * @return
+	 */
+	@At("/getTotalQuestion")
+	public int getTotalQuestion() {
+		return questionService.queryTotalQuestion();
+	}
+	
+	/**
 	 * 查询公开的最热问题 访问数最多
 	 * @param question_type
 	 * @return
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@At("/getPublicHotQs")
-	public Map queryPublicHotQuestions() {
+	public Map queryPublicHotQuestions(int page, int count) {
 		Map map = new HashMap();
-		List<Map> list = questionService.queryHotQuestionByType(QuestionType.can_public.getValue());
+		List<Map> list = questionService.queryHotQuestionByType(QuestionType.can_public.getValue(), (page - 1) * count, count);
 		for(Map mm : list){
 			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
 			List<Map> labelList = labelService.queryLabelsByQuestionId(Integer.parseInt(mm.get("id").toString())); 
@@ -81,9 +113,9 @@ public class QuestionApi {
 	 */
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@At("/getPublicMFQs")
-	public Map queryPublicMostFocusQuestions() {
+	public Map queryPublicMostFocusQuestions(int page, int count) {
 		Map map = new HashMap();
-		List<Map> list = questionService.queryMostFocusedQuestion(QuestionType.can_public.getValue());
+		List<Map> list = questionService.queryMostFocusedQuestion(QuestionType.can_public.getValue(), (page - 1) * count, count);
 		for(Map mm : list){
 			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
 			List<Map> labelList = labelService.queryLabelsByQuestionId(Integer.parseInt(mm.get("id").toString())); 
@@ -122,6 +154,9 @@ public class QuestionApi {
 		}
 		Map map = questionService.queryQuestionByQuestionId(id);
 		map.put("create_time", DateUtils.getNewTime(Long.parseLong(map.get("create_time").toString()), 10));
+		if(map.get("image") == null) {
+			map.put("image", "default.jpg");
+		} 
 		if(userId > 0 && userId != Integer.parseInt(map.get("user_id").toString())) {
 			if(questionService.queryHaveFocused(userId, id)) {
 				map.put("focused", 1);

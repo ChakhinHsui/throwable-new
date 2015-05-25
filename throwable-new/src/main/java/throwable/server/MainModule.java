@@ -28,7 +28,7 @@ import org.nutz.mvc.ioc.provider.ComboIocProvider;
 public class MainModule implements Setup, Runnable {
 
 	private Log log = Logs.getLog("MainModule");
-	private Ioc ioc;
+	public static Ioc ioc;
 	
 	/**
 	 * 框架启动时，初始化入口
@@ -41,6 +41,7 @@ public class MainModule implements Setup, Runnable {
 		//最高优先级
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.start();
+		
 	} 
 	
 	@Override

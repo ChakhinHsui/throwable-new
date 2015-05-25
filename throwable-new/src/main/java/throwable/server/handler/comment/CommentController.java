@@ -34,6 +34,9 @@ public class CommentController {
 				|| StringTool.isEmpty(comment.toUserName) || StringTool.isEmpty(comment.fromUserName) || StringTool.isEmpty(comment.comment)) {
 			BackTool.errorInfo("100001", "参数错误");
 		}
+		if(comment.fromUserId == comment.toUserId) {
+			BackTool.errorInfo("100001", "不能对自己进行评论");
+		}
 		return commentServer.addComment(comment);
 	}
 	

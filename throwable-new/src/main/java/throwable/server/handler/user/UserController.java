@@ -144,4 +144,17 @@ public class UserController {
 		userServer.saveUserExtendInfo(userInfo);
 		return BackTool.successInfo();
 	}
+	
+	/**
+	 * 查询用户信息
+	 * @param userId  用户id
+	 * @return
+	 */
+	@At("/queryUserInfo")
+	public User queryUserInfo(long userId) {
+		if(userId < 1) {
+			BackTool.errorInfo("070104");
+		}
+		return userServer.queryUserInfo(userId);
+	}
 }

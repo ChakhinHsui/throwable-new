@@ -224,14 +224,34 @@ public class QuestionService extends BaseService {
 	}
 	
 	/**
+	 * 根据问题类型分页查询问题  首页显示最新问题(分页)
+	 * @param type   类型 1 公开  2 私有
+	 * @param page   开始位置 即offset
+	 * @param count  显示条数
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryQuestionByTypePage(int type, int page, int count) {
+		Sql sql = dao.sqls().create("question_queryAllQuestionByTypePage");
+		sql.params().set("question_type", type);
+		sql.params().set("page", page);
+		sql.params().set("count", count);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		return sql.getList(Map.class);
+	}
+	
+	/**
 	 * 查询最热问题  访问最多问题
 	 * @param type   问题类型
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public List<Map> queryHotQuestionByType(int type) {
+	public List<Map> queryHotQuestionByType(int type, int page, int count) {
 		Sql sql = dao.sqls().create("question_queryAllHotQuestionByType");
 		sql.params().set("question_type", type);
+		sql.params().set("page", page);
+		sql.params().set("count", count);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		return sql.getList(Map.class);
@@ -243,9 +263,11 @@ public class QuestionService extends BaseService {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public List<Map> queryMostFocusedQuestion(int type) {
+	public List<Map> queryMostFocusedQuestion(int type, int page, int count) {
 		Sql sql = dao.sqls().create("question_queryAllMostFocusQuestionByType");
 		sql.params().set("question_type", type);
+		sql.params().set("page", page);
+		sql.params().set("count", count);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		return sql.getList(Map.class);
@@ -463,5 +485,30 @@ public class QuestionService extends BaseService {
 		sql.setCallback(Sqls.callback.integer());
 		dao.execute(sql);
 		return sql.getInt();
+	}
+	
+	/**
+	 * 查询问题的总记录数
+	 * @return
+	 */
+	public int queryTotalQuestion() {
+		Sql sql = dao.sqls().create("question_queryAllQuestionNumber");
+		sql.setCallback(Sqls.callback.integer());
+		dao.execute(sql);
+		return sql.getInt();
+	}
+	
+	/**
+	 * 解决问题
+	 * @param questionId  问题id
+	 * @param solved      解决
+	 * @return
+	 */
+	public int solveQuestion(long questionId, int solved) {
+		Sql sql = dao.sqls().create("question_solveQuestion");
+		sql.params().set("id", questionId);
+		sql.params().set("solved", solved);
+		dao.execute(sql);
+		return sql.getUpdateCount();
 	}
 }

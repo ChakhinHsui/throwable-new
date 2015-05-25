@@ -14,7 +14,7 @@ select * from seava_throwable.t_user where id = @id
 
 /*user=查询用户  根据id查询用户部分信息*/
 /*user_queryPartUserInfoById*/
-select id, username, password, rights, email, nickname, phone, qq, score, user_state from seava_throwable.t_user where id = @id
+select id, username, rights, email, nickname, phone, qq, score, user_state from seava_throwable.t_user where id = @id
 
 /*user=查询用户  根据用户名查询用户部分信息*/
 /*user_queryPartUserInfoByUserName*/
@@ -72,3 +72,32 @@ goodAt = @goodAt where user_id = @user_id
 /*用户扩展信息查询*/
 /*user_extend_queryInfo*/
 select * from seava_throwable.t_user_extend where user_id = @user_id
+
+/*查询用户统计表中的信息*/
+/*user_statistics_queryInfo*/
+select * from seava_throwable.t_user_statistics where user_id = @userId
+
+/*用户统计表插入用户统计相关信息*/
+/*user_statistics_insertInfo*/
+insert into seava_throwable.t_user_statistics(user_id, asks, answers, agrees, collections, focuses)
+values(@user_id, @asks, @answers, @agrees, @collections, @focuses)
+
+/*用户统计表中更新统计信息*/
+/*user_statistics_updateInfo*/
+update seava_throwable.t_user_statistics set asks = asks + @asks, answers = answers + @answers,
+agrees = agrees + @agrees, collections = collections + @collections, focuses = focuses + @focuses
+where user_id = @userId
+
+
+/*用户通知-插入通知内容*/
+/*notice_insertNotice*/
+insert into seava_throwable.t_notice(noticeText, noticeUrl, readOrNo, type, uuid, userId)
+values(@noticeText, @noticeUrl, @readOrNo, @type, @uuid, @userId, @time)
+
+/*用户通知-更新通知内容 标记为已读*/
+/*notice_updateReadOrNo*/
+update seava_throwable.t_notice set readOrNo = @readOrNo where uuid = @uuid
+
+/*用户通知-查询用户未查看的通知*/
+/*notice_queryReadOrNo*/
+select * from seava_throwable.t_notice where userId = @userId and readOrNo=@readOrNo

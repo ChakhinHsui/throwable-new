@@ -34,8 +34,10 @@ update seava_throwable.t_question set agrees = agrees + @agrees where id = @id
 
 /*question=根据id查询问题*/
 /*question_queryOneQuestionInfo*/
-select a.id, a.question_name, a.question_description, a.viewers, a.agrees, a.degrees, a.solved, a.user_id, a.focuses, a.collections, a.create_time, b.username 
-from seava_throwable.t_question as a inner join seava_throwable.t_user as b on a.user_id = b.id where a.id = @id 
+select a.id, a.question_name, a.question_description, a.viewers, a.agrees, a.degrees, a.solved, a.user_id, a.focuses, a.collections, a.create_time, b.username, c.image, d.asks, d.answers
+from seava_throwable.t_question as a inner join seava_throwable.t_user as b on a.user_id = b.id 
+left join seava_throwable.t_user_extend as c on c.user_id = a.user_id
+left join seava_throwable.t_user_statistics as d on d.user_id = a.user_id where a.id = @id 
 
 /*question=根据kind_id查询问题*/
 /*question_queryQuestionByKindId*/
@@ -65,7 +67,13 @@ select * from seava_throwable.t_question where create_time > @minTime and create
 /*question_queryAllQuestionByType*/
 select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username
 from seava_throwable.t_question as a inner join seava_throwable.t_user as b on a.user_id = b.id
-where a.question_type = @question_type order by a.id desc 
+where a.question_type = @question_type order by a.id desc
+
+/*question=根据questionType分页查询查询所有问题*/
+/*question_queryAllQuestionByTypePage*/
+select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username
+from seava_throwable.t_question as a inner join seava_throwable.t_user as b on a.user_id = b.id
+where a.question_type = @question_type order by a.id desc limit @page, @count
 
 /*question=根据userid查询问题的部分信息*/
 /*question_queryPartQByUserId*/
@@ -73,11 +81,11 @@ select id, question_name, question_type, viewers, agrees, degrees, answers, focu
 
 /*question=根据questionType查询所有最热(访问数最多)问题*/
 /*question_queryAllHotQuestionByType*/
-select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type order by a.viewers desc, a.id desc
+select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type order by a.viewers desc, a.id desc limit @page, @count
 
 /*question=根据questionType查询所有关注最多的问题*/
 /*question_queryAllMostFocusQuestionByType*/
-select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.focuses, a.solved, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type and a.solved = 0 order by a.focuses desc, a.id desc
+select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.focuses, a.solved, a.create_time, b.username from seava_throwable.t_question as a left join seava_throwable.t_user as b on a.user_id = b.id  where a.question_type = @question_type and a.solved = 0 order by a.focuses desc, a.id desc limit @page, @count
 
 /*question=根据questionType查询10条最新的回答最多的问题*/
 /*question_queryNewMostAnswerQuestionByType*/
@@ -135,3 +143,11 @@ select * from seava_throwable.t_user_question_collection where user_id = @user_i
 /*question-根据label查询问题*/
 /*question_queryQuestionByLabelId*/
 select a.id as questionId, a.question_name as questionName, a.question_type as questionType, a.answers as answers, a.focuses as focuses from seava_throwable.t_question as a inner join seava_throwable.t_label_question as b where b.label_id = @labelId and b.question_id = a.id
+
+/*question-查询问题的总记录数 用于分页*/
+/*question_queryAllQuestionNumber*/
+select count(*) from seava_throwable.t_question where question_type = 1
+
+/*question-问题已解决*/
+/*question_solveQuestion*/
+update seava_throwable.t_question set solved = @solved where id = @id

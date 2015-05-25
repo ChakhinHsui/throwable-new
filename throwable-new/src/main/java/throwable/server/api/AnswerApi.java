@@ -44,6 +44,9 @@ public class AnswerApi {
 					comment.put("time", DateUtils.getNewTime(Long.parseLong(comment.get("time").toString()), 10));
 				}
 				mm.put("comments", comments);
+				if(null == mm.get("image")) {
+					mm.put("image", "default.jpg");
+				}
 			}
 			map.put("answers", list);
 		}else{

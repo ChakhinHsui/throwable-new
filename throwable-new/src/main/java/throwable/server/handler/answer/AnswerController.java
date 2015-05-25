@@ -54,4 +54,42 @@ public class AnswerController {
 		}
 		return answerServer.addAnswer(answer);
 	}
+	
+	/**
+	 * 赞同问题
+	 * @param answerId
+	 */
+	@At("/agreeAnswer")
+	public void agreeAnswer(long answerId) {
+		if(answerId < 1) {
+			BackTool.errorInfo("120001", "参数错误");
+		}
+		answerServer.agreeAnswer(answerId);
+	}
+	
+	/**
+	 * 不赞同问题
+	 * @param answerId
+	 */
+	@At("/disagreeAnswer")
+	public void disagreeAnswer(long answerId) {
+		if(answerId < 1) {
+			BackTool.errorInfo("120001", "参数错误");
+		}
+		answerServer.disagreeAnswer(answerId);
+	}
+	
+	/**
+	 * 接受答案
+	 * @param questionId
+	 * @param answerId
+	 * @return
+	 */
+	@At("/acceptAnswer")
+	public int acceptAnswer(long questionId, long answerId, long userId) {
+		if(questionId < 1 || answerId < 1 || userId < 1) {
+			BackTool.errorInfo("120001", "参数错误");
+		}
+		return answerServer.acceptAnswer(questionId, answerId, userId);
+	}
 }
