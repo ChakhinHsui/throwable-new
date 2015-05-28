@@ -126,13 +126,13 @@ public class AnswerServer {
 			BackTool.errorInfo("050304", "用户不存在");
 		}
 		if(!user.rights.equals(Right.general.getValue()) && user.rights.equals(Right.context.getValue()) && !user.rights.equals(Right.superU.getValue())) {
-			BackTool.errorInfo("050305", "用户权限不够,不能回答问题");
+			BackTool.errorInfo("050305", "用户权限不够,不能接受问题答案");
 		}
 		if(user.user_state == State.no_active.getValue()) {
-			BackTool.errorInfo("020306", "用户未激活，不能回答问题");
+			BackTool.errorInfo("020306", "用户未激活，不能接受问题答案");
 		}
 		if(user.user_state != State.user_nomal.getValue()) {
-			BackTool.errorInfo("020306", "用户异常，不能回答问题，请联系网站管理员");
+			BackTool.errorInfo("020306", "用户异常，不能接受问题答案，请联系网站管理员");
 		}
 		Map map = questionService.queryQuestionByQuestionId((int)questionId);
 		if(userId != Long.parseLong(map.get("user_id").toString())) {

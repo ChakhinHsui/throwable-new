@@ -3,6 +3,7 @@ package throwable.server.service;
 import java.util.List;
 import java.util.Map;
 
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -364,5 +365,92 @@ public class UserService extends BaseService {
 		dao.execute(sql);
 		List<Map> list = sql.getList(Map.class);
 		return StringTool.isEmpty(list) ? null : list.get(0);
+	}
+	
+	/**
+	 * 
+	 * @param userId      用户id
+	 * @param q_a_id      问题id 或 答案id
+	 * @param type        1 问题   2答案
+	 * @param time        时间
+	 * @param agreeType   1赞同   2反对
+	 */
+	public void insertAgreeRecord(long userId, long q_a_id, int type, long time, int agreeType) {
+		Sql sql = dao.sqls().create("user_insertAgreeDisAgree");
+		sql.params().set("userId", userId);
+		sql.params().set("q_a_id", q_a_id);
+		sql.params().set("type", type);
+		sql.params().set("time", time);
+		sql.params().set("agreeTyp", agreeType);
+		dao.execute(sql);
+	}
+	
+	/**
+	 * 根据用户id  赞同的问题或答案id  以及类型  查找记录
+	 * @param userId   用户id
+	 * @param q_a_id  问题id 或 答案id
+	 * @param type     1问题  2答案
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public Map queryAgreeDisAgreeRecord(long userId, long q_a_id, int type) {
+		Sql sql = dao.sqls().create("user_queryAgreeDisagreeRecord");
+		sql.params().set("userId", userId);
+		sql.params().set("q_a_id", q_a_id);
+		sql.params().set("type", type);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		List<Map> list = sql.getList(Map.class);
+		return StringTool.isEmpty(list) ? null : list.get(0);
+	}
+	
+	/**
+	 * 查询用户的所有赞同不赞同记录
+	 * @param userId   用户id 
+	 * @param type     1问题  2答案
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryUserAgreeDisAgreeRecords(long userId, int type) {
+		Sql sql = dao.sqls().create("user_queryUserAgreeDisAgreeRecords");
+		sql.params().set("userId", userId);
+		sql.params().set("type", type);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		return sql.getList(Map.class);
+	}
+	
+	/**
+	 * 查询问题的所有赞同不赞同的用户的记录
+	 * @param q_a_id   问题id  答案id
+	 * @param type      1问题  2答案
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryAQAgreeDisAgreeUserRecords(long q_a_id, int type) {
+		Sql sql = dao.sqls().create("user_queryAQAgreeDisAgreeRecords");
+		sql.params().set("agreeId", q_a_id);
+		sql.params().set("type", type);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		return sql.getList(Map.class);
+	}
+	
+	/**
+	 * 查询用户与某些问题 答案的赞同记录
+	 * @param userId   用户id
+	 * @param type     1 问题  2答案
+	 * @param q_a_ids 多个问题id  或  多个答案id  逗号隔开
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> queryUserAQAgreeDisAgreeRecords(long userId, int type, String q_a_ids) {
+		Sql sql = dao.sqls().create("user_queryUserAQAgreeDisAgreeRecords");
+		sql.setCondition(Cnd.where(Cnd.exps("q_a_id", "in", q_a_ids)));
+		sql.params().set("userId", userId);
+		sql.params().set("type", type);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		return sql.getList(Map.class);
 	}
 }

@@ -101,3 +101,24 @@ update seava_throwable.t_notice set readOrNo = @readOrNo where uuid = @uuid
 /*用户通知-查询用户未查看的通知*/
 /*notice_queryReadOrNo*/
 select * from seava_throwable.t_notice where userId = @userId and readOrNo=@readOrNo
+
+/*用户-插入用户赞同反对问题答案的记录  type 1问题  2答案     agreeType 1赞同  2反对*/
+/*user_insertAgreeDisAgree*/
+insert into t_user_agree_disagree(user_id, q_a_id, type, time, agreeType) values(@userId, @q_a_id, @type, @time, @agreeType)
+
+/*用户-根据用户id，agreeid以及type查询记录*/
+/*user_queryAgreeDisagreeRecord*/
+select * from t_user_agree_disagree where user_id=@userId and q_a_id = @q_a_id and type = @type
+
+/*用户 -查询用户的所有记录*/
+/*user_queryUserAgreeDisAgreeRecords*/
+select * from t_user_agree_disagree where user_id=@userId and type = @type
+
+/*用户赞同-查询问题 答案的所有赞同不赞同用户*/
+/*user_queryAQAgreeDisAgreeRecords*/
+select * from t_user_agree_disagree where q_a_id=@q_a_id and type = @type
+
+/*用户赞同-查询用户和某些问题 答案 的赞同记录*/
+/*user_queryUserAQAgreeDisAgreeRecords*/
+select * from t_user_agree_disagree $condition and user_id = @userId and type = @type
+

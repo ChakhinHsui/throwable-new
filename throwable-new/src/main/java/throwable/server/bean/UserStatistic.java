@@ -24,6 +24,10 @@ public class UserStatistic {
 	 */
 	public int agrees;
 	/**
+	 * 不赞同数
+	 */
+	public int disagrees;
+	/**
 	 * 收藏数
 	 */
 	public int collections;

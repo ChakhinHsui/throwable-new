@@ -18,11 +18,11 @@ public class Notice {
 	/**
 	 * 通知内容
 	 */
-	public long nonticeText;
+	public String nonticeText;
 	/**
 	 * 通知内容所指的url
 	 */
-	public long noticeUrl;
+	public String noticeUrl;
 	/**
 	 * 通知产生的时间
 	 */
