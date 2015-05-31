@@ -532,10 +532,11 @@ public class QuestionService extends BaseService {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public List<Map> querySameQuestion(int type, int kindId) {
+	public List<Map> querySameQuestion(int type, int kindId, long questionId) {
 		Sql sql = dao.sqls().create("question_querySameQuestions");
 		sql.params().set("question_type", type);
 		sql.params().set("kindId", kindId);
+		sql.params().set("questionId", questionId);
 		sql.setCallback(Sqls.callback.maps());
 		dao.execute(sql);
 		return sql.getList(Map.class);

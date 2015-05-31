@@ -164,5 +164,5 @@ from seava_throwable.t_question as a
 left join seava_throwable.t_user as b 
 on a.user_id = b.id  
 where a.question_type = @question_type 
-and kind_id = @kindId 
+and kind_id = @kindId and a.id != @questionId
 order by a.answers desc, a.id desc limit 10

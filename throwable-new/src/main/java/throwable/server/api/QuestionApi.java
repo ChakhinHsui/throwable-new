@@ -268,7 +268,7 @@ public class QuestionApi {
 			BackTool.errorInfo("020203");
 		}
 		Map map = questionService.queryQuestionByQuestionId(questionId);
-		List<Map> list = questionService.querySameQuestion(QuestionType.can_public.getValue(), Integer.parseInt(map.get("kind_id").toString()));
+		List<Map> list = questionService.querySameQuestion(QuestionType.can_public.getValue(), Integer.parseInt(map.get("kind_id").toString()), questionId);
 		for(Map mm : list) {
 			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
 		}
