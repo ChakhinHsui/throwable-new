@@ -60,11 +60,11 @@ public class AnswerController {
 	 * @param answerId
 	 */
 	@At("/agreeAnswer")
-	public void agreeAnswer(long answerId) {
-		if(answerId < 1) {
+	public void agreeAnswer(long answerId, long userId) {
+		if(answerId < 1 || userId < 1) {
 			BackTool.errorInfo("120001", "参数错误");
 		}
-		answerServer.agreeAnswer(answerId);
+		answerServer.agreeAnswer(answerId, userId);
 	}
 	
 	/**
@@ -72,11 +72,11 @@ public class AnswerController {
 	 * @param answerId
 	 */
 	@At("/disagreeAnswer")
-	public void disagreeAnswer(long answerId) {
-		if(answerId < 1) {
+	public void disagreeAnswer(long answerId, long userId) {
+		if(answerId < 1 || userId < 1) {
 			BackTool.errorInfo("120001", "参数错误");
 		}
-		answerServer.disagreeAnswer(answerId);
+		answerServer.disagreeAnswer(answerId, userId);
 	}
 	
 	/**

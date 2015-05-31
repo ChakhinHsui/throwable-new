@@ -297,6 +297,7 @@ public class UserService extends BaseService {
 		sql.params().set("agrees", userStatistic.agrees);
 		sql.params().set("collections", userStatistic.collections);
 		sql.params().set("focuses", userStatistic.focuses);
+		sql.params().set("disagrees", userStatistic.disagrees);
 		dao.execute(sql);
 		return sql.getUpdateCount();
 	}
@@ -314,6 +315,7 @@ public class UserService extends BaseService {
 		sql.params().set("agrees", userStatistic.agrees);
 		sql.params().set("collections", userStatistic.collections);
 		sql.params().set("focuses", userStatistic.focuses);
+		sql.params().set("disagrees", userStatistic.disagrees);
 		dao.execute(sql);
 		return sql.getUpdateCount();
 	}
@@ -381,7 +383,7 @@ public class UserService extends BaseService {
 		sql.params().set("q_a_id", q_a_id);
 		sql.params().set("type", type);
 		sql.params().set("time", time);
-		sql.params().set("agreeTyp", agreeType);
+		sql.params().set("agreeType", agreeType);
 		dao.execute(sql);
 	}
 	

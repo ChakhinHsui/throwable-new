@@ -8,26 +8,32 @@
  */
 package throwable.server.handler.question;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.json.Json;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
+import seava.tools.rabbitmq.RabbitMqTool;
 import throwable.server.ThrowableConf;
 import throwable.server.bean.Question;
 import throwable.server.bean.User;
 import throwable.server.bean.UserStatistic;
+import throwable.server.enums.AgreeOrDisagree;
 import throwable.server.enums.LabelType;
+import throwable.server.enums.QuestionOrAnswer;
 import throwable.server.enums.Right;
 import throwable.server.enums.State;
 import throwable.server.handler.label.LabelServer;
 import throwable.server.handler.user.UserServer;
 import throwable.server.service.LabelService;
 import throwable.server.service.QuestionService;
+import throwable.server.service.UserService;
 import throwable.server.utils.BackTool;
 import throwable.server.utils.StringTool;
 
@@ -47,6 +53,10 @@ public class QuestionServer {
 	private LabelService labelService;
 	@Inject
 	private UserServer userServer;
+	@Inject
+	private UserService userService;
+	@Inject
+	private RabbitMqTool rabbitMqTool;
 	
 	/**
 	 * 添加问题
@@ -96,10 +106,7 @@ public class QuestionServer {
 					}
 				}
 				//增加用户提问数统计
-				UserStatistic userStat = new UserStatistic();
-				userStat.user_id = question.user_id;
-				userStat.asks = 1;
-				userServer.addUserStatistics(userStat);
+				userServer.addUserStatistics(UserStatistic.updateAsks(1));
 			}
 		});
 		log.info("添加一个问题: " + question.user_id);
@@ -167,7 +174,7 @@ public class QuestionServer {
 	 */
 	public Map<String, Object> deleteCollection(int userId, int questionId){
 		if(!questionService.haveCollected(userId, questionId)){
-			return BackTool.errorInfo("020603", ThrowableConf.errorMsg);
+			BackTool.errorInfo("020603", ThrowableConf.errorMsg);
 		}
 		questionService.deleteCollection(userId, questionId);
 		return BackTool.successInfo();
@@ -178,9 +185,8 @@ public class QuestionServer {
 	 * @param questionId
 	 * @return
 	 */
-	public Map<String, Object> agreeQuestion(int questionId){
-		questionService.agreeQuestion(questionId);
-		return BackTool.successInfo();
+	public Map<String, Object> agreeQuestion(final long questionId, final long userId){
+		return agreeDisagreeQuestion(questionId, userId, AgreeOrDisagree.agree.getValue());
 	}
 	
 	/**
@@ -188,8 +194,48 @@ public class QuestionServer {
 	 * @param questionId
 	 * @return
 	 */
-	public Map<String, Object> disagreeQuestion(int questionId){
-		questionService.disagreeQuestion(questionId);
+	public Map<String, Object> disagreeQuestion(long questionId, long userId){
+		return agreeDisagreeQuestion(questionId, userId, AgreeOrDisagree.disagree.getValue());
+	}
+	
+	
+	/**
+	 * 赞同或不赞同问题
+	 * @param questionId       问题id
+	 * @param userId           用户id
+	 * @param agreeOrDisagree  1 赞同   2不赞同
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public Map<String, Object> agreeDisagreeQuestion(final long questionId, final long userId, final int agreeOrDisagree) {
+		Map map = userService.queryAgreeDisAgreeRecord(userId, questionId, QuestionOrAnswer.question.getValue());
+		if(!StringTool.isEmpty(map)) {
+			BackTool.errorInfo("020607", "你已经赞同或反对过该问题了");
+		}
+		Trans.exec(new Atom() {
+
+			@Override
+			public void run() {
+				//更新问题的赞同数
+				if(agreeOrDisagree == 1) {
+					questionService.agreeQuestion(questionId);
+				} else {
+					questionService.disagreeQuestion(questionId);
+				}
+				//插入用户赞同问题的记录
+				userService.insertAgreeRecord(userId, questionId, QuestionOrAnswer.question.getValue(), System.currentTimeMillis(), agreeOrDisagree);
+				UserStatistic userstat = agreeOrDisagree == 1 ? UserStatistic.updateAgrees(1) : UserStatistic.updateDisAgrees(1);
+				//增加用户赞同数的统计
+				userService.updateUserStatistics(userstat);
+				if(agreeOrDisagree == 1) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("userId", userId);
+					map.put("questionId", questionId);
+					map.put("time", System.currentTimeMillis());
+					rabbitMqTool.sendMessageToExchange("Notice", "agreeQuestion", Json.toJson(map));
+				}
+			}
+		});
 		return BackTool.successInfo();
 	}
 	

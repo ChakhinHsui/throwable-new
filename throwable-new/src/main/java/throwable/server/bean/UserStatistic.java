@@ -35,4 +35,28 @@ public class UserStatistic {
 	 * 关注数
 	 */
 	public int focuses;
+	
+	public static UserStatistic updateAgrees(int agrees) {
+		UserStatistic userstat = new UserStatistic();
+		userstat.agrees = agrees;
+		return userstat;
+	}
+	
+	public static UserStatistic updateDisAgrees(int disagrees) {
+		UserStatistic userstat = new UserStatistic();
+		userstat.disagrees = disagrees;
+		return userstat;
+	}
+	
+	public static UserStatistic updateAsks(int asks) {
+		UserStatistic userstat = new UserStatistic();
+		userstat.asks = asks;
+		return userstat;
+	}
+	
+	public static UserStatistic updateAnswers(int answers) {
+		UserStatistic userstat = new UserStatistic();
+		userstat.answers = answers;
+		return userstat;
+	}
 }

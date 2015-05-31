@@ -10,12 +10,14 @@ import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Param;
 
 import throwable.server.ThrowableConf;
+import throwable.server.enums.QuestionOrAnswer;
 import throwable.server.enums.QuestionSolved;
 import throwable.server.enums.QuestionType;
 import throwable.server.service.AnswerService;
 import throwable.server.service.CommentService;
 import throwable.server.service.LabelService;
 import throwable.server.service.QuestionService;
+import throwable.server.service.UserService;
 import throwable.server.utils.BackTool;
 import throwable.server.utils.DateUtils;
 import throwable.server.utils.StringTool;
@@ -36,6 +38,8 @@ public class QuestionApi {
 	private LabelService labelService;
 	@Inject
 	private CommentService commentService;
+	@Inject
+	private UserService userService;
 	
 	/**
 	 * 查询公开的问题 用于首页显示 最新的
@@ -84,8 +88,11 @@ public class QuestionApi {
 	 * @return
 	 */
 	@At("/getTotalQuestion")
-	public int getTotalQuestion() {
-		return questionService.queryTotalQuestion();
+	public Map<String, Object> getTotalQuestion() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("newTotal", questionService.queryTotalQuestion());
+		map.put("MostFocusTotal", questionService.queryTotalMostFocusQuestion());
+		return map;
 	}
 	
 	/**
@@ -169,6 +176,13 @@ public class QuestionApi {
 				map.put("collected", 0);
 			}
 		}
+		//查询用户是否有赞同或反对问题
+		if(userId > 0) {
+			Map userQuestionMap = userService.queryAgreeDisAgreeRecord(userId, id, QuestionOrAnswer.question.getValue());
+			if(!StringTool.isEmpty(userQuestionMap)) {
+				map.put("user_question_relation", userQuestionMap.get("agreeType"));
+			}
+		}
 		List<Map> list = commentService.queryCommentByBelongIdType(id, 0);
 		for(Map mm : list) {
 			mm.put("time", DateUtils.getNewTime(Long.parseLong(mm.get("time").toString()), 10));
@@ -240,5 +254,24 @@ public class QuestionApi {
 			BackTool.errorInfo("020203");
 		}
 		return questionService.getUserQuestionNumber(userId);
+	}
+	
+	/**
+	 * 查询相似问题
+	 * @param questionId  问题id
+	 * @return
+	 */
+	@At("/querySameQuestion")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Map> querySameQuestons(long questionId) {
+		if(questionId < 1) {
+			BackTool.errorInfo("020203");
+		}
+		Map map = questionService.queryQuestionByQuestionId(questionId);
+		List<Map> list = questionService.querySameQuestion(QuestionType.can_public.getValue(), Integer.parseInt(map.get("kind_id").toString()));
+		for(Map mm : list) {
+			mm.put("create_time", DateUtils.getNewTime(Long.parseLong(mm.get("create_time").toString()), 10));
+		}
+		return list;
 	}
 }

@@ -34,7 +34,7 @@ update seava_throwable.t_question set agrees = agrees + @agrees where id = @id
 
 /*question=根据id查询问题*/
 /*question_queryOneQuestionInfo*/
-select a.id, a.question_name, a.question_description, a.viewers, a.agrees, a.degrees, a.solved, a.user_id, a.focuses, a.collections, a.create_time, b.username, c.image, d.asks, d.answers
+select a.id, a.question_name, a.question_description, a.viewers, a.agrees, a.degrees, a.solved, a.user_id, a.kind_id, a.focuses, a.collections, a.create_time, b.username, c.image, d.asks, d.answers
 from seava_throwable.t_question as a inner join seava_throwable.t_user as b on a.user_id = b.id 
 left join seava_throwable.t_user_extend as c on c.user_id = a.user_id
 left join seava_throwable.t_user_statistics as d on d.user_id = a.user_id where a.id = @id 
@@ -148,6 +148,21 @@ select a.id as questionId, a.question_name as questionName, a.question_type as q
 /*question_queryAllQuestionNumber*/
 select count(*) from seava_throwable.t_question where question_type = 1
 
+/*question-查询热门问题的总记录数 用于分页*/
+/*question_queryAllMostFocusQuestionNumber*/
+select count(*) from seava_throwable.t_question where question_type = 1 and solved = 0
+
+
 /*question-问题已解决*/
 /*question_solveQuestion*/
 update seava_throwable.t_question set solved = @solved where id = @id
+
+/*question-查询相似的问题*/
+/*question_querySameQuestions*/
+select a.id, a.question_name, a.viewers, a.agrees, a.degrees, a.answers, a.focuses, a.create_time, b.username 
+from seava_throwable.t_question as a 
+left join seava_throwable.t_user as b 
+on a.user_id = b.id  
+where a.question_type = @question_type 
+and kind_id = @kindId 
+order by a.answers desc, a.id desc limit 10

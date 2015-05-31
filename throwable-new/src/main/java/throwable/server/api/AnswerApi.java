@@ -8,10 +8,13 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 
+import seava.tools.StringTool;
 import throwable.server.ThrowableConf;
 import throwable.server.enums.CorrectType;
+import throwable.server.enums.QuestionOrAnswer;
 import throwable.server.service.AnswerService;
 import throwable.server.service.CommentService;
+import throwable.server.service.UserService;
 import throwable.server.utils.BackTool;
 import throwable.server.utils.DateUtils;
 
@@ -27,10 +30,12 @@ public class AnswerApi {
 	private AnswerService answerService;
 	@Inject
 	private CommentService commentService;
+	@Inject
+	private UserService userService;
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	@At("/getAnswerByQId")
-	public Map queryAnswer(int questionId){
+	public Map queryAnswer(int questionId, long userId){
 		if(questionId < 1){
 			return BackTool.errorInfo("030201", ThrowableConf.errorMsg);
 		}
@@ -46,6 +51,13 @@ public class AnswerApi {
 				mm.put("comments", comments);
 				if(null == mm.get("image")) {
 					mm.put("image", "default.jpg");
+				}
+				//查询用户是否有赞同或反对答案
+				if(userId > 0) {
+					Map userAnswerMap = userService.queryAgreeDisAgreeRecord(userId, Long.parseLong(mm.get("id").toString()), QuestionOrAnswer.answer.getValue());
+					if(!StringTool.isEmpty(userAnswerMap)) {
+						mm.put("user_answer_relation", userAnswerMap.get("agreeType"));
+					}
 				}
 			}
 			map.put("answers", list);
