@@ -36,25 +36,25 @@ public class UserStatistic {
 	 */
 	public int focuses;
 	
-	public static UserStatistic updateAgrees(int agrees) {
+	public static UserStatistic updateAgrees(long userId, int agrees) {
 		UserStatistic userstat = new UserStatistic();
 		userstat.agrees = agrees;
 		return userstat;
 	}
 	
-	public static UserStatistic updateDisAgrees(int disagrees) {
+	public static UserStatistic updateDisAgrees(long userId, int disagrees) {
 		UserStatistic userstat = new UserStatistic();
 		userstat.disagrees = disagrees;
 		return userstat;
 	}
 	
-	public static UserStatistic updateAsks(int asks) {
+	public static UserStatistic updateAsks(long userId, int asks) {
 		UserStatistic userstat = new UserStatistic();
 		userstat.asks = asks;
 		return userstat;
 	}
 	
-	public static UserStatistic updateAnswers(int answers) {
+	public static UserStatistic updateAnswers(long userId, int answers) {
 		UserStatistic userstat = new UserStatistic();
 		userstat.answers = answers;
 		return userstat;

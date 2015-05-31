@@ -106,7 +106,7 @@ public class QuestionServer {
 					}
 				}
 				//增加用户提问数统计
-				userServer.addUserStatistics(UserStatistic.updateAsks(1));
+				userServer.addUserStatistics(UserStatistic.updateAsks(question.user_id, 1));
 			}
 		});
 		log.info("添加一个问题: " + question.user_id);
@@ -224,7 +224,7 @@ public class QuestionServer {
 				}
 				//插入用户赞同问题的记录
 				userService.insertAgreeRecord(userId, questionId, QuestionOrAnswer.question.getValue(), System.currentTimeMillis(), agreeOrDisagree);
-				UserStatistic userstat = agreeOrDisagree == 1 ? UserStatistic.updateAgrees(1) : UserStatistic.updateDisAgrees(1);
+				UserStatistic userstat = agreeOrDisagree == 1 ? UserStatistic.updateAgrees(userId, 1) : UserStatistic.updateDisAgrees(userId, 1);
 				//增加用户赞同数的统计
 				userService.updateUserStatistics(userstat);
 				if(agreeOrDisagree == 1) {

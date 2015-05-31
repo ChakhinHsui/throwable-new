@@ -142,7 +142,7 @@ public class AnswerServer {
 					answerService.disagreeAnswer(answerId);
 				}
 				userService.insertAgreeRecord(userId, answerId, QuestionOrAnswer.answer.getValue(), System.currentTimeMillis(), agreeOrDisagree);
-				UserStatistic userstat = agreeOrDisagree == 1 ? UserStatistic.updateAgrees(1) : UserStatistic.updateDisAgrees(1);
+				UserStatistic userstat = agreeOrDisagree == 1 ? UserStatistic.updateAgrees(userId, 1) : UserStatistic.updateDisAgrees(userId, 1);
 				userService.updateUserStatistics(userstat);
 				if(agreeOrDisagree == 1) {
 					Map<String, Object> map = new HashMap<String, Object>();
