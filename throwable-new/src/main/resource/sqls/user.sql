@@ -91,7 +91,7 @@ where user_id = @userId
 
 /*用户通知-插入通知内容*/
 /*notice_insertNotice*/
-insert into seava_throwable.t_notice(noticeText, noticeUrl, readOrNo, type, uuid, userId)
+insert into seava_throwable.t_notice(noticeText, noticeUrl, readOrNo, type, uuid, userId, time)
 values(@noticeText, @noticeUrl, @readOrNo, @type, @uuid, @userId, @time)
 
 /*用户通知-更新通知内容 标记为已读*/

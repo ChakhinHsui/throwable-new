@@ -7,6 +7,8 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.json.Json;
 import org.nutz.lang.Lang;
+import org.nutz.log.Log;
+import org.nutz.log.Logs;
 
 import seava.tools.ProxyChannel;
 import seava.tools.RedisTool;
@@ -14,7 +16,7 @@ import seava.tools.StringTool;
 import seava.tools.rabbitmq.MQWorker;
 import throwable.server.bean.Notice;
 import throwable.server.bean.User;
-import throwable.server.handler.user.UserServer;
+import throwable.server.manager.ThrowableManager;
 import throwable.server.service.QuestionService;
 import throwable.server.service.UserService;
 
@@ -25,6 +27,7 @@ import throwable.server.service.UserService;
 @IocBean
 public class AnswerWorker implements MQWorker {
 
+	private static Log log = Logs.getLog(AnswerWorker.class);
 	@Inject
 	private QuestionService questionService;
 	@Inject
@@ -35,6 +38,7 @@ public class AnswerWorker implements MQWorker {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void work(String message) {
+		log.info("来自MQ的消息是: " + message);
 		if(StringTool.isEmpty(message)) {
 			return;
 		}
@@ -52,8 +56,11 @@ public class AnswerWorker implements MQWorker {
 		notice.type = 2;
 		notice.time = Long.parseLong(map.get("time").toString());
 		notice.uuid = UUID.randomUUID().toString();
-		ProxyChannel.user(notice.userId, Lang.obj2map(notice), redisTool);
+		Map<String, Object> backMessage = Lang.obj2map(notice);
+		backMessage.put("fc", "notice");
+		backMessage.put("msgCode", 1);
+		ProxyChannel.user(notice.userId, backMessage, redisTool);
+		log.info("分发出去的消息是 : " + backMessage);
 		userService.insertNotice(notice);
 	}
-
 }

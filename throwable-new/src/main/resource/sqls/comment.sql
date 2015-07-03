@@ -10,7 +10,7 @@ values(@belongId, @belongType, @toUserId, @toUserName, @fromUserId, @fromUserNam
 /*comment_queryByBelongIdType*/
 select a.id, a.belongId, a.belongType, a.toUserId, a.toUserName, a.fromUserId, a.fromUserName, a.comment, a.time, b.image 
 from seava_throwable.t_comment as a left join seava_throwable.t_user_extend as b on a.fromUserId = b.user_id 
-where a.belongId = @belongId and a.belongType=@belongType
+where a.belongId = @belongId and a.belongType=@belongType order by a.id
 
 /*根据留言用户id查询评论*/
 /*comment_queryByFromUser*/
