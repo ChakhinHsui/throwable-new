@@ -19,17 +19,21 @@ import org.nutz.log.Logs;
 import org.nutz.trans.Atom;
 import org.nutz.trans.Trans;
 
+import seava.tools.StringTool;
 import seava.tools.rabbitmq.RabbitMqTool;
 import throwable.server.bean.Answer;
 import throwable.server.bean.User;
 import throwable.server.bean.UserStatistic;
+import throwable.server.enums.AgreeOrDisagree;
 import throwable.server.enums.CorrectType;
+import throwable.server.enums.QuestionOrAnswer;
 import throwable.server.enums.QuestionSolved;
 import throwable.server.enums.Right;
 import throwable.server.enums.State;
 import throwable.server.handler.user.UserServer;
 import throwable.server.service.AnswerService;
 import throwable.server.service.QuestionService;
+import throwable.server.service.UserService;
 import throwable.server.utils.BackTool;
 
 /**
@@ -49,6 +53,8 @@ public class AnswerServer {
 	private UserServer userServer;
 	@Inject
 	private RabbitMqTool rabbitMqTool;
+	@Inject
+	private UserService userService;
 	
 	/**
 	 * 添加问题
@@ -100,8 +106,9 @@ public class AnswerServer {
 	 * 顶问题  赞同问题
 	 * @param answerId
 	 */
-	public void agreeAnswer(long answerId) {
+	public void agreeAnswer(long answerId, long userId) {
 		answerService.agreeAnswer(answerId);
+		agreeDisagreeAnswer(answerId, userId, AgreeOrDisagree.agree.getValue());
 	}
 	
 	
@@ -109,8 +116,43 @@ public class AnswerServer {
 	 * 踩问题
 	 * @param answerId
 	 */
-	public void disagreeAnswer(long answerId) {
-		answerService.disagreeAnswer(answerId);
+	public void disagreeAnswer(long answerId, long userId) {
+		agreeDisagreeAnswer(answerId, userId, AgreeOrDisagree.disagree.getValue());
+	}
+	
+	/**
+	 * 赞同不赞同答案
+	 * @param answerId        答案id
+	 * @param userId          用户id
+	 * @param agreeOrDisagree 1 赞同  2反对
+	 */
+	@SuppressWarnings("rawtypes")
+	public void agreeDisagreeAnswer(final long answerId, final long userId, final int agreeOrDisagree) {
+		Map map = userService.queryAgreeDisAgreeRecord(userId, answerId, QuestionOrAnswer.answer.getValue());
+		if(!StringTool.isEmpty(map)) {
+			BackTool.errorInfo("020607", "你已经赞同或反对过该答案了");
+		}
+		Trans.exec(new Atom() {
+			
+			@Override
+			public void run() {
+				if(agreeOrDisagree == 1) {
+					answerService.agreeAnswer(answerId);
+				} else {
+					answerService.disagreeAnswer(answerId);
+				}
+				userService.insertAgreeRecord(userId, answerId, QuestionOrAnswer.answer.getValue(), System.currentTimeMillis(), agreeOrDisagree);
+				UserStatistic userstat = agreeOrDisagree == 1 ? UserStatistic.updateAgrees(userId, 1) : UserStatistic.updateDisAgrees(userId, 1);
+				userService.updateUserStatistics(userstat);
+				if(agreeOrDisagree == 1) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("userId", userId);
+					map.put("answerId", answerId);
+					map.put("time", System.currentTimeMillis());
+					rabbitMqTool.sendMessageToExchange("Notice", "agreeAnswer", Json.toJson(map));
+				}
+			}
+		});
 	}
 	
 	/**
@@ -126,13 +168,13 @@ public class AnswerServer {
 			BackTool.errorInfo("050304", "用户不存在");
 		}
 		if(!user.rights.equals(Right.general.getValue()) && user.rights.equals(Right.context.getValue()) && !user.rights.equals(Right.superU.getValue())) {
-			BackTool.errorInfo("050305", "用户权限不够,不能回答问题");
+			BackTool.errorInfo("050305", "用户权限不够,不能接受问题答案");
 		}
 		if(user.user_state == State.no_active.getValue()) {
-			BackTool.errorInfo("020306", "用户未激活，不能回答问题");
+			BackTool.errorInfo("020306", "用户未激活，不能接受问题答案");
 		}
 		if(user.user_state != State.user_nomal.getValue()) {
-			BackTool.errorInfo("020306", "用户异常，不能回答问题，请联系网站管理员");
+			BackTool.errorInfo("020306", "用户异常，不能接受问题答案，请联系网站管理员");
 		}
 		Map map = questionService.queryQuestionByQuestionId((int)questionId);
 		if(userId != Long.parseLong(map.get("user_id").toString())) {

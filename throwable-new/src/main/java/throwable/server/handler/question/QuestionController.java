@@ -132,11 +132,11 @@ public class QuestionController {
 	 * @return
 	 */
 	@At("/agreeQuestion")
-	public Map<String, Object> agreeQuestion(@Param("questionId") int questionId){
-		if(questionId <= 0){
+	public Map<String, Object> agreeQuestion(@Param("questionId") long questionId, @Param("userId") long userId){
+		if(questionId < 1 || userId < 1){
 			return BackTool.errorInfo("020701", ThrowableConf.errorMsg);
 		}
-		return questionServer.agreeQuestion(questionId);
+		return questionServer.agreeQuestion(questionId, userId);
 	}
 	
 	/**
@@ -145,11 +145,11 @@ public class QuestionController {
 	 * @return
 	 */
 	@At("/disagreeQuestion")
-	public Map<String, Object> disagreeQuestion(@Param("questionId") int questionId){
-		if(questionId <= 0){
+	public Map<String, Object> disagreeQuestion(@Param("questionId") long questionId, long userId){
+		if(questionId < 1 || userId < 1){
 			return BackTool.errorInfo("020801", ThrowableConf.errorMsg);
 		}
-		return questionServer.disagreeQuestion(questionId);
+		return questionServer.disagreeQuestion(questionId, userId);
 	}
 	
 	/**

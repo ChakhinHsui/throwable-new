@@ -10,9 +10,11 @@ package throwable.server.service;
 
 import java.util.List;
 import java.util.Map;
+
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
+
 import throwable.server.bean.Question;
 import throwable.server.utils.StringTool;
 
@@ -100,7 +102,7 @@ public class QuestionService extends BaseService {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public Map queryQuestionByQuestionId(int id){
+	public Map queryQuestionByQuestionId(long id){
 		Sql sql = dao.sqls().create("question_queryOneQuestionInfo");
 		sql.params().set("id", id);
 		sql.setCallback(Sqls.callback.maps());
@@ -380,7 +382,7 @@ public class QuestionService extends BaseService {
 	 * @param questionId
 	 * @return
 	 */
-	public int agreeQuestion(int questionId){
+	public int agreeQuestion(long questionId){
 		Sql sql = dao.sqls().create("question_agreeQuestion");
 		sql.params().set("agrees", 1);
 		sql.params().set("id", questionId);
@@ -393,7 +395,7 @@ public class QuestionService extends BaseService {
 	 * @param questionId
 	 * @return
 	 */
-	public int disagreeQuestion(int questionId){
+	public int disagreeQuestion(long questionId){
 		Sql sql = dao.sqls().create("question_disagreeQuestion");
 		sql.params().set("disagrees", 1);
 		sql.params().set("id", questionId);
@@ -499,6 +501,17 @@ public class QuestionService extends BaseService {
 	}
 	
 	/**
+	 * 查询关注最多即没有解决的问题的总记录数
+	 * @return
+	 */
+	public int queryTotalMostFocusQuestion() {
+		Sql sql = dao.sqls().create("question_queryAllMostFocusQuestionNumber");
+		sql.setCallback(Sqls.callback.integer());
+		dao.execute(sql);
+		return sql.getInt();
+	}
+	
+	/**
 	 * 解决问题
 	 * @param questionId  问题id
 	 * @param solved      解决
@@ -510,5 +523,22 @@ public class QuestionService extends BaseService {
 		sql.params().set("solved", solved);
 		dao.execute(sql);
 		return sql.getUpdateCount();
+	}
+	
+	/**
+	 * 查询相同的问题   10个
+	 * @param type    类型 公开
+	 * @param kindId  分类id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public List<Map> querySameQuestion(int type, int kindId, long questionId) {
+		Sql sql = dao.sqls().create("question_querySameQuestions");
+		sql.params().set("question_type", type);
+		sql.params().set("kindId", kindId);
+		sql.params().set("questionId", questionId);
+		sql.setCallback(Sqls.callback.maps());
+		dao.execute(sql);
+		return sql.getList(Map.class);
 	}
 }
