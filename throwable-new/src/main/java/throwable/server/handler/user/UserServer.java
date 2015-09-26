@@ -12,7 +12,7 @@ import org.nutz.json.Json;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
-import seava.tools.RedisTool;
+import seava.tools.cache.RedisTool;
 import throwable.server.ThrowableConf;
 import throwable.server.bean.User;
 import throwable.server.bean.UserExtend;

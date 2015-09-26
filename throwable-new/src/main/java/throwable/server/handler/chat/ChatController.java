@@ -8,7 +8,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 
 import seava.tools.ProxyChannel;
-import seava.tools.RedisTool;
+import seava.tools.cache.RedisTool;
 import throwable.server.bean.ChatInfo;
 import throwable.server.bean.User;
 import throwable.server.bean.UserShowInfo;

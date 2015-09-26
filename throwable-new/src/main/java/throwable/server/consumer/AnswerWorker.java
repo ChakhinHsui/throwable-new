@@ -11,12 +11,11 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import seava.tools.ProxyChannel;
-import seava.tools.RedisTool;
 import seava.tools.StringTool;
+import seava.tools.cache.RedisTool;
 import seava.tools.rabbitmq.MQWorker;
 import throwable.server.bean.Notice;
 import throwable.server.bean.User;
-import throwable.server.manager.ThrowableManager;
 import throwable.server.service.QuestionService;
 import throwable.server.service.UserService;
 
