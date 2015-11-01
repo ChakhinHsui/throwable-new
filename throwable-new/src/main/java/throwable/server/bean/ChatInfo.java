@@ -17,9 +17,19 @@ public class ChatInfo {
 	public long fromUserId;
 	
 	/**
+	 * 说话人名字
+	 */
+	public String fromUserName;
+	
+	/**
 	 * 说话对象id
 	 */
 	public long toUserId;
+	
+	/**
+	 * 说话对象的名字
+	 */
+	public String toUserName;
 	
 	/**
 	 * 发言时间

@@ -23,7 +23,7 @@ public class KindService extends BaseService {
 	 * @param id
 	 * @return
 	 */
-	public Kind queryKindById(int id){
+	public Kind queryKindById(long id){
 		Sql sql = dao.sqls().create("kind_queryKindByKindId");
 		sql.params().set("id", id);
 		sql.setCallback(Sqls.callback.entity());
@@ -51,7 +51,7 @@ public class KindService extends BaseService {
 	 * @param id   分类id
 	 * @return
 	 */
-	public String queryKindNameByKindId(int id){
+	public String queryKindNameByKindId(long id){
 		Sql sql = dao.sqls().create("kind_queryKindNameByKindId");
 		sql.params().set("id", id);
 		sql.setCallback(Sqls.callback.str());

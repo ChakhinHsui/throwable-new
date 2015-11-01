@@ -26,6 +26,11 @@ public class UserShowInfo {
 	 */
 	public String nn;
 	
+	/**
+	 * 头像地址
+	 */
+	public String image;
+	
 	public UserShowInfo() {
 	}
 	
@@ -34,13 +39,11 @@ public class UserShowInfo {
 	}
 	
 	public void initUserShowInfo(User user) {
-		if(null == user) {
-			
-		}
 		this.uid = user.id;
 		this.un = user.username;
 		this.ur = user.rights;
 		this.nn = user.nickname;
+		this.image = "chat/images/user_b.gif";
 	}
 	
 	public static UserShowInfo getVisitor(long userId) {
@@ -49,6 +52,7 @@ public class UserShowInfo {
 		visitor.un = "游客";
 		visitor.nn = "游客";
 		visitor.ur = "游客";
+		visitor.image = "chat/images/user_b.gif";
 		return visitor;
 	}
 }

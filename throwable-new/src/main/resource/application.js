@@ -63,7 +63,7 @@ var ioc = {
 		} ]
 	},
 	redisTool : {
-		type : "seava.tools.RedisTool",
+		type : "seava.tools.cache.RedisTool",
 		args : [ 
 		        { java: "$config.get('chat.redis.host')" }
 		        ,{ java: "$config.get('chat.redis.port')" }

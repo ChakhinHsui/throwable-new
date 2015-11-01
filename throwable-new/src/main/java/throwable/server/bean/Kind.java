@@ -27,6 +27,11 @@ public class Kind {
 	public long time;
 	
 	/**
+	 * 分类/房间的描述
+	 */
+	public String description;
+	
+	/**
 	 * 问题所属用户id
 	 */
 	public int user_id;
